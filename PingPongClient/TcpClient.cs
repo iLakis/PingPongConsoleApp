@@ -1,8 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Net.Security;
-using System.Runtime.Intrinsics.X86;
 using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -10,9 +8,9 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Schema;
 using System.Xml.Serialization;
-using PingPongSchema;
+using Utils;
 
-namespace PPClient {
+namespace PingPongClient {
     public class TcpClient {
         protected const string ServerAddress = "localhost"; //"127.0.0.1";
         protected string ClientSslPass;
@@ -84,6 +82,7 @@ namespace PPClient {
 
                             try {
                                 using (var stringReader = new StringReader(response)) {
+                                    if (token.IsCancellationRequested) throw new TaskCanceledException();
                                     ReadPong(pongSerializer, stringReader);
                                 }
                             } catch (InvalidOperationException ex) {

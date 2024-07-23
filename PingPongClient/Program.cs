@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using PPClient;
+using PingPongClient;
 using System.Diagnostics.Tracing;
 
 var serviceProvider = new ServiceCollection()

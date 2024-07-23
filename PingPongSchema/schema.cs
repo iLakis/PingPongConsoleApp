@@ -10,7 +10,7 @@
 
 using System.Xml.Serialization;
 
-namespace PingPongSchema {
+namespace Utils {
     // 
     // Этот исходный код был создан с помощью xsd, версия=4.8.3928.0.
     // 

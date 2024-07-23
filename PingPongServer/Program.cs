@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using PPServer;
+using PingPongServer;
 
 var serviceProvider = new ServiceCollection()
     .AddLogging (configure => configure.AddConsole())

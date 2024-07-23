@@ -1,22 +1,15 @@
-﻿using System.IO;
-using System.Net;
+﻿using System.Net;
 using System.Net.Security;
 using System.Net.Sockets;
-using System.Security.Authentication;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
-using System.Xml;
-using System.Xml.Linq;
-using System.Xml.Schema;
 using System.Xml.Serialization;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using PPServer;
-using PingPongSchema;
+using PingPongServer;
+using Utils;
 
 namespace PingPongTests {
-    public class TestServer : TcpServer {
-        public TestServer(ILogger<TcpServer> logger) : base(logger) { }
+    public class TestServer_SpammingMessages : TcpServer {
+        public TestServer_SpammingMessages(ILogger<TcpServer> logger) : base(logger) { }
 
         public async Task StartSendingPongs(int count, int delayMs, CancellationToken token) {
             TcpListener listener = new TcpListener(IPAddress.Any, Port);
@@ -70,6 +63,7 @@ namespace PingPongTests {
 
                             try {
                                 using (var stringReader = new StringReader(message)) {
+                                    if (token.IsCancellationRequested) throw new TaskCanceledException();
                                     ReadPing(stringReader, pingSerializer);
                                 }
                             } catch (InvalidOperationException ex) {
@@ -101,12 +95,8 @@ namespace PingPongTests {
                     await Task.Delay(delayMs, token);
                 }
             } catch (TaskCanceledException ex) {
-                //_systemLogger.LogError($"Task cancelled: {ex.Message}");
-                if (ex.InnerException != null) {
-                    _logger.LogError($"Task cancelled while sending messages: {ex.InnerException.Message}");
-                } else {
-                    _logger.LogError($"Task cancelled while sending messages");
-                }
+                _logger.LogError($"Task cancelled while sending messages");
+                
             } catch (Exception ex) {
                 _logger.LogError($"Error while sending messages: {ex.Message}");
             }

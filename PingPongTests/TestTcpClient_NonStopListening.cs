@@ -1,16 +1,12 @@
 ﻿using Microsoft.Extensions.Logging;
-using System.IO;
 using System.Net.Security;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
-using PingPongSchema;
+using Utils;
 
-namespace PPClient {
-    public class TestTcpClient : TcpClient {
-        public TestTcpClient(ILogger systemLogger, ILogger responseLogger)
+namespace PingPongClient {
+    public class TestTcpClient_NonStopListening : TcpClient {
+        public TestTcpClient_NonStopListening(ILogger systemLogger, ILogger responseLogger)
             : base(systemLogger, responseLogger) { }
 
         protected override async Task CommunicateAsync(System.Net.Sockets.TcpClient client, SslStream sslStream, CancellationToken token) {
@@ -40,6 +36,7 @@ namespace PPClient {
 
                         try {
                             using (var stringReader = new StringReader(response)) {
+                                if (token.IsCancellationRequested) throw new TaskCanceledException();
                                 ReadPong(pongSerializer, stringReader);
                             }
                         } catch (InvalidOperationException ex) {

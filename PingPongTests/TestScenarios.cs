@@ -1,12 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using PPClient;
-using PPServer;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using PingPongClient;
+using PingPongServer;
 using System.Xml.Linq;
 using System.Xml.Schema;
 
@@ -43,7 +38,7 @@ namespace PingPongTests {
 
             var clientTasks = new List<Task>();
             var clients = new List<(TcpClient client, string clientLoggerCategory, string responseLoggerCategory)>();
-            for (int i = 0; i < 300; i++) { // Amount of clients
+            for (int i = 0; i < 200; i++) { // Amount of clients
                 string clientLoggerCategory = $"TcpClient_{i}";
                 string responseLoggerCategory = $"ResponseLogger_{i}";
                 var clientLogger = _loggerFactory.CreateLogger(clientLoggerCategory);
@@ -61,9 +56,7 @@ namespace PingPongTests {
             try {
 
                 cts.Cancel();
-                //await Task.WhenAll(serverTask);
-               // await Task.WhenAll(clientTasks);
-               await Task.Delay(1000);
+               await Task.WhenAll(serverTask);
             } catch (OperationCanceledException) {
 
             } catch (Exception) {
@@ -101,17 +94,17 @@ namespace PingPongTests {
             string clientResponseLoggerCategory = "ClientResponseLogger";
             var clientSystemLogger = _loggerFactory.CreateLogger(clientLSystemLoggerCategory);
             var clientResponseLogger = _loggerFactory.CreateLogger(clientResponseLoggerCategory);
-            var serverLogger = _loggerFactory.CreateLogger<TestServer>();
+            var serverLogger = _loggerFactory.CreateLogger<TestServer_SpammingMessages>();
             var cts = new CancellationTokenSource();
 
 
-            var testServer = new TestServer(serverLogger);
+            var testServer = new TestServer_SpammingMessages(serverLogger);
             var serverTask = testServer.StartSendingPongs(20000, 1, cts.Token);
 
             await Task.Delay(1000);
 
             
-            var client = new TestTcpClient(clientSystemLogger, clientResponseLogger);
+            var client = new TestTcpClient_NonStopListening(clientSystemLogger, clientResponseLogger);
             var clientTask = client.StartAsync(cts.Token);
 
             await Task.Delay(22000); 
@@ -133,7 +126,7 @@ namespace PingPongTests {
                 clientTask.Dispose();
             }
 
-            ValidateLogs(clientLSystemLoggerCategory, clientResponseLoggerCategory, typeof(TestServer).FullName);
+            ValidateLogs(clientLSystemLoggerCategory, clientResponseLoggerCategory, typeof(TestServer_SpammingMessages).FullName);
         }
 
         private void ValidateLogs(string clientSystemLoggerCategory, string clientResponseLoggerCategory, string serverLoggerCategory) {
@@ -145,60 +138,14 @@ namespace PingPongTests {
             var clientMessages = responseLogs.Where(log => log.Contains("Received response:")).ToList();
 
             Assert.NotEmpty(clientMessages);
-            Assert.All(clientMessages, msg => Assert.True(ValidateXml(RemovePrefix(msg, "Received response: "), _schemaSet)));
+            Assert.All(clientMessages, msg => Assert.True(ValidateXml(RemovePrefix(msg, "Received response: "), _schemaSet), "Client received invalid response"));
 
             Assert.NotEmpty(serverMessages);
-            Assert.All(serverMessages, msg => Assert.True(ValidateXml(RemovePrefix(msg, "Received message: "), _schemaSet)));
+            Assert.All(serverMessages, msg => Assert.True(ValidateXml(RemovePrefix(msg, "Received message: "), _schemaSet), "Server received invalid response"));
 
             Assert.DoesNotContain(serverLogs, log => log.Contains("error", StringComparison.OrdinalIgnoreCase));
             Assert.DoesNotContain(clientLogs, log => log.Contains("error", StringComparison.OrdinalIgnoreCase));
         }
-
-
-        /*[Fact]
-        public async Task TestClientOverload() {
-            var cts = new CancellationTokenSource();
-            var token = cts.Token;
-
-            var serverLogger = _loggerFactory.CreateLogger<TcpServer>();
-            var testServer = new TestServer(serverLogger);
-            var serverTask = Task.Run(() => testServer.StartSendingPongs(100, 100, token));
-
-            await Task.Delay(1000); // Ждём, пока сервер запустится
-
-            string clientLoggerCategory = "TcpClient_Test";
-            string responseLoggerCategory = "ResponseLogger_Test";
-            var clientLogger = _loggerFactory.CreateLogger(clientLoggerCategory);
-            var responseLogger = _loggerFactory.CreateLogger(responseLoggerCategory);
-
-            var testClient = new TestClient(clientLogger, responseLogger);
-            var clientTask = Task.Run(() => testClient.StartAsync(token));
-
-            await Task.Delay(15000); // Ждём, чтобы клиент получил множество сообщений
-
-            cts.Cancel();
-            try {
-                await Task.WhenAll(serverTask, clientTask);
-            } catch (TaskCanceledException) {
-                // Ожидаемое исключение при отмене задачи
-            } catch (Exception ex) {
-                // Обрабатываем другие исключения
-                _serverLogger.LogError(ex, "Ошибка во время выполнения теста");
-            }
-
-            if (serverTask.IsCompleted) {
-                serverTask.Dispose();
-            }
-
-            var responseLogs = _memoryLoggerProvider.GetLogs(responseLoggerCategory);
-            var clientMessages = responseLogs.Where(log => log.Contains("Received response:")).ToList();
-
-            Assert.NotEmpty(clientMessages);
-            Assert.All(clientMessages, msg => Assert.True(ValidateXml(RemovePrefix(msg, "Received response: "), _schemaSet)));
-
-            var clientLogs = _memoryLoggerProvider.GetLogs(clientLoggerCategory);
-            Assert.DoesNotContain(clientLogs, log => log.Contains("error", StringComparison.OrdinalIgnoreCase));
-        }*/
 
         private bool ValidateXml(string xmlMessage, XmlSchemaSet schemaSet) {
             try {

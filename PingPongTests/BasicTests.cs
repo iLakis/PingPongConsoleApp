@@ -1,8 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.VisualBasic;
-using PPClient;
-using PPServer;
+using PingPongClient;
+using PingPongServer;
 using System.Xml.Linq;
 using System.Xml.Schema;
 
@@ -50,6 +49,7 @@ namespace PingPongTests {
             cts.Cancel();
             try {
                 await Task.WhenAll(serverTask, clientTask);
+                //await Task.Delay(1000);
             } catch (OperationCanceledException ex) {
 
             } catch (Exception ex) {
@@ -70,10 +70,10 @@ namespace PingPongTests {
             var responseLogs = _memoryLoggerProvider.GetLogs(responseLoggerCategory);
             var clientMessages = responseLogs.Where(log => log.Contains("Received response:")).ToList();
 
-            Assert.NotEmpty(clientMessages);
+            Assert.True(clientMessages.Count > 0, "Client received no messages");
             Assert.All(clientMessages, msg => Assert.True(ValidateXml(RemovePrefix(msg, "Received response: "), _schemaSet)));
 
-            Assert.NotEmpty(serverMessages);
+            Assert.True(serverMessages.Count > 0, "Server received no messages");
             Assert.All(serverMessages, msg => Assert.True(ValidateXml(RemovePrefix(msg, "Received message: "), _schemaSet)));
 
             Assert.DoesNotContain(serverLogs, log => log.Contains("error", System.StringComparison.OrdinalIgnoreCase));

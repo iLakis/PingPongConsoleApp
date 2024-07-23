@@ -1,6 +1,4 @@
-﻿using System.IO;
-using System.Net;
-using System.Net.NetworkInformation;
+﻿using System.Net;
 using System.Net.Security;
 using System.Net.Sockets;
 using System.Security.Authentication;
@@ -12,9 +10,9 @@ using System.Xml.Schema;
 using System.Xml.Serialization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using PingPongSchema;
+using Utils;
 
-namespace PPServer {
+namespace PingPongServer {
     public class TcpServer {
         protected const int Port = 5001;
         protected string ServerSslPass;
@@ -71,7 +69,8 @@ namespace PPServer {
                     var pongSerializer = new XmlSerializer(typeof(pong));
                     StringBuilder messageBuilder = new StringBuilder();
 
-                    while (client.Connected && !token.IsCancellationRequested) {
+                    while (client.Connected) {
+                        if (token.IsCancellationRequested) throw new TaskCanceledException();
                         string line = await reader.ReadLineAsync();
                         if (!string.IsNullOrWhiteSpace(line)) {
                             messageBuilder.AppendLine(line);
@@ -79,11 +78,12 @@ namespace PPServer {
                                 string message = messageBuilder.ToString();
                                 message = message.Replace(Separator, "");
                                 _logger.LogInformation($"Received message: {message}", message);
-
                                 try {
                                     using (var stringReader = new StringReader(message)) {
+                                        if (token.IsCancellationRequested) throw new TaskCanceledException();
                                         ReadPing(stringReader, pingSerializer);
-                                        SendPong(writer);                                        
+                                        if (token.IsCancellationRequested) throw new TaskCanceledException();
+                                        SendPong(writer);
                                     }
                                 } catch (InvalidOperationException ex) {
                                     _logger.LogError($"XML Deserialization error: {ex.Message}");
@@ -114,12 +114,8 @@ namespace PPServer {
                     _logger.LogError($"Inner exception: {ioEx.InnerException.Message}");
                 }
             } catch (TaskCanceledException ex) {
-                //_systemLogger.LogError($"Task cancelled: {ex.Message}");
-                if (ex.InnerException != null) {
-                    _logger.LogError($"Task cancelled: {ex.InnerException.Message}");
-                } else {
-                    _logger.LogError($"Task cancelled");
-                }
+                _logger.LogWarning($"Task cancelled");
+                
             } catch (Exception ex) {
                 _logger.LogInformation($"Error: {ex.Message}");
                 if (ex.InnerException != null) {

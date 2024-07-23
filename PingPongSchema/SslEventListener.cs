@@ -1,6 +1,4 @@
-﻿using System;
-using System.Diagnostics.Tracing;
-using System.Linq;
+﻿using System.Diagnostics.Tracing;
 
 public class SslEventListener : EventListener {
     protected override void OnEventSourceCreated(EventSource eventSource) {
