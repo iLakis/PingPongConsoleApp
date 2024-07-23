@@ -57,9 +57,14 @@ namespace PPClient {
         }
 
         private async Task SendMessagesAsync(StreamWriter writer, CancellationToken token) {
-            while (!token.IsCancellationRequested) {
-                SendPing(writer);
-                await Task.Delay(Interval, token);
+            try {
+                while (!token.IsCancellationRequested) {
+                    SendPing(writer);
+                    await Task.Delay(Interval, token);
+                }
+            } catch (TaskCanceledException ex) {
+                //_systemLogger.LogError($"Task cancelled: {ex.Message}");
+                _systemLogger.LogWarning($"Task cancelled: {ex.Message}");
             }
         }
     }

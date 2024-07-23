@@ -100,6 +100,13 @@ namespace PingPongTests {
                     _logger.LogInformation($"Sent: {pongVar.timestamp}");
                     await Task.Delay(delayMs, token);
                 }
+            } catch (TaskCanceledException ex) {
+                //_systemLogger.LogError($"Task cancelled: {ex.Message}");
+                if (ex.InnerException != null) {
+                    _logger.LogError($"Task cancelled while sending messages: {ex.InnerException.Message}");
+                } else {
+                    _logger.LogError($"Task cancelled while sending messages");
+                }
             } catch (Exception ex) {
                 _logger.LogError($"Error while sending messages: {ex.Message}");
             }

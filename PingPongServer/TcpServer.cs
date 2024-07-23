@@ -113,6 +113,13 @@ namespace PPServer {
                 if (ioEx.InnerException != null) {
                     _logger.LogError($"Inner exception: {ioEx.InnerException.Message}");
                 }
+            } catch (TaskCanceledException ex) {
+                //_systemLogger.LogError($"Task cancelled: {ex.Message}");
+                if (ex.InnerException != null) {
+                    _logger.LogError($"Task cancelled: {ex.InnerException.Message}");
+                } else {
+                    _logger.LogError($"Task cancelled");
+                }
             } catch (Exception ex) {
                 _logger.LogInformation($"Error: {ex.Message}");
                 if (ex.InnerException != null) {

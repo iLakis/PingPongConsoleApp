@@ -51,6 +51,13 @@ namespace PPClient {
                 }
             } catch (IOException ioEx) {
                 _systemLogger.LogError($"IO error: {ioEx.Message}");
+            } catch (TaskCanceledException ex) {
+                //_systemLogger.LogError($"Task cancelled: {ex.Message}");
+                if (ex.InnerException != null) {
+                    _systemLogger.LogError($"Task cancelled: {ex.InnerException.Message}");
+                } else {
+                    _systemLogger.LogError($"Task cancelled");
+                }
             } catch (Exception ex) {
                 _systemLogger.LogError($"Error: {ex.Message}");
             }

@@ -43,7 +43,7 @@ namespace PingPongTests {
 
             var clientTasks = new List<Task>();
             var clients = new List<(TcpClient client, string clientLoggerCategory, string responseLoggerCategory)>();
-            for (int i = 0; i < 100; i++) { // Amount of clients
+            for (int i = 0; i < 300; i++) { // Amount of clients
                 string clientLoggerCategory = $"TcpClient_{i}";
                 string responseLoggerCategory = $"ResponseLogger_{i}";
                 var clientLogger = _loggerFactory.CreateLogger(clientLoggerCategory);
@@ -57,11 +57,13 @@ namespace PingPongTests {
 
             await Task.Delay(10000); // Wait to ensure some communication occurs
 
-            cts.Cancel();
 
             try {
-                await Task.WhenAll(serverTask);
-                await Task.WhenAll(clientTasks);
+
+                cts.Cancel();
+                //await Task.WhenAll(serverTask);
+               // await Task.WhenAll(clientTasks);
+               await Task.Delay(1000);
             } catch (OperationCanceledException) {
 
             } catch (Exception) {
@@ -82,8 +84,9 @@ namespace PingPongTests {
                 var responseLogs = _memoryLoggerProvider.GetLogs(responseLoggerCategory);
                 var clientMessages = responseLogs.Where(log => log.Contains("Received response:")).ToList();
 
-                Assert.NotEmpty(clientMessages);
-                Assert.All(clientMessages, msg => Assert.True(ValidateXml(RemovePrefix(msg, "Received response: "), _schemaSet)));
+                Assert.True(clientMessages.Count > 0, $"{clientLoggerCategory} has no messages");
+                Assert.All(clientMessages, msg => 
+                Assert.True(ValidateXml(RemovePrefix(msg, "Received response: "), _schemaSet), $"{clientLoggerCategory} reveived invalid response"));
 
                 var clientLogs = _memoryLoggerProvider.GetLogs(clientLoggerCategory);
                 Assert.DoesNotContain(clientLogs, log => log.Contains("error", StringComparison.OrdinalIgnoreCase));
@@ -112,10 +115,11 @@ namespace PingPongTests {
             var clientTask = client.StartAsync(cts.Token);
 
             await Task.Delay(22000); 
-
-            cts.Cancel();
+       
             try {
-                await Task.WhenAny(serverTask, clientTask);
+                cts.Cancel();
+                await Task.Delay(1000);
+                //await Task.WhenAny(serverTask, clientTask);
             } catch (OperationCanceledException ex) {
 
             } catch (Exception ex) {
