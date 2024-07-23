@@ -1,0 +1,7 @@
+﻿// installing certificates if there are none
+dotnet dev-certs https --trust
+
+// exporting the certificates
+dotnet dev-certs https -ep server.pfx -p yourpassword
+
+// dont forget to check file properties to be available during debugging

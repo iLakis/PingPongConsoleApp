@@ -1,0 +1,34 @@
+﻿// Create private key
+openssl genpkey -algorithm RSA -out client-key.pem -aes256
+
+// Create CSR Certificate 
+openssl req -new -key client-key.pem -out client-csr.pem 
+
+Country Name (2 letter code) [AU]:EE
+State or Province Name (full name) [Some-State]:Harju
+Locality Name (eg, city) []:Tallinn
+Organization Name (eg, company) [Internet Widgits Pty Ltd]:PingPong
+Organizational Unit Name (eg, section) []:IT
+Common Name (e.g. server FQDN or YOUR name) []:client.localhost
+Email Address []:.
+
+Please enter the following 'extra' attributes
+to be sent with your certificate request
+Press Enter to skip the rest, these are optional
+
+or just add `-subj "/C=EE/ST=Harju/L=Tallinn/O=PingPong/OU=IT/CN=client.localhost"` to autofill
+
+Only the `Common Name` matters, other fields are not critical
+
+
+// Create self-signed certificate
+openssl req -x509 -key client-key.pem -in client-csr.pem -out client-cert.pem -days 365
+
+// Export to .pfx file (certificate + private key). Note the `-certpbe PBE-SHA1-3DES -keypbe PBE-SHA1-3DES `, it changes crypto algorithm, doesn't really change anything as it turned out
+// `-nomac` without this you will get invalid password exception
+openssl pkcs12 -export -out client.pfx -inkey client-key.pem -in client-cert.pem -certpbe PBE-SHA1-3DES -keypbe PBE-SHA1-3DES -nomac
+
+// View info about the certificate
+openssl pkcs12 -info -in client.pfx
+
+// dont forget to check file properties to be available during debugging

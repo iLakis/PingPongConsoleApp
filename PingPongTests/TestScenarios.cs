@@ -1,0 +1,221 @@
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using PPClient;
+using PPServer;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Xml.Linq;
+using System.Xml.Schema;
+
+namespace PingPongTests {
+    public class TestScenarios {
+        private readonly MemoryLoggerProvider _memoryLoggerProvider;
+        private readonly ILogger<TcpServer> _serverLogger;
+        private readonly ILoggerFactory _loggerFactory;
+        private readonly XmlSchemaSet _schemaSet;
+
+        public TestScenarios() {
+            _memoryLoggerProvider = new MemoryLoggerProvider();
+            var serviceProvider = new ServiceCollection()
+                .AddLogging(configure => configure.AddProvider(_memoryLoggerProvider))
+                .BuildServiceProvider();
+
+            _loggerFactory = serviceProvider.GetService<ILoggerFactory>();
+            _serverLogger = _loggerFactory.CreateLogger<TcpServer>();
+
+            _schemaSet = new XmlSchemaSet();
+            var schemaPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "schema.xsd");
+            _schemaSet.Add("", schemaPath);
+        }
+
+        [Fact]
+        public async Task TestServerOverload() {
+            var cts = new CancellationTokenSource();
+            var token = cts.Token;
+
+            var server = new TcpServer(_serverLogger);
+            var serverTask = Task.Run(() => { server.StartAsync(token); });
+
+            await Task.Delay(1000); // Wait for server to boot up
+
+            var clientTasks = new List<Task>();
+            var clients = new List<(TcpClient client, string clientLoggerCategory, string responseLoggerCategory)>();
+            for (int i = 0; i < 100; i++) { // Amount of clients
+                string clientLoggerCategory = $"TcpClient_{i}";
+                string responseLoggerCategory = $"ResponseLogger_{i}";
+                var clientLogger = _loggerFactory.CreateLogger(clientLoggerCategory);
+                var responseLogger = _loggerFactory.CreateLogger(responseLoggerCategory);
+
+                var client = new TcpClient(clientLogger, responseLogger);
+                clients.Add((client, clientLoggerCategory, responseLoggerCategory));
+                clientTasks.Add(Task.Run(() => client.StartAsync(token)));
+                //await Task.Delay(200); // Delay between connections
+            }
+
+            await Task.Delay(10000); // Wait to ensure some communication occurs
+
+            cts.Cancel();
+
+            try {
+                await Task.WhenAll(serverTask);
+                await Task.WhenAll(clientTasks);
+            } catch (OperationCanceledException) {
+
+            } catch (Exception) {
+
+            }
+
+            if (serverTask.IsCompleted) {
+                serverTask.Dispose();
+            }
+
+            var serverLogs = _memoryLoggerProvider.GetLogs(typeof(TcpServer).FullName);
+            var serverMessages = serverLogs.Where(log => log.Contains("Received message:")).ToList();
+
+            Assert.NotEmpty(serverMessages);
+            Assert.All(serverMessages, msg => Assert.True(ValidateXml(RemovePrefix(msg, "Received message: "), _schemaSet)));
+
+            foreach (var (client, clientLoggerCategory, responseLoggerCategory) in clients) {
+                var responseLogs = _memoryLoggerProvider.GetLogs(responseLoggerCategory);
+                var clientMessages = responseLogs.Where(log => log.Contains("Received response:")).ToList();
+
+                Assert.NotEmpty(clientMessages);
+                Assert.All(clientMessages, msg => Assert.True(ValidateXml(RemovePrefix(msg, "Received response: "), _schemaSet)));
+
+                var clientLogs = _memoryLoggerProvider.GetLogs(clientLoggerCategory);
+                Assert.DoesNotContain(clientLogs, log => log.Contains("error", StringComparison.OrdinalIgnoreCase));
+            }
+
+        }
+
+
+        [Fact]
+        public async Task TestClientOverload() {
+            string clientLSystemLoggerCategory = "ClientSystemLogger";
+            string clientResponseLoggerCategory = "ClientResponseLogger";
+            var clientSystemLogger = _loggerFactory.CreateLogger(clientLSystemLoggerCategory);
+            var clientResponseLogger = _loggerFactory.CreateLogger(clientResponseLoggerCategory);
+            var serverLogger = _loggerFactory.CreateLogger<TestServer>();
+            var cts = new CancellationTokenSource();
+
+
+            var testServer = new TestServer(serverLogger);
+            var serverTask = testServer.StartSendingPongs(20000, 1, cts.Token);
+
+            await Task.Delay(1000);
+
+            
+            var client = new TestTcpClient(clientSystemLogger, clientResponseLogger);
+            var clientTask = client.StartAsync(cts.Token);
+
+            await Task.Delay(22000); 
+
+            cts.Cancel();
+            try {
+                await Task.WhenAny(serverTask, clientTask);
+            } catch (OperationCanceledException ex) {
+
+            } catch (Exception ex) {
+                clientSystemLogger.LogError($"Unexpected error: {ex.Message}");
+            }
+
+            if (serverTask.IsCompleted) {
+                serverTask.Dispose();
+            }
+            if (clientTask.IsCompleted) {
+                clientTask.Dispose();
+            }
+
+            ValidateLogs(clientLSystemLoggerCategory, clientResponseLoggerCategory, typeof(TestServer).FullName);
+        }
+
+        private void ValidateLogs(string clientSystemLoggerCategory, string clientResponseLoggerCategory, string serverLoggerCategory) {
+            var serverLogs = _memoryLoggerProvider.GetLogs(serverLoggerCategory);
+            var serverMessages = serverLogs.Where(log => log.Contains("Received message:")).ToList();
+
+            var clientLogs = _memoryLoggerProvider.GetLogs(clientSystemLoggerCategory);
+            var responseLogs = _memoryLoggerProvider.GetLogs(clientResponseLoggerCategory);
+            var clientMessages = responseLogs.Where(log => log.Contains("Received response:")).ToList();
+
+            Assert.NotEmpty(clientMessages);
+            Assert.All(clientMessages, msg => Assert.True(ValidateXml(RemovePrefix(msg, "Received response: "), _schemaSet)));
+
+            Assert.NotEmpty(serverMessages);
+            Assert.All(serverMessages, msg => Assert.True(ValidateXml(RemovePrefix(msg, "Received message: "), _schemaSet)));
+
+            Assert.DoesNotContain(serverLogs, log => log.Contains("error", StringComparison.OrdinalIgnoreCase));
+            Assert.DoesNotContain(clientLogs, log => log.Contains("error", StringComparison.OrdinalIgnoreCase));
+        }
+
+
+        /*[Fact]
+        public async Task TestClientOverload() {
+            var cts = new CancellationTokenSource();
+            var token = cts.Token;
+
+            var serverLogger = _loggerFactory.CreateLogger<TcpServer>();
+            var testServer = new TestServer(serverLogger);
+            var serverTask = Task.Run(() => testServer.StartSendingPongs(100, 100, token));
+
+            await Task.Delay(1000); // Ждём, пока сервер запустится
+
+            string clientLoggerCategory = "TcpClient_Test";
+            string responseLoggerCategory = "ResponseLogger_Test";
+            var clientLogger = _loggerFactory.CreateLogger(clientLoggerCategory);
+            var responseLogger = _loggerFactory.CreateLogger(responseLoggerCategory);
+
+            var testClient = new TestClient(clientLogger, responseLogger);
+            var clientTask = Task.Run(() => testClient.StartAsync(token));
+
+            await Task.Delay(15000); // Ждём, чтобы клиент получил множество сообщений
+
+            cts.Cancel();
+            try {
+                await Task.WhenAll(serverTask, clientTask);
+            } catch (TaskCanceledException) {
+                // Ожидаемое исключение при отмене задачи
+            } catch (Exception ex) {
+                // Обрабатываем другие исключения
+                _serverLogger.LogError(ex, "Ошибка во время выполнения теста");
+            }
+
+            if (serverTask.IsCompleted) {
+                serverTask.Dispose();
+            }
+
+            var responseLogs = _memoryLoggerProvider.GetLogs(responseLoggerCategory);
+            var clientMessages = responseLogs.Where(log => log.Contains("Received response:")).ToList();
+
+            Assert.NotEmpty(clientMessages);
+            Assert.All(clientMessages, msg => Assert.True(ValidateXml(RemovePrefix(msg, "Received response: "), _schemaSet)));
+
+            var clientLogs = _memoryLoggerProvider.GetLogs(clientLoggerCategory);
+            Assert.DoesNotContain(clientLogs, log => log.Contains("error", StringComparison.OrdinalIgnoreCase));
+        }*/
+
+        private bool ValidateXml(string xmlMessage, XmlSchemaSet schemaSet) {
+            try {
+                var xmlDoc = XDocument.Parse(xmlMessage);
+                xmlDoc.Validate(schemaSet, (o, e) => {
+                    throw new XmlSchemaValidationException(e.Message);
+                });
+                return true;
+            } catch (XmlSchemaValidationException) {
+                return false;
+            }
+        }
+
+        private string RemovePrefix(string message, string prefix) {
+            if (message.StartsWith(prefix)) {
+                return message.Substring(prefix.Length).Trim();
+            }
+            return message;
+        }
+    
+    }
+
+
+}

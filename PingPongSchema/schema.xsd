@@ -1,0 +1,12 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="ping">
+    <xs:complexType>
+      <xs:attribute name="timestamp" type="xs:dateTime" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="pong">
+    <xs:complexType>
+      <xs:attribute name="timestamp" type="xs:dateTime" use="required"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
