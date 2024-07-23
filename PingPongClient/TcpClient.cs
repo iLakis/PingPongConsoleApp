@@ -20,6 +20,8 @@ namespace PingPongClient {
         protected static XmlSchemaSet schemaSet;
         protected const string Separator = "<EOF>";
 
+        protected System.Net.Sockets.TcpClient _client;
+        protected SslStream _sslStream;
         protected readonly ILogger _systemLogger;
         protected readonly ILogger _responseLogger;
 
@@ -35,9 +37,8 @@ namespace PingPongClient {
                 throw;
             }
         }
-
         public async Task StartAsync(CancellationToken token) {
-            try {
+            /*try {
                 System.Net.Sockets.TcpClient client = new System.Net.Sockets.TcpClient(ServerAddress, Port);
                 var sslStream = new SslStream(client.GetStream(), false, new RemoteCertificateValidationCallback(ValidateServerCertificate));
                 AuthenticateSsl(sslStream);
@@ -58,20 +59,59 @@ namespace PingPongClient {
                 }
             } catch (Exception ex) {
                 _systemLogger.LogError($"Error: {ex.Message}");
+            }*/
+            while (!token.IsCancellationRequested) {
+                try {
+                    if (_client == null || !_client.Connected) {
+                        await ConnectAsync(token);
+                    }
+                    await CommunicateAsync(token);
+                } catch (AuthenticationException ex) {
+                    _systemLogger.LogError($"Authentication failed: {ex.Message}");
+                    if (ex.InnerException != null) {
+                        _systemLogger.LogError($"Inner exception: {ex.InnerException.Message}");
+                    }
+                } catch (IOException ioEx) {
+                    _systemLogger.LogError($"IO error: {ioEx.Message}");
+                    if (ioEx.InnerException != null) {
+                        _systemLogger.LogError($"Inner exception: {ioEx.InnerException.Message}");
+                    }
+                } catch (TaskCanceledException ex) {
+                    //_systemLogger.LogError($"Task cancelled: {ex.Message}");
+                    if (ex.InnerException != null) {
+                        _systemLogger.LogError($"Task cancelled: {ex.InnerException.Message}");
+                    } else {
+                        _systemLogger.LogError($"Task cancelled");
+                    }
+                } catch (Exception ex) {
+                    _systemLogger.LogError($"Error: {ex.Message}");
+                } finally {
+                    await ReconnectAsync(token);
+                }
             }
         }
-
-        protected virtual async Task CommunicateAsync(System.Net.Sockets.TcpClient client, SslStream sslStream, CancellationToken token) {
-            using StreamReader reader = new StreamReader(sslStream);
-            using StreamWriter writer = new StreamWriter(sslStream) { AutoFlush = true };
+        public async Task ConnectAsync(CancellationToken token) {
+            try {
+                _client = new System.Net.Sockets.TcpClient();
+                await _client.ConnectAsync(ServerAddress, Port);
+                _sslStream = new SslStream(_client.GetStream(), false, new RemoteCertificateValidationCallback(ValidateServerCertificate));
+                AuthenticateSsl(_sslStream);
+            } catch (Exception ex) {
+                _systemLogger.LogError($"Connection error: {ex.Message}");
+                throw;
+            }
+        }
+        protected virtual async Task CommunicateAsync(CancellationToken token) {
+            using StreamReader reader = new StreamReader(_sslStream);
+            using StreamWriter writer = new StreamWriter(_sslStream) { AutoFlush = true };
             var pingSerializer = new XmlSerializer(typeof(ping));
             var pongSerializer = new XmlSerializer(typeof(pong));
             StringBuilder responseBuilder = new StringBuilder();
 
-            while (client.Connected && !token.IsCancellationRequested) {
+            while (_client.Connected && !token.IsCancellationRequested) {
                 SendPing(writer);
 
-                while (client.Connected && !token.IsCancellationRequested) {
+                while (_client.Connected && !token.IsCancellationRequested) {
                     string line = await reader.ReadLineAsync();
                     if (!string.IsNullOrWhiteSpace(line)) {
                         responseBuilder.AppendLine(line);
@@ -103,8 +143,19 @@ namespace PingPongClient {
             }
             _systemLogger.LogWarning("Client stopped");
         }
-
-
+        public async Task ReconnectAsync(CancellationToken token) {
+            while (!token.IsCancellationRequested) {
+                try {
+                    _systemLogger.LogInformation("Attempting to reconnect...");
+                    await ConnectAsync(token);
+                    _systemLogger.LogInformation("Reconnected successfully.");
+                    break;
+                } catch (Exception ex) {
+                    _systemLogger.LogError($"Reconnection failed: {ex.Message}");
+                    await Task.Delay(5000, token); // Wait 5 seconds before retrying
+                }
+            }
+        }
         protected void AuthenticateSsl(SslStream sslStream) {
             _systemLogger.LogInformation("Starting SSL handshake...");
             sslStream.AuthenticateAsClient(
@@ -114,14 +165,12 @@ namespace PingPongClient {
                 checkCertificateRevocation: true);//true. false for testing
             _systemLogger.LogInformation("SSL handshake completed.");
         }
-
         protected void SendPing(StreamWriter writer) {
             var pingVar = new ping { timestamp = DateTime.UtcNow };
             var pingMessage = SerializeToXml(pingVar) + Separator;
             writer.WriteLine(pingMessage);
             _systemLogger.LogInformation($"Sent: {pingVar.timestamp}");
         }
-
         protected void ReadPong(XmlSerializer pongSerializer, StringReader stringReader) {
             var pongVar = (pong)pongSerializer.Deserialize(stringReader);
             var receivedTime = DateTime.UtcNow;
@@ -129,7 +178,6 @@ namespace PingPongClient {
             var deliveryTime = receivedTime - sentTime;
             _responseLogger.LogInformation($"Received: {pongVar.timestamp}, Delivery Time: {deliveryTime.TotalMilliseconds}ms");
         }
-
         protected string SerializeToXml<T>(T obj) {
             var serializer = new XmlSerializer(typeof(T));
             var settings = new XmlWriterSettings {
@@ -162,7 +210,6 @@ namespace PingPongClient {
             // return true;
 
         }
-
         private void LoadConfiguration() {
             try {
                 _systemLogger.LogInformation("Loading configuration...");
@@ -188,7 +235,6 @@ namespace PingPongClient {
                 throw;
             }
         }
-
         private void LoadCertificate() {
             try {
                 string certPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ClientCertificate\\client.pfx");
@@ -207,7 +253,6 @@ namespace PingPongClient {
                 throw;
             }
         }
-
         private void LoadXsdSchema() {
             try {
                 schemaSet = new XmlSchemaSet();
@@ -222,7 +267,5 @@ namespace PingPongClient {
                 throw;
             }
         }
-
-
     }
 }

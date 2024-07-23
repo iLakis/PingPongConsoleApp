@@ -8,10 +8,9 @@ namespace PingPongClient {
     public class TestTcpClient_NonStopListening : TcpClient {
         public TestTcpClient_NonStopListening(ILogger systemLogger, ILogger responseLogger)
             : base(systemLogger, responseLogger) { }
-
-        protected override async Task CommunicateAsync(System.Net.Sockets.TcpClient client, SslStream sslStream, CancellationToken token) {
-            using StreamReader reader = new StreamReader(sslStream);
-            using StreamWriter writer = new StreamWriter(sslStream) { AutoFlush = true };
+        protected override async Task CommunicateAsync( CancellationToken token) {
+            using StreamReader reader = new StreamReader(_sslStream);
+            using StreamWriter writer = new StreamWriter(_sslStream) { AutoFlush = true };
             var pingSerializer = new XmlSerializer(typeof(ping));
             var pongSerializer = new XmlSerializer(typeof(pong));
             StringBuilder responseBuilder = new StringBuilder();
@@ -23,7 +22,6 @@ namespace PingPongClient {
 
             _systemLogger.LogWarning("Client stopped");
         }
-
         private async Task ReadMessagesAsync(StreamReader reader, XmlSerializer pongSerializer, StringBuilder responseBuilder, CancellationToken token) {
             while (!token.IsCancellationRequested) {
                 string line = await reader.ReadLineAsync();
@@ -52,7 +50,6 @@ namespace PingPongClient {
                 }
             }
         }
-
         private async Task SendMessagesAsync(StreamWriter writer, CancellationToken token) {
             try {
                 while (!token.IsCancellationRequested) {
