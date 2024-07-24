@@ -19,6 +19,8 @@ namespace PingPongClient {
         protected static int Interval;
         protected static XmlSchemaSet schemaSet;
         protected const string Separator = "<EOF>";
+        protected int _maxReconnectAttempts;
+        protected int _reconnectDelay;
 
         protected System.Net.Sockets.TcpClient _client;
         protected SslStream _sslStream;
@@ -38,28 +40,6 @@ namespace PingPongClient {
             }
         }
         public async Task StartAsync(CancellationToken token) {
-            /*try {
-                System.Net.Sockets.TcpClient client = new System.Net.Sockets.TcpClient(ServerAddress, Port);
-                var sslStream = new SslStream(client.GetStream(), false, new RemoteCertificateValidationCallback(ValidateServerCertificate));
-                AuthenticateSsl(sslStream);
-                await CommunicateAsync(client, sslStream, token);
-            } catch (AuthenticationException ex) {
-                _systemLogger.LogError($"Authentication failed: {ex.Message}");
-                if (ex.InnerException != null) {
-                    _systemLogger.LogError($"Inner exception: {ex.InnerException.Message}");
-                }
-            } catch (IOException ioEx) {
-                _systemLogger.LogError($"IO error: {ioEx.Message}");
-            } catch (TaskCanceledException ex) {
-                //_systemLogger.LogError($"Task cancelled: {ex.Message}");
-                if (ex.InnerException != null) {
-                    _systemLogger.LogError($"Task cancelled: {ex.InnerException.Message}");
-                } else {
-                    _systemLogger.LogError($"Task cancelled");
-                }
-            } catch (Exception ex) {
-                _systemLogger.LogError($"Error: {ex.Message}");
-            }*/
             while (!token.IsCancellationRequested) {
                 try {
                     if (_client == null || !_client.Connected) {
@@ -144,15 +124,21 @@ namespace PingPongClient {
             _systemLogger.LogWarning("Client stopped");
         }
         public async Task ReconnectAsync(CancellationToken token) {
-            while (!token.IsCancellationRequested) {
+            int attempts = 0;
+            while (!token.IsCancellationRequested && attempts < _maxReconnectAttempts) {
                 try {
                     _systemLogger.LogInformation("Attempting to reconnect...");
                     await ConnectAsync(token);
                     _systemLogger.LogInformation("Reconnected successfully.");
                     break;
                 } catch (Exception ex) {
-                    _systemLogger.LogError($"Reconnection failed: {ex.Message}");
-                    await Task.Delay(5000, token); // Wait 5 seconds before retrying
+                    _systemLogger.LogError($"Reconnection attempt {attempts + 1} failed: {ex.Message}");
+                    attempts++;
+                    if (attempts >= _maxReconnectAttempts) {
+                        _systemLogger.LogError("Max reconnection attempts reached. Giving up.");
+                        break;
+                    }
+                    await Task.Delay(_reconnectDelay, token); 
                 }
             }
         }
@@ -229,6 +215,21 @@ namespace PingPongClient {
                 } else {
                     throw new Exception("Interval in appsettings.json is not a valid integer.");
                 }
+
+                string maxReconnectAttemptsString = configuration["MaxReconnectAttempts"];
+                if (int.TryParse(maxReconnectAttemptsString, out int maxReconnectAttempts)) {
+                    _maxReconnectAttempts = maxReconnectAttempts;
+                } else {
+                    throw new Exception("MaxReconnectAttempts in appsettings.json is not a valid integer.");
+                }
+
+                string reconnectDelayString = configuration["ReconnectDelay"];
+                if (int.TryParse(reconnectDelayString, out int reconnectDelay)) {
+                    _reconnectDelay = reconnectDelay;
+                } else {
+                    throw new Exception("ReconnectDelay in appsettings.json is not a valid integer.");
+                }
+
                 _systemLogger.LogInformation("Configuration loaded successfully.");
             } catch (Exception ex) {
                 _systemLogger.LogError($"Error loading configuration: {ex.Message}");
@@ -266,6 +267,11 @@ namespace PingPongClient {
                 _systemLogger.LogError($"Error loading schema: {ex.Message}");
                 throw;
             }
+        }
+        public void Disconnect() {
+            _systemLogger.LogWarning("Disconnecting the client.");
+            _sslStream?.Close();
+            _client?.Close();
         }
     }
 }

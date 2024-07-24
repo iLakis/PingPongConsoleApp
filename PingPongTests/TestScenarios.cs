@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using PingPongClient;
 using PingPongServer;
+using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using System.Xml.Schema;
 
@@ -127,6 +128,95 @@ namespace PingPongTests {
             }
 
             ValidateLogs(clientLSystemLoggerCategory, clientResponseLoggerCategory, typeof(TestServer_SpammingMessages).FullName);
+        }
+
+        [Fact]
+        public async Task TestClientReconnection() {
+            var cts = new CancellationTokenSource();
+            var token = cts.Token;
+
+            var server = new TcpServer(_serverLogger);
+            var serverTask = Task.Run(() => server.StartAsync(token));
+
+            await Task.Delay(1000); // Wait for server to boot up
+
+            string clientLoggerCategory = "TcpClient_ReconnectTest";
+            string clientResponseLoggerCategory = "ResponseLogger_ReconnectTest";
+            var clientLogger = _loggerFactory.CreateLogger(clientLoggerCategory);
+            var responseLogger = _loggerFactory.CreateLogger(clientResponseLoggerCategory);
+
+            var client = new TcpClient(clientLogger, responseLogger);
+            var clientTask = Task.Run(() => client.StartAsync(token));
+
+            await Task.Delay(5000); // Wait to ensure some communication occurs
+
+            // Simulate connection loss
+            client.Disconnect();
+
+            await Task.Delay(10000); // Wait to ensure reconnection and some communication occurs
+
+            cts.Cancel();
+            try {
+                await Task.WhenAll(serverTask, clientTask);
+            } catch (OperationCanceledException) {
+                // Expected exception when tasks are cancelled
+            } catch (Exception ex) {
+                clientLogger.LogError($"Unexpected error during testing: {ex.Message}");
+            }
+
+            if (serverTask.IsCompleted) {
+                serverTask.Dispose();
+            }
+            if (clientTask.IsCompleted) {
+                clientTask.Dispose();
+            }
+
+            var serverLogs = _memoryLoggerProvider.GetLogs(typeof(TcpServer).FullName);
+            var serverMessages = serverLogs.Where(log => log.Contains("Received message:")).ToList();
+
+            var clientLogs = _memoryLoggerProvider.GetLogs(clientLoggerCategory);
+            var clientResponseLogs = _memoryLoggerProvider.GetLogs(clientResponseLoggerCategory);
+            var clientMessages = clientResponseLogs.Where(log => log.Contains("Received response:")).ToList();
+
+            var logsAfterReconnect = clientLogs.SkipWhile(log => !log.Contains("Reconnected successfully.")).Skip(1).ToList();
+            var firstMessageAfterReconnect = logsAfterReconnect.FirstOrDefault(log => log.Contains("Sent:"));
+            var firstMessageTimestamp = ExtractTimestamp(firstMessageAfterReconnect);
+
+            var clientMessagesAfterReconnect = clientMessages.Where(msg => ExtractTimestamp(msg) >= firstMessageTimestamp).ToList();
+            Assert.True(clientMessagesAfterReconnect.Count > 0, "Client received no messages after reconnection");
+
+            var serverLogsAfterConnect = serverLogs.SkipWhile(log => !log.Contains("Client connected")).Skip(1).ToList();
+            var serverLogsAfterReconnect = serverLogsAfterConnect.SkipWhile(log => !log.Contains("Client connected")).Skip(1).ToList();
+            var serverMessagesAfterReconnect = serverLogsAfterReconnect.Where(log => log.Contains("Received message:")).ToList();
+
+
+            Assert.True(serverMessagesAfterReconnect.Count > 0, "Server received no messages received after reconnection");
+            var reconnectionAttempts = clientLogs.Count(log => log.Contains("Attempting to reconnect"));
+            Assert.True(reconnectionAttempts <= 5, "Client attempted to reconnect more than the maximum allowed attempts"); // TODO read attemts variable from config
+
+            ValidateLogs(clientLoggerCategory, clientResponseLoggerCategory, typeof(TcpServer).FullName);
+            
+        }
+        private DateTime ExtractTimestamp(string log) {
+            try {
+                // Try to extract timestamp from "Sent: " log
+                if (log.Contains("Sent: ")) {
+                    var timestampPart = log.Split(new[] { "Sent: " }, StringSplitOptions.None)[1];
+                    return DateTime.Parse(timestampPart.Trim(), null, System.Globalization.DateTimeStyles.AssumeUniversal | System.Globalization.DateTimeStyles.AdjustToUniversal);
+                }
+
+                // Try to extract timestamp from response or server log
+                var regex = new Regex(@"timestamp=""(?<timestamp>[^""]+)""");
+                var match = regex.Match(log);
+                if (match.Success) {
+                    var timestampPart = match.Groups["timestamp"].Value;
+                    return DateTime.Parse(timestampPart, null, System.Globalization.DateTimeStyles.AssumeUniversal | System.Globalization.DateTimeStyles.AdjustToUniversal);
+                }
+
+                throw new FormatException($"Log '{log}' does not contain a valid timestamp.");
+            } catch (Exception ex) {
+                throw new FormatException($"Log '{log}' does not contain a valid timestamp. Error: {ex.Message}", ex);
+            }
         }
 
         private void ValidateLogs(string clientSystemLoggerCategory, string clientResponseLoggerCategory, string serverLoggerCategory) {
