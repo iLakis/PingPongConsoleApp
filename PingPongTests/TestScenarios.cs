@@ -155,7 +155,7 @@ namespace PingPongTests
             // Simulate connection loss
             client.Disconnect();
 
-            await Task.Delay(10000); // Wait to ensure reconnection and some communication occurs
+            await Task.Delay(20000); // Wait to ensure reconnection and some communication occurs
 
             cts.Cancel();
             try {

@@ -1,0 +1,7 @@
+﻿{
+  "Interval": 1000,
+  "ClientSslPass": "PPClient",
+  "ClientSslExportPass": "PPClientExport",
+  "MaxReconnectAttempts": 3,
+  "ReconnectDelay": 2000
+}

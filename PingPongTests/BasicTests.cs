@@ -4,6 +4,7 @@ using PingPongClient;
 using PingPongServer;
 using Utils;
 using System.Xml.Schema;
+using Microsoft.Extensions.Configuration;
 
 namespace PingPongTests {
     public class BasicTests {
@@ -84,6 +85,51 @@ namespace PingPongTests {
             Assert.DoesNotContain(clientLogs, log => log.Contains("error", System.StringComparison.OrdinalIgnoreCase));
         }
 
-        
+        [Fact]
+        public void LoadConfiguration_MissingValues() {
+            string clientSystemLoggerCategory = "ClientSystemLogger_LoadConfiguration_MissingValues";
+            string clientResponseLoggerCategory = "ClientResponseLogger_LoadConfiguration_MissingValues";
+            var clientSystemLogger = _loggerFactory.CreateLogger(clientSystemLoggerCategory);
+            var clientResponseLogger = _loggerFactory.CreateLogger(clientResponseLoggerCategory);
+            var path = Directory.GetCurrentDirectory() + "\\TestConfigs\\Client\\";
+
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(path)
+                .AddJsonFile("TestClientConfig_MissingValues.json", optional: false, reloadOnChange: true)
+                .Build();
+
+            var client = new TcpClient(clientSystemLogger, clientResponseLogger, configuration);
+
+            var clientLogs = _memoryLoggerProvider.GetLogs(clientSystemLoggerCategory);
+
+            Assert.Contains(clientLogs, log => log.Contains("ReadTimeout was not found in config file"));
+            Assert.Contains(clientLogs, log => log.Contains("WriteTimeout was not found in config file"));
+            Assert.Contains(clientLogs, log => log.Contains("Using default values for missing variables."));
+            Assert.Contains(clientLogs, log => log.Contains("Configuration loaded with errors"));
+        }
+
+        [Fact]
+        public void LoadConfiguration_InvalidValues() {
+            string clientSystemLoggerCategory = "ClientSystemLogger_InvalidValues";
+            string clientResponseLoggerCategory = "ClientResponseLogger_InvalidValues";
+            var clientSystemLogger = _loggerFactory.CreateLogger(clientSystemLoggerCategory);
+            var clientResponseLogger = _loggerFactory.CreateLogger(clientResponseLoggerCategory);
+            var path = Directory.GetCurrentDirectory() + "\\TestConfigs\\Client\\";
+
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(path)
+                .AddJsonFile("TestClientConfig_InvalidValues.json", optional: false, reloadOnChange: true)
+                .Build();
+
+            var client = new TcpClient(clientSystemLogger, clientResponseLogger, configuration);
+
+            var clientLogs = _memoryLoggerProvider.GetLogs(clientSystemLoggerCategory);
+
+            Assert.Contains(clientLogs, log => log.Contains("Interval in config is not a valid integer."));
+            Assert.Contains(clientLogs, log => log.Contains("ReconnectDelay in config is not a valid integer."));
+            Assert.Contains(clientLogs, log => log.Contains("ReadTimeout in config is not a valid integer."));
+            Assert.Contains(clientLogs, log => log.Contains("Using default values for missing variables."));
+            Assert.Contains(clientLogs, log => log.Contains("Configuration loaded with errors"));
+        }
     }
 }

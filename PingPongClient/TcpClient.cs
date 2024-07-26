@@ -15,11 +15,11 @@ namespace PingPongClient {
         protected string ClientSslPass;
         protected const int Port = 5001;
         protected static X509Certificate2 ClientCertificate;
-        protected static int Interval;
+        protected static int Interval = 3000;
         protected static XmlSchemaSet schemaSet;
         protected const string Separator = "<EOF>";
-        protected int _maxReconnectAttempts;
-        protected int _reconnectDelay;
+        protected int _maxReconnectAttempts = 5;
+        protected int _reconnectDelay = 5000;
         private int _readTimeout = 5000; 
         private int _writeTimeout = 5000; 
 
@@ -27,10 +27,14 @@ namespace PingPongClient {
         protected SslStream _sslStream;
         protected readonly ILogger _systemLogger;
         protected readonly ILogger _responseLogger;
+        protected IConfiguration _configuration;
 
-        public TcpClient(ILogger systemLogger, ILogger responseLogger) {
+        public TcpClient(ILogger systemLogger, ILogger responseLogger, IConfiguration? configuration = null) {
             _systemLogger = systemLogger;
             _responseLogger = responseLogger;
+            if (configuration != null) {
+                _configuration = configuration;
+            }
             try {
                 LoadConfiguration();
                 LoadCertificate();
@@ -41,7 +45,7 @@ namespace PingPongClient {
             }
         }
         public async Task StartAsync(CancellationToken token) {
-            bool shouldReconnect = true;
+            bool shouldReconnect = true; // without this bool reconnection will not stop at maxReconnectionAttempts, the cycle will repeat
             while (!token.IsCancellationRequested && shouldReconnect) {
                 try {
                     if (_client == null || !_client.Connected) {
@@ -58,8 +62,7 @@ namespace PingPongClient {
                     if (ioEx.InnerException != null) {
                         _systemLogger.LogError($"Inner exception: {ioEx.InnerException.Message}");
                     }
-                } catch (TaskCanceledException ex) {
-                    //_systemLogger.LogError($"Task cancelled: {ex.Message}");
+                } catch (OperationCanceledException ex) { // cancellation token throws this, not TaskCancelledException
                     if (ex.InnerException != null) {
                         _systemLogger.LogError($"Task cancelled: {ex.InnerException.Message}");
                     } else {
@@ -77,7 +80,10 @@ namespace PingPongClient {
             try {
                 _client = new System.Net.Sockets.TcpClient();
                 await _client.ConnectAsync(ServerAddress, Port);
-                _sslStream = new SslStream(_client.GetStream(), false, new RemoteCertificateValidationCallback(ValidateServerCertificate));
+                _sslStream = new SslStream(
+                    _client.GetStream(),
+                    false,
+                    new RemoteCertificateValidationCallback(ValidateServerCertificate));
                 AuthenticateSsl(_sslStream);
                 _sslStream.ReadTimeout = _readTimeout;
                 _sslStream.WriteTimeout = _writeTimeout;
@@ -138,7 +144,7 @@ namespace PingPongClient {
                     _systemLogger.LogInformation("Attempting to reconnect...");
                     await ConnectAsync(token);
                     _systemLogger.LogInformation("Reconnected successfully.");
-                    break;
+                    return true; // else it will go till the end and return false, which means it won't try to reconnect again if disconnected
                 } catch (Exception ex) {
                     _systemLogger.LogError($"Reconnection attempt {attempts + 1} failed: {ex.Message}");
                     attempts++;
@@ -182,61 +188,58 @@ namespace PingPongClient {
             // return true;
 
         }
-        private void LoadConfiguration() {
+        protected void LoadConfiguration() {
+            List<string> usingDefaults = new List<string>();
             try {
                 _systemLogger.LogInformation("Loading configuration...");
-                var configuration = new ConfigurationBuilder()
-                    .SetBasePath(Directory.GetCurrentDirectory())
-                    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                    .Build();
-
-                ClientSslPass = configuration["ClientSslPass"];
-                if (string.IsNullOrEmpty(ClientSslPass)) {
-                    throw new Exception("Client SSL Password was not found in config file");
+                if(_configuration == null) {
+                    _systemLogger.LogInformation("Configuration file not given, searching for the file");
+                    var configuration = new ConfigurationBuilder()
+                                        .SetBasePath(Directory.GetCurrentDirectory())
+                                        .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                                        .Build();
+                    _configuration = configuration;
                 }
 
-                string intervalString = configuration["Interval"];
-                if (int.TryParse(intervalString, out int interval)) {
-                    Interval = interval;
+                var configParams = new Dictionary<string, Action<string>> {
+                    { "ClientSslPass", value => ClientSslPass = value },
+                    { "Interval", value => TryParseInt(value, "Interval", v => Interval = v, usingDefaults) },
+                    { "MaxReconnectAttempts", value => TryParseInt(value, "MaxReconnectAttempts", v => _maxReconnectAttempts = v, usingDefaults) },
+                    { "ReconnectDelay", value => TryParseInt(value, "ReconnectDelay", v => _reconnectDelay = v, usingDefaults) },
+                    { "ReadTimeout", value => TryParseInt(value, "ReadTimeout", v => _readTimeout = v, usingDefaults) },
+                    { "WriteTimeout", value => TryParseInt(value, "WriteTimeout", v => _writeTimeout = v, usingDefaults) }
+                };
+
+
+                foreach (var param in configParams) {
+                    var value = _configuration[param.Key];
+                    if (!string.IsNullOrEmpty(value)) {
+                        param.Value(value);
+                    } else {
+                        _systemLogger.LogError($"{param.Key} was not found in config file");
+                        usingDefaults.Add(param.Key);
+                    }
+                }
+
+                if (usingDefaults.Count > 0) {
+                    _systemLogger.LogError($"Could not find or parse: {string.Join(", ", usingDefaults)}");
+                    _systemLogger.LogWarning("Using default values for missing variables.");
+                    _systemLogger.LogWarning("Configuration loaded with errors");
                 } else {
-                    throw new Exception("Interval in appsettings.json is not a valid integer.");
+                    _systemLogger.LogInformation("Configuration loaded successfully.");
                 }
-
-                string maxReconnectAttemptsString = configuration["MaxReconnectAttempts"];
-                if (int.TryParse(maxReconnectAttemptsString, out int maxReconnectAttempts)) {
-                    _maxReconnectAttempts = maxReconnectAttempts;
-                } else {
-                    throw new Exception("MaxReconnectAttempts in appsettings.json is not a valid integer.");
-                }
-
-                string reconnectDelayString = configuration["ReconnectDelay"];
-                if (int.TryParse(reconnectDelayString, out int reconnectDelay)) {
-                    _reconnectDelay = reconnectDelay;
-                } else {
-                    throw new Exception("ReconnectDelay in appsettings.json is not a valid integer.");
-                }
-
-                string readTimeoutString = configuration["ReadTimeout"];
-                if (int.TryParse(readTimeoutString, out int readTimeout)) {
-                    _readTimeout = readTimeout;
-                } else {
-                    throw new Exception("ReadTimeout in appsettings.json is not a valid integer.");
-                }
-
-                string writeTimeoutString = configuration["WriteTimeout"];
-                if (int.TryParse(writeTimeoutString, out int writeTimeout)) {
-                    _writeTimeout = writeTimeout;
-                } else {
-                    throw new Exception("WriteTimeout in appsettings.json is not a valid integer.");
-                }
-
-                _systemLogger.LogInformation("Configuration loaded successfully.");
+            } catch (KeyNotFoundException ex) {
+                _systemLogger.LogError($"Variable not found in the config file: {ex.Message}");
+                throw;                        
+            } catch (FormatException ex) {
+                _systemLogger.LogError($"Wrong format while parsing config file: {ex.Message}");
+                throw;
             } catch (Exception ex) {
                 _systemLogger.LogError($"Error loading configuration: {ex.Message}");
                 throw;
             }
         }
-        private void LoadCertificate() {
+        protected void LoadCertificate() {
             try {
                 string certPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ClientCertificate\\client.pfx");
 
@@ -254,7 +257,7 @@ namespace PingPongClient {
                 throw;
             }
         }
-        private void LoadXsdSchema() {
+        protected void LoadXsdSchema() {
             try {
                 schemaSet = new XmlSchemaSet();
                 string schemaPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "schema.xsd");
@@ -272,6 +275,14 @@ namespace PingPongClient {
             _systemLogger.LogWarning("Disconnecting the client.");
             _sslStream?.Close();
             _client?.Close();
+        }
+        private void TryParseInt(string value, string paramName, Action<int> setValue, List<string> usingDefaults) {
+            if (int.TryParse(value, out int result)) {
+                setValue(result);
+            } else {
+                _systemLogger.LogError($"{paramName} in config is not a valid integer.");
+                usingDefaults.Add(paramName);
+            }
         }
     }
 }

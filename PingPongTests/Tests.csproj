@@ -13,6 +13,8 @@
     <None Remove="appsettings.json" />
     <None Remove="ClientCertificate\client.pfx" />
     <None Remove="ServerCertificate\server.pfx" />
+    <None Remove="TestConfigs\Client\TestClientConfig_InvalidValues.json" />
+    <None Remove="TestConfigs\Client\TestClientConfig_MissingValues.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -23,6 +25,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="ServerCertificate\server.pfx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestConfigs\Client\TestClientConfig_InvalidValues.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestConfigs\Client\TestClientConfig_MissingValues.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

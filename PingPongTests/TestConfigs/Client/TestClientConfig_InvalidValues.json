@@ -1,0 +1,9 @@
+{
+  "Interval": "not_valid_integer",
+  "ClientSslPass": "PPClient",
+  "ClientSslExportPass": "PPClientExport",
+  "MaxReconnectAttempts": 5,
+  "ReconnectDelay": 0.123,
+  "ReadTimeout": -0.666,
+  "WriteTimeout": 5000
+}

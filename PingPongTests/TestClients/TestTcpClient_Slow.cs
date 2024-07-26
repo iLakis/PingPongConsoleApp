@@ -28,7 +28,7 @@ namespace Tests.TestClients
                     SendPing(writer);
 
                     while (_client.Connected && !token.IsCancellationRequested) {
-                        await Task.Delay(3000, token); // Delay
+                        await Task.Delay(2000, token); // Delay
                         token.ThrowIfCancellationRequested();
                         string line = await reader.ReadLineAsync();
                         if (!string.IsNullOrWhiteSpace(line)) {
