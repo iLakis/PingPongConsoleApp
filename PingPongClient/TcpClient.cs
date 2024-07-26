@@ -4,11 +4,10 @@ using System.Net.Security;
 using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
-using System.Xml;
-using System.Xml.Linq;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 using Utils;
+
 
 namespace PingPongClient {
     public class TcpClient {
@@ -21,6 +20,8 @@ namespace PingPongClient {
         protected const string Separator = "<EOF>";
         protected int _maxReconnectAttempts;
         protected int _reconnectDelay;
+        private int _readTimeout = 5000; 
+        private int _writeTimeout = 5000; 
 
         protected System.Net.Sockets.TcpClient _client;
         protected SslStream _sslStream;
@@ -40,7 +41,8 @@ namespace PingPongClient {
             }
         }
         public async Task StartAsync(CancellationToken token) {
-            while (!token.IsCancellationRequested) {
+            bool shouldReconnect = true;
+            while (!token.IsCancellationRequested && shouldReconnect) {
                 try {
                     if (_client == null || !_client.Connected) {
                         await ConnectAsync(token);
@@ -66,16 +68,19 @@ namespace PingPongClient {
                 } catch (Exception ex) {
                     _systemLogger.LogError($"Error: {ex.Message}");
                 } finally {
-                    await ReconnectAsync(token);
+                    shouldReconnect = await ReconnectAsync(token);
                 }
             }
         }
         public async Task ConnectAsync(CancellationToken token) {
+            token.ThrowIfCancellationRequested();
             try {
                 _client = new System.Net.Sockets.TcpClient();
                 await _client.ConnectAsync(ServerAddress, Port);
                 _sslStream = new SslStream(_client.GetStream(), false, new RemoteCertificateValidationCallback(ValidateServerCertificate));
                 AuthenticateSsl(_sslStream);
+                _sslStream.ReadTimeout = _readTimeout;
+                _sslStream.WriteTimeout = _writeTimeout;
             } catch (Exception ex) {
                 _systemLogger.LogError($"Connection error: {ex.Message}");
                 throw;
@@ -89,9 +94,11 @@ namespace PingPongClient {
             StringBuilder responseBuilder = new StringBuilder();
 
             while (_client.Connected && !token.IsCancellationRequested) {
+                token.ThrowIfCancellationRequested();
                 SendPing(writer);
 
                 while (_client.Connected && !token.IsCancellationRequested) {
+                    token.ThrowIfCancellationRequested();
                     string line = await reader.ReadLineAsync();
                     if (!string.IsNullOrWhiteSpace(line)) {
                         responseBuilder.AppendLine(line);
@@ -102,7 +109,7 @@ namespace PingPongClient {
 
                             try {
                                 using (var stringReader = new StringReader(response)) {
-                                    if (token.IsCancellationRequested) throw new TaskCanceledException();
+                                    token.ThrowIfCancellationRequested();
                                     ReadPong(pongSerializer, stringReader);
                                 }
                             } catch (InvalidOperationException ex) {
@@ -116,16 +123,17 @@ namespace PingPongClient {
                         }
                     } else {
                         _systemLogger.LogError("Received empty response or whitespace.");
+                        Disconnect();
                     }
                 }
-
-                Thread.Sleep(Interval);
+                await Task.Delay(Interval, token);
             }
             _systemLogger.LogWarning("Client stopped");
         }
-        public async Task ReconnectAsync(CancellationToken token) {
+        public async Task<bool> ReconnectAsync(CancellationToken token) {
             int attempts = 0;
-            while (!token.IsCancellationRequested && attempts < _maxReconnectAttempts) {
+            while (attempts < _maxReconnectAttempts) {
+                token.ThrowIfCancellationRequested();
                 try {
                     _systemLogger.LogInformation("Attempting to reconnect...");
                     await ConnectAsync(token);
@@ -141,6 +149,7 @@ namespace PingPongClient {
                     await Task.Delay(_reconnectDelay, token); 
                 }
             }
+            return false;
         }
         protected void AuthenticateSsl(SslStream sslStream) {
             _systemLogger.LogInformation("Starting SSL handshake...");
@@ -152,8 +161,8 @@ namespace PingPongClient {
             _systemLogger.LogInformation("SSL handshake completed.");
         }
         protected void SendPing(StreamWriter writer) {
-            var pingVar = new ping { timestamp = DateTime.UtcNow };
-            var pingMessage = SerializeToXml(pingVar) + Separator;
+            var pingVar = new ping { timestamp = DateTime.UtcNow };           
+            var pingMessage = Utils.XmlTools.SerializeToXml(pingVar) + Separator;
             writer.WriteLine(pingMessage);
             _systemLogger.LogInformation($"Sent: {pingVar.timestamp}");
         }
@@ -163,29 +172,6 @@ namespace PingPongClient {
             var sentTime = pongVar.timestamp;
             var deliveryTime = receivedTime - sentTime;
             _responseLogger.LogInformation($"Received: {pongVar.timestamp}, Delivery Time: {deliveryTime.TotalMilliseconds}ms");
-        }
-        protected string SerializeToXml<T>(T obj) {
-            var serializer = new XmlSerializer(typeof(T));
-            var settings = new XmlWriterSettings {
-                Indent = true,
-                Encoding = Encoding.UTF8,
-                OmitXmlDeclaration = false
-            };
-            using (var stringWriter = new StringWriter())
-            using (var xmlWriter = XmlWriter.Create(stringWriter, settings)) {
-                serializer.Serialize(xmlWriter, obj);
-                return stringWriter.ToString();
-            }
-        }
-        protected static bool ValidateXml(XDocument xmlDoc, XmlSchemaSet schemaSet) {
-            try {
-                xmlDoc.Validate(schemaSet, (o, e) => {
-                    throw new XmlSchemaValidationException(e.Message);
-                });
-                return true;
-            } catch (XmlSchemaValidationException) {
-                return false;
-            }
         }
         protected static bool ValidateServerCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors) {        
             if (sslPolicyErrors == SslPolicyErrors.None)
@@ -228,6 +214,20 @@ namespace PingPongClient {
                     _reconnectDelay = reconnectDelay;
                 } else {
                     throw new Exception("ReconnectDelay in appsettings.json is not a valid integer.");
+                }
+
+                string readTimeoutString = configuration["ReadTimeout"];
+                if (int.TryParse(readTimeoutString, out int readTimeout)) {
+                    _readTimeout = readTimeout;
+                } else {
+                    throw new Exception("ReadTimeout in appsettings.json is not a valid integer.");
+                }
+
+                string writeTimeoutString = configuration["WriteTimeout"];
+                if (int.TryParse(writeTimeoutString, out int writeTimeout)) {
+                    _writeTimeout = writeTimeout;
+                } else {
+                    throw new Exception("WriteTimeout in appsettings.json is not a valid integer.");
                 }
 
                 _systemLogger.LogInformation("Configuration loaded successfully.");

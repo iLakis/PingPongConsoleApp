@@ -3,10 +3,13 @@ using Microsoft.Extensions.Logging;
 using PingPongClient;
 using PingPongServer;
 using System.Text.RegularExpressions;
-using System.Xml.Linq;
+using Utils;
 using System.Xml.Schema;
+using Tests.TestClients;
+using Tests.TestServers;
 
-namespace PingPongTests {
+namespace PingPongTests
+{
     public class TestScenarios {
         private readonly MemoryLoggerProvider _memoryLoggerProvider;
         private readonly ILogger<TcpServer> _serverLogger;
@@ -72,7 +75,7 @@ namespace PingPongTests {
             var serverMessages = serverLogs.Where(log => log.Contains("Received message:")).ToList();
 
             Assert.NotEmpty(serverMessages);
-            Assert.All(serverMessages, msg => Assert.True(ValidateXml(RemovePrefix(msg, "Received message: "), _schemaSet)));
+            Assert.All(serverMessages, msg => Assert.True(XmlTools.ValidateXml(StringTools.RemovePrefix(msg, "Received message: "), _schemaSet)));
 
             foreach (var (client, clientLoggerCategory, responseLoggerCategory) in clients) {
                 var responseLogs = _memoryLoggerProvider.GetLogs(responseLoggerCategory);
@@ -80,14 +83,13 @@ namespace PingPongTests {
 
                 Assert.True(clientMessages.Count > 0, $"{clientLoggerCategory} has no messages");
                 Assert.All(clientMessages, msg => 
-                Assert.True(ValidateXml(RemovePrefix(msg, "Received response: "), _schemaSet), $"{clientLoggerCategory} reveived invalid response"));
+                Assert.True(XmlTools.ValidateXml(StringTools.RemovePrefix(msg, "Received response: "), _schemaSet), $"{clientLoggerCategory} reveived invalid response"));
 
                 var clientLogs = _memoryLoggerProvider.GetLogs(clientLoggerCategory);
                 Assert.DoesNotContain(clientLogs, log => log.Contains("error", StringComparison.OrdinalIgnoreCase));
             }
 
         }
-
 
         [Fact]
         public async Task TestClientOverload() {
@@ -197,6 +199,115 @@ namespace PingPongTests {
             ValidateLogs(clientLoggerCategory, clientResponseLoggerCategory, typeof(TcpServer).FullName);
             
         }
+
+        [Fact]
+        public async Task TestClientWithSlowConnection() {
+            var cts = new CancellationTokenSource();
+            var token = cts.Token;
+
+            var server = new TestTcpServer_Slow(_serverLogger);
+            var serverTask = Task.Run(() => server.StartAsync(token));
+
+            await Task.Delay(1000); // Wait for server to boot up
+
+            string clientLoggerCategory = "TcpClient_SlowConnectionTest";
+            string clietnResponseLoggerCategory = "ClientResponseLogger_SlowConnectionTest";
+            var clientLogger = _loggerFactory.CreateLogger(clientLoggerCategory);
+            var responseLogger = _loggerFactory.CreateLogger(clietnResponseLoggerCategory);
+
+            var client = new TestTcpClient_Slow(clientLogger, responseLogger);
+            var clientTask = Task.Run(() => client.StartAsync(token));
+
+            await Task.Delay(30000); // Wait to ensure some communication occurs
+
+            cts.Cancel();
+
+            try {
+                await Task.WhenAll(serverTask, clientTask);
+            } catch (OperationCanceledException) {
+                // Expected exception when tasks are cancelled
+            } catch (Exception ex) {
+                clientLogger.LogError($"Unexpected error during testing: {ex.Message}");
+                if(ex.InnerException != null) {
+                    clientLogger.LogError($"Inner error: {ex.InnerException.Message}");
+                }
+            }
+
+            if (serverTask.IsCompleted) {
+                serverTask.Dispose();
+            }
+            if (clientTask.IsCompleted) {
+                clientTask.Dispose();
+            }
+
+            ValidateLogs(clientLoggerCategory, clietnResponseLoggerCategory, typeof(TcpServer).FullName);
+        }
+        [Fact]
+        public async Task TestServerShutdown() {
+            var serverCts = new CancellationTokenSource();
+            var clientCts = new CancellationTokenSource();
+
+            var serverToken = serverCts.Token;
+            var clientToken = clientCts.Token;
+
+            var serverLogger = _loggerFactory.CreateLogger<TcpServer>();
+            var server = new TcpServer(serverLogger);
+            var serverTask = Task.Run(() => server.StartAsync(serverToken));
+
+            await Task.Delay(1000); // Wait for server to boot up
+
+            string clientSystemLoggerCategory = "TcpClient_ServerShutdownTest";
+            string clientResponseLoggerCategory = "ClientResponseLogger_ServerShutdownTest";
+            var clientLogger = _loggerFactory.CreateLogger(clientSystemLoggerCategory);
+            var clientResponseLogger = _loggerFactory.CreateLogger(clientResponseLoggerCategory);
+
+            var client = new TcpClient(clientLogger, clientResponseLogger);
+            var clientTask = Task.Run(() => client.StartAsync(clientToken));
+
+            await Task.Delay(5000); // Wait to ensure some communication occurs
+
+            serverCts.Cancel();
+
+            // Wait some more time to see how the client reacts to server shutdown
+            await Task.Delay(60000);
+
+            clientCts.Cancel();
+
+            try {
+                await Task.WhenAll(serverTask, clientTask);
+            } catch (OperationCanceledException) {
+                // Expected exception when tasks are cancelled
+            } catch (Exception ex) {
+                clientLogger.LogError($"Unexpected error during testing: {ex.Message}");
+                if (ex.InnerException != null) {
+                    clientLogger.LogError($"Inner error: {ex.InnerException.Message}");
+                }
+            }
+
+            if (serverTask.IsCompleted) {
+                serverTask.Dispose();
+            }
+            if (clientTask.IsCompleted) {
+                clientTask.Dispose();
+            }
+
+            var serverLogs = _memoryLoggerProvider.GetLogs(typeof(TcpServer).FullName);
+            var serverMessages = serverLogs.Where(log => log.Contains("Received message:")).ToList();
+
+            var clientLogs = _memoryLoggerProvider.GetLogs(clientSystemLoggerCategory);
+            var clientResponseLogs = _memoryLoggerProvider.GetLogs(clientResponseLoggerCategory);
+            var clientMessages = clientResponseLogs.Where(log => log.Contains("Received response:")).ToList();
+
+            Assert.NotEmpty(clientMessages);
+            Assert.All(clientMessages, msg => Assert.True(XmlTools.ValidateXml(StringTools.RemovePrefix(msg, "Received response: "), _schemaSet), "Client received invalid response"));
+
+            Assert.NotEmpty(serverMessages);
+            Assert.All(serverMessages, msg => Assert.True(XmlTools.ValidateXml(StringTools.RemovePrefix(msg, "Received message: "), _schemaSet), "Server received invalid response"));
+            Assert.True(clientLogs.Contains("Max reconnection attempts reached. Giving up."), "Client didn't reach max reconnection attempts");
+            Assert.False(clientLogs.Contains("Reconnection attempt 6"), "Client exceeded reconnection cap"); //TODO get the cap from config
+        }
+
+
         private DateTime ExtractTimestamp(string log) {
             try {
                 // Try to extract timestamp from "Sent: " log
@@ -218,45 +329,24 @@ namespace PingPongTests {
                 throw new FormatException($"Log '{log}' does not contain a valid timestamp. Error: {ex.Message}", ex);
             }
         }
-
         private void ValidateLogs(string clientSystemLoggerCategory, string clientResponseLoggerCategory, string serverLoggerCategory) {
             var serverLogs = _memoryLoggerProvider.GetLogs(serverLoggerCategory);
             var serverMessages = serverLogs.Where(log => log.Contains("Received message:")).ToList();
 
             var clientLogs = _memoryLoggerProvider.GetLogs(clientSystemLoggerCategory);
-            var responseLogs = _memoryLoggerProvider.GetLogs(clientResponseLoggerCategory);
-            var clientMessages = responseLogs.Where(log => log.Contains("Received response:")).ToList();
+            var clientResponseLogs = _memoryLoggerProvider.GetLogs(clientResponseLoggerCategory);
+            var clientMessages = clientResponseLogs.Where(log => log.Contains("Received response:")).ToList();
 
             Assert.NotEmpty(clientMessages);
-            Assert.All(clientMessages, msg => Assert.True(ValidateXml(RemovePrefix(msg, "Received response: "), _schemaSet), "Client received invalid response"));
+            Assert.All(clientMessages, msg => Assert.True(XmlTools.ValidateXml(StringTools.RemovePrefix(msg, "Received response: "), _schemaSet), "Client received invalid response"));
 
             Assert.NotEmpty(serverMessages);
-            Assert.All(serverMessages, msg => Assert.True(ValidateXml(RemovePrefix(msg, "Received message: "), _schemaSet), "Server received invalid response"));
+            Assert.All(serverMessages, msg => Assert.True(XmlTools.ValidateXml(StringTools.RemovePrefix(msg, "Received message: "), _schemaSet), "Server received invalid response"));
 
             Assert.DoesNotContain(serverLogs, log => log.Contains("error", StringComparison.OrdinalIgnoreCase));
             Assert.DoesNotContain(clientLogs, log => log.Contains("error", StringComparison.OrdinalIgnoreCase));
         }
-
-        private bool ValidateXml(string xmlMessage, XmlSchemaSet schemaSet) {
-            try {
-                var xmlDoc = XDocument.Parse(xmlMessage);
-                xmlDoc.Validate(schemaSet, (o, e) => {
-                    throw new XmlSchemaValidationException(e.Message);
-                });
-                return true;
-            } catch (XmlSchemaValidationException) {
-                return false;
-            }
-        }
-
-        private string RemovePrefix(string message, string prefix) {
-            if (message.StartsWith(prefix)) {
-                return message.Substring(prefix.Length).Trim();
-            }
-            return message;
-        }
-    
+            
     }
-
 
 }

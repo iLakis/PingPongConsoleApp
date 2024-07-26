@@ -7,19 +7,25 @@ using Microsoft.Extensions.Logging;
 using PingPongServer;
 using Utils;
 
-namespace PingPongTests {
-    public class TestServer_SpammingMessages : TcpServer {
+namespace Tests.TestServers
+{
+    public class TestServer_SpammingMessages : TcpServer
+    {
         public TestServer_SpammingMessages(ILogger<TcpServer> logger) : base(logger) { }
 
-        public async Task StartSendingPongs(int count, int delayMs, CancellationToken token) {
+        public async Task StartSendingPongs(int count, int delayMs, CancellationToken token)
+        {
             TcpListener listener = new TcpListener(IPAddress.Any, Port);
             listener.Start();
             _logger.LogInformation($"TestServer started on port {Port}");
 
-            try {
-                while (!token.IsCancellationRequested) {
-                    if (listener.Pending()) {
-                        System.Net.Sockets.TcpClient client = listener.AcceptTcpClient();
+            try
+            {
+                while (!token.IsCancellationRequested)
+                {
+                    if (listener.Pending())
+                    {
+                        TcpClient client = listener.AcceptTcpClient();
                         _logger.LogInformation("Client connected");
                         var sslStream = new SslStream(client.GetStream(), false);
                         await AuthenticateSsl(sslStream);
@@ -31,14 +37,20 @@ namespace PingPongTests {
 
                         client.Close();
                         _logger.LogWarning("Client connection closed.");
-                    } else {
-                        await Task.Delay(100, token); 
+                    }
+                    else
+                    {
+                        await Task.Delay(100, token);
                     }
                 }
 
-            } catch (TaskCanceledException) {
+            }
+            catch (TaskCanceledException)
+            {
                 _logger.LogWarning("Task was cancelled.");
-            } finally {
+            }
+            finally
+            {
                 listener.Stop();
                 _logger.LogWarning("TestServer stopped");
             }
@@ -46,63 +58,85 @@ namespace PingPongTests {
 
         }
 
-        private async Task ReadMessagesAsync(SslStream sslStream, CancellationToken token) {
+        private async Task ReadMessagesAsync(SslStream sslStream, CancellationToken token)
+        {
             var reader = new StreamReader(sslStream);
             var pingSerializer = new XmlSerializer(typeof(ping));
             StringBuilder messageBuilder = new StringBuilder();
 
-            try {
-                while (!token.IsCancellationRequested) {
+            try
+            {
+                while (!token.IsCancellationRequested)
+                {
                     string line = await reader.ReadLineAsync();
-                    if (!string.IsNullOrWhiteSpace(line)) {
+                    if (!string.IsNullOrWhiteSpace(line))
+                    {
                         messageBuilder.AppendLine(line);
-                        if (line.EndsWith(Separator)) {
+                        if (line.EndsWith(Separator))
+                        {
                             string message = messageBuilder.ToString();
                             message = message.Replace(Separator, "");
                             _logger.LogInformation($"Received message: {message}");
 
-                            try {
-                                using (var stringReader = new StringReader(message)) {
+                            try
+                            {
+                                using (var stringReader = new StringReader(message))
+                                {
                                     if (token.IsCancellationRequested) throw new TaskCanceledException();
                                     ReadPing(stringReader, pingSerializer);
                                 }
-                            } catch (InvalidOperationException ex) {
+                            }
+                            catch (InvalidOperationException ex)
+                            {
                                 _logger.LogError($"XML Deserialization error: {ex.Message}");
-                                if (ex.InnerException != null) {
+                                if (ex.InnerException != null)
+                                {
                                     _logger.LogError($"Inner exception: {ex.InnerException.Message}");
                                 }
                             }
                             messageBuilder.Clear();
                         }
-                    } else {
+                    }
+                    else
+                    {
                         _logger.LogWarning("Received empty message or whitespace.");
                     }
                 }
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 _logger.LogError($"Error while reading messages: {ex.Message}");
             }
         }
 
-        private async Task SendMessagesAsync(SslStream sslStream, int count, int delayMs, CancellationToken token) {
+        private async Task SendMessagesAsync(SslStream sslStream, int count, int delayMs, CancellationToken token)
+        {
             var writer = new StreamWriter(sslStream) { AutoFlush = true };
 
-            try {
-                for (int i = 0; i < count && !token.IsCancellationRequested; i++) {
+            try
+            {
+                for (int i = 0; i < count && !token.IsCancellationRequested; i++)
+                {
                     var pongVar = new pong { timestamp = DateTime.UtcNow };
-                    var pongMessage = SerializeToXml(pongVar) + Separator;
+                    var pongMessage = XmlTools.SerializeToXml(pongVar) + Separator;
                     await writer.WriteLineAsync(pongMessage);
                     _logger.LogInformation($"Sent: {pongVar.timestamp}");
                     await Task.Delay(delayMs, token);
                 }
-            } catch (TaskCanceledException ex) {
+            }
+            catch (TaskCanceledException ex)
+            {
                 _logger.LogError($"Task cancelled while sending messages");
-                
-            } catch (Exception ex) {
+
+            }
+            catch (Exception ex)
+            {
                 _logger.LogError($"Error while sending messages: {ex.Message}");
             }
         }
 
-        private void ReadPing(StringReader stringReader, XmlSerializer pingSerializer) {
+        private void ReadPing(StringReader stringReader, XmlSerializer pingSerializer)
+        {
             var pingVar = (ping)pingSerializer.Deserialize(stringReader);
             var receivedTime = DateTime.UtcNow;
             var sentTime = pingVar.timestamp;

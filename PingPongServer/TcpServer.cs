@@ -4,8 +4,6 @@ using System.Net.Sockets;
 using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
-using System.Xml;
-using System.Xml.Linq;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 using Microsoft.Extensions.Configuration;
@@ -19,6 +17,8 @@ namespace PingPongServer {
         protected static X509Certificate2 ServerCertificate;
         protected static XmlSchemaSet schemaSet;
         protected const string Separator = "<EOF>";
+        private int _readTimeout = 5000;
+        private int _writeTimeout = 5000;
 
         protected readonly ILogger<TcpServer> _logger;
 
@@ -60,6 +60,8 @@ namespace PingPongServer {
 
         protected virtual async Task HandleClientAsync(System.Net.Sockets.TcpClient client, CancellationToken token) {
             var sslStream = new SslStream(client.GetStream(), false);
+            sslStream.ReadTimeout = _readTimeout;
+            sslStream.WriteTimeout = _writeTimeout;
             try {
                 await AuthenticateSsl(sslStream);
 
@@ -69,8 +71,8 @@ namespace PingPongServer {
                     var pongSerializer = new XmlSerializer(typeof(pong));
                     StringBuilder messageBuilder = new StringBuilder();
 
-                    while (client.Connected) {
-                        if (token.IsCancellationRequested) throw new TaskCanceledException();
+                    while (client.Connected && !token.IsCancellationRequested) {
+                        token.ThrowIfCancellationRequested();
                         string line = await reader.ReadLineAsync();
                         if (!string.IsNullOrWhiteSpace(line)) {
                             messageBuilder.AppendLine(line);
@@ -80,9 +82,9 @@ namespace PingPongServer {
                                 _logger.LogInformation($"Received message: {message}", message);
                                 try {
                                     using (var stringReader = new StringReader(message)) {
-                                        if (token.IsCancellationRequested) throw new TaskCanceledException();
+                                        token.ThrowIfCancellationRequested();
                                         ReadPing(stringReader, pingSerializer);
-                                        if (token.IsCancellationRequested) throw new TaskCanceledException();
+                                        token.ThrowIfCancellationRequested();
                                         SendPong(writer);
                                     }
                                 } catch (InvalidOperationException ex) {
@@ -113,7 +115,7 @@ namespace PingPongServer {
                 if (ioEx.InnerException != null) {
                     _logger.LogError($"Inner exception: {ioEx.InnerException.Message}");
                 }
-            } catch (TaskCanceledException ex) {
+            } catch (OperationCanceledException ex) {
                 _logger.LogWarning($"Task cancelled");
                 
             } catch (Exception ex) {
@@ -128,17 +130,38 @@ namespace PingPongServer {
 
         }
         protected void LoadConfiguration() {
-            _logger.LogInformation("Loading configuration...");
-            var configuration = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .Build();
+            try {
+                _logger.LogInformation("Loading configuration...");
+                var configuration = new ConfigurationBuilder()
+                    .SetBasePath(Directory.GetCurrentDirectory())
+                    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                    .Build();
 
-            ServerSslPass = configuration["ServerSslPass"];
-            if (string.IsNullOrEmpty(ServerSslPass)) {
-                throw new Exception("SSL Password was not found in config file");
+                ServerSslPass = configuration["ServerSslPass"];
+                if (string.IsNullOrEmpty(ServerSslPass)) {
+                    throw new Exception("Server SSL Password was not found in config file");
+                }
+
+                string readTimeoutString = configuration["ReadTimeout"];
+                if (int.TryParse(readTimeoutString, out int readTimeout)) {
+                    _readTimeout = readTimeout;
+                } else {
+                    throw new Exception("ReadTimeout in appsettings.json is not a valid integer.");
+                }
+
+                string writeTimeoutString = configuration["WriteTimeout"];
+                if (int.TryParse(writeTimeoutString, out int writeTimeout)) {
+                    _writeTimeout = writeTimeout;
+                } else {
+                    throw new Exception("WriteTimeout in appsettings.json is not a valid integer.");
+                }
+                _logger.LogInformation("Configuration loaded successfully.");
+
+            } catch (Exception ex) {
+                _logger.LogError($"Error loading configuration: {ex.Message}");
+                throw;
             }
-            _logger.LogInformation("Configuration loaded successfully.");
+
         }
 
         protected void LoadCertificate() {
@@ -176,7 +199,7 @@ namespace PingPongServer {
         }
         protected void SendPong(StreamWriter writer) {
             var pongVar = new pong { timestamp = DateTime.UtcNow };
-            var pongMessage = SerializeToXml(pongVar) + Separator;
+            var pongMessage = Utils.XmlTools.SerializeToXml(pongVar) + Separator;
             writer.WriteLine(pongMessage);
             _logger.LogInformation($"Sent: {pongVar.timestamp}");
         }
@@ -186,30 +209,6 @@ namespace PingPongServer {
             var sentTime = pingVar.timestamp;
             var deliveryTime = receivedTime - sentTime;
             _logger.LogInformation($"Received: {pingVar.timestamp}, Delivery Time: {deliveryTime.TotalMilliseconds}ms");
-        }
-        protected string SerializeToXml<T>(T obj) {
-            var serializer = new XmlSerializer(typeof(T));
-            var settings = new XmlWriterSettings {
-                Indent = true,
-                Encoding = Encoding.UTF8,
-                OmitXmlDeclaration = false
-            };
-            using (var stringWriter = new StringWriter())
-            using (var xmlWriter = XmlWriter.Create(stringWriter, settings)) {
-                serializer.Serialize(xmlWriter, obj);
-                return stringWriter.ToString();
-            }
-        }
-        protected static bool ValidateXml(XDocument xmlDoc, XmlSchemaSet schemaSet) {
-            try {
-                xmlDoc.Validate(schemaSet, (o, e) => {
-                    Console.WriteLine($"XML validation error: {e.Message}");
-                    throw new XmlSchemaValidationException(e.Message);
-                });
-                return true;
-            } catch (XmlSchemaValidationException) {
-                return false;
-            }
         }
     }
 }

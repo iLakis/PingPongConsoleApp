@@ -2,7 +2,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using PingPongClient;
 using PingPongServer;
-using System.Xml.Linq;
+using Utils;
 using System.Xml.Schema;
 
 namespace PingPongTests {
@@ -53,7 +53,11 @@ namespace PingPongTests {
             } catch (OperationCanceledException ex) {
 
             } catch (Exception ex) {
-            
+                clientLogger.LogError($"Unexpected error during testing: {ex.Message}");
+                if (ex.InnerException != null) {
+                    clientLogger.LogError($"Inner Exception: {ex.InnerException.Message}");
+
+                }
             }
 
             if (serverTask.IsCompleted) {
@@ -71,34 +75,15 @@ namespace PingPongTests {
             var clientMessages = responseLogs.Where(log => log.Contains("Received response:")).ToList();
 
             Assert.True(clientMessages.Count > 0, "Client received no messages");
-            Assert.All(clientMessages, msg => Assert.True(ValidateXml(RemovePrefix(msg, "Received response: "), _schemaSet)));
+            Assert.All(clientMessages, msg => Assert.True(XmlTools.ValidateXml(StringTools.RemovePrefix(msg, "Received response: "), _schemaSet)));
 
             Assert.True(serverMessages.Count > 0, "Server received no messages");
-            Assert.All(serverMessages, msg => Assert.True(ValidateXml(RemovePrefix(msg, "Received message: "), _schemaSet)));
+            Assert.All(serverMessages, msg => Assert.True(XmlTools.ValidateXml(StringTools.RemovePrefix(msg, "Received message: "), _schemaSet)));
 
             Assert.DoesNotContain(serverLogs, log => log.Contains("error", System.StringComparison.OrdinalIgnoreCase));
             Assert.DoesNotContain(clientLogs, log => log.Contains("error", System.StringComparison.OrdinalIgnoreCase));
-
-
         }
 
-        private bool ValidateXml(string xmlMessage, XmlSchemaSet schemaSet) {
-            try {
-                var xmlDoc = XDocument.Parse(xmlMessage);
-                xmlDoc.Validate(schemaSet, (o, e) => {
-                    throw new XmlSchemaValidationException(e.Message);
-                });
-                return true;
-            } catch (XmlSchemaValidationException) {
-                return false;
-            }
-        }
-
-        private string RemovePrefix(string message, string prefix) {
-            if (message.StartsWith(prefix)) {
-                return message.Substring(prefix.Length).Trim();
-            }
-            return message;
-        }
+        
     }
 }
