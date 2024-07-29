@@ -196,7 +196,7 @@ namespace PingPongClient {
                     _systemLogger.LogInformation("Configuration file not given, searching for the file");
                     var configuration = new ConfigurationBuilder()
                                         .SetBasePath(Directory.GetCurrentDirectory())
-                                        .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                                        .AddJsonFile("appsettings.client.json", optional: false, reloadOnChange: true)
                                         .Build();
                     _configuration = configuration;
                 }

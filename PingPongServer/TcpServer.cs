@@ -21,9 +21,13 @@ namespace PingPongServer {
         private int _writeTimeout = 5000;
 
         protected readonly ILogger<TcpServer> _logger;
+        protected IConfiguration _configuration;
 
-        public TcpServer(ILogger<TcpServer> logger) {
+        public TcpServer(ILogger<TcpServer> logger, IConfiguration? configuration = null) {
             _logger = logger;
+            if (configuration != null) {
+                _configuration = configuration;
+            }
             try {
                 LoadConfiguration();
                 LoadCertificate();
@@ -130,39 +134,60 @@ namespace PingPongServer {
 
         }
         protected void LoadConfiguration() {
+            List<string> usingDefaults = new List<string>();
             try {
                 _logger.LogInformation("Loading configuration...");
-                var configuration = new ConfigurationBuilder()
-                    .SetBasePath(Directory.GetCurrentDirectory())
-                    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                    .Build();
-
-                ServerSslPass = configuration["ServerSslPass"];
-                if (string.IsNullOrEmpty(ServerSslPass)) {
-                    throw new Exception("Server SSL Password was not found in config file");
+                if (_configuration == null) {
+                    _logger.LogInformation("Configuration file not given, searching for the file");
+                    _configuration = new ConfigurationBuilder()
+                                        .SetBasePath(Directory.GetCurrentDirectory())
+                                        .AddJsonFile("appsettings.server.json", optional: false, reloadOnChange: true)
+                                        .Build();
                 }
 
-                string readTimeoutString = configuration["ReadTimeout"];
-                if (int.TryParse(readTimeoutString, out int readTimeout)) {
-                    _readTimeout = readTimeout;
+                var configParams = new Dictionary<string, Action<string>> {
+                    { "ServerSslPass", value => ServerSslPass = value },
+                    { "ReadTimeout", value => TryParseInt(value, "ReadTimeout", v => _readTimeout = v, usingDefaults) },
+                    { "WriteTimeout", value => TryParseInt(value, "WriteTimeout", v => _writeTimeout = v, usingDefaults) }
+                };
+
+                foreach (var param in configParams) {
+                    var value = _configuration[param.Key];
+                    if (!string.IsNullOrEmpty(value)) {
+                        param.Value(value);
+                    } else {
+                        _logger.LogError($"{param.Key} was not found in config file");
+                        usingDefaults.Add(param.Key);
+                    }
+                }
+
+                if (usingDefaults.Count > 0) {
+                    _logger.LogError($"Could not find or parse: {string.Join(", ", usingDefaults)}");
+                    _logger.LogWarning("Using default values for missing variables.");
+                    _logger.LogWarning("Configuration loaded with errors");
                 } else {
-                    throw new Exception("ReadTimeout in appsettings.json is not a valid integer.");
+                    _logger.LogInformation("Configuration loaded successfully.");
                 }
-
-                string writeTimeoutString = configuration["WriteTimeout"];
-                if (int.TryParse(writeTimeoutString, out int writeTimeout)) {
-                    _writeTimeout = writeTimeout;
-                } else {
-                    throw new Exception("WriteTimeout in appsettings.json is not a valid integer.");
-                }
-                _logger.LogInformation("Configuration loaded successfully.");
-
+            } catch (KeyNotFoundException ex) {
+                _logger.LogError($"Variable not found in the config file: {ex.Message}");
+                throw;
+            } catch (FormatException ex) {
+                _logger.LogError($"Wrong format while parsing config file: {ex.Message}");
+                throw;
             } catch (Exception ex) {
                 _logger.LogError($"Error loading configuration: {ex.Message}");
                 throw;
             }
-
         }
+        private void TryParseInt(string value, string paramName, Action<int> setValue, List<string> usingDefaults) {
+            if (int.TryParse(value, out int result)) {
+                setValue(result);
+            } else {
+                _logger.LogError($"{paramName} in config is not a valid integer.");
+                usingDefaults.Add(paramName);
+            }
+        }
+
 
         protected void LoadCertificate() {
             string certPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ServerCertificate\\server.pfx");
