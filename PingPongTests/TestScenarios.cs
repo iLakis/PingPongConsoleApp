@@ -42,7 +42,7 @@ namespace PingPongTests
             await Task.Delay(1000); // Wait for server to boot up
 
             var clientTasks = new List<Task>();
-            var clients = new List<(TcpClient client, string clientLoggerCategory, string responseLoggerCategory)>();
+            var clients = new List<(PingPongTcpClient client, string clientLoggerCategory, string responseLoggerCategory)>();
             var path = Directory.GetCurrentDirectory() + "\\TestConfigs\\Client\\";
 
             for (int i = 0; i < 500; i++) { // Amount of clients
@@ -52,7 +52,7 @@ namespace PingPongTests
                 var clientResponseLogger = _loggerFactory.CreateLogger(clientResponseLoggerCategory);
                 IConfigLoader<DefaultClientConfig> configLoader = new JsonConfigLoader<DefaultClientConfig>(Path.Combine(path, "TestClientConfig_LowInterval.json"), clientSystemLogger);
 
-                var client = new TcpClient(clientSystemLogger, clientResponseLogger, configLoader);
+                var client = new PingPongTcpClient(clientSystemLogger, clientResponseLogger, configLoader);
                 clients.Add((client, clientSystemLoggerCategory, clientResponseLoggerCategory));
                 clientTasks.Add(Task.Run(() => client.StartAsync(token)));
                 //await Task.Delay(200); // Delay between connections
@@ -162,7 +162,7 @@ namespace PingPongTests
             var clientLogger = _loggerFactory.CreateLogger(clientLoggerCategory);
             var responseLogger = _loggerFactory.CreateLogger(clientResponseLoggerCategory);
 
-            var client = new TcpClient(clientLogger, responseLogger);
+            var client = new PingPongTcpClient(clientLogger, responseLogger);
             var clientTask = Task.Run(() => client.StartAsync(token));
 
             await Task.Delay(5000); // Wait to ensure some communication occurs
@@ -276,7 +276,7 @@ namespace PingPongTests
             var clientLogger = _loggerFactory.CreateLogger(clientSystemLoggerCategory);
             var clientResponseLogger = _loggerFactory.CreateLogger(clientResponseLoggerCategory);
 
-            var client = new TcpClient(clientLogger, clientResponseLogger);
+            var client = new PingPongTcpClient(clientLogger, clientResponseLogger);
             var clientTask = Task.Run(() => client.StartAsync(clientToken));
 
             await Task.Delay(5000); // Wait to ensure some communication occurs

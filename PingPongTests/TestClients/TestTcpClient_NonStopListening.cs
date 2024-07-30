@@ -7,7 +7,7 @@ using Utils;
 
 namespace Tests.TestClients
 {
-    public class TestTcpClient_NonStopListening : TcpClient
+    public class TestTcpClient_NonStopListening : PingPongTcpClient
     {
         public TestTcpClient_NonStopListening(ILogger systemLogger, ILogger responseLogger)
             : base(systemLogger, responseLogger) { }

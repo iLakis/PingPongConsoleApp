@@ -43,7 +43,7 @@ namespace PingPongTests {
             var responseLogger = _loggerFactory.CreateLogger(responseLoggerCategory);
 
 
-            var client = new TcpClient(clientLogger, responseLogger);
+            var client = new PingPongTcpClient(clientLogger, responseLogger);
             var clientTask = Task.Run(() => client.StartAsync(token));
 
             await Task.Delay(6000); // Wait to ensure some communication occurs
@@ -97,7 +97,7 @@ namespace PingPongTests {
             var path = Directory.GetCurrentDirectory() + "\\TestConfigs\\Client\\";
 
             IConfigLoader<DefaultClientConfig> configLoader = new JsonConfigLoader<DefaultClientConfig>(Path.Combine(path, "TestClientConfig_MissingValues.json"), clientSystemLogger);
-            var client = new TcpClient(clientSystemLogger, clientResponseLogger, configLoader);
+            var client = new PingPongTcpClient(clientSystemLogger, clientResponseLogger, configLoader);
 
             var clientLogs = _memoryLoggerProvider.GetLogs(clientSystemLoggerCategory);
 
@@ -117,7 +117,7 @@ namespace PingPongTests {
 
             IConfigLoader<DefaultClientConfig> configLoader = new JsonConfigLoader<DefaultClientConfig>(Path.Combine(path, "TestClientConfig_InvalidValues.json"), clientSystemLogger);
 
-            var client = new TcpClient(clientSystemLogger, clientResponseLogger, configLoader);
+            var client = new PingPongTcpClient(clientSystemLogger, clientResponseLogger, configLoader);
 
             var clientLogs = _memoryLoggerProvider.GetLogs(clientSystemLoggerCategory);
 

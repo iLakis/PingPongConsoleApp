@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 using System.Net.Security;
+using System.Net.Sockets;
 using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -11,19 +12,16 @@ using Utils;
 
 
 namespace PingPongClient {
-    public class TcpClient {
-        protected static X509Certificate2 ClientCertificate;
-        protected static XmlSchemaSet schemaSet;
-        protected DefaultClientConfig _config;
-
-
-        protected System.Net.Sockets.TcpClient _client;
-        protected SslStream _sslStream;
+    public class PingPongTcpClient {
+        protected static X509Certificate2? ClientCertificate;
+        protected static XmlSchemaSet? schemaSet;
+        protected DefaultClientConfig? _config;
+        protected TcpClient? _client;
+        protected SslStream? _sslStream;
         protected readonly ILogger _systemLogger;
         protected readonly ILogger _responseLogger;
-        protected IConfiguration _configuration;
 
-        public TcpClient(ILogger systemLogger, ILogger responseLogger, IConfigLoader<DefaultClientConfig>? configLoader = null) {
+        public PingPongTcpClient(ILogger systemLogger, ILogger responseLogger, IConfigLoader<DefaultClientConfig>? configLoader = null) {
             _systemLogger = systemLogger;
             _responseLogger = responseLogger;
             if (configLoader == null) {
@@ -73,7 +71,7 @@ namespace PingPongClient {
         public async Task ConnectAsync(CancellationToken token) {
             token.ThrowIfCancellationRequested();
             try {
-                _client = new System.Net.Sockets.TcpClient();
+                _client = new TcpClient();
                 await _client.ConnectAsync(_config.ServerAddress, _config.Port);
                 _sslStream = new SslStream(
                     _client.GetStream(),

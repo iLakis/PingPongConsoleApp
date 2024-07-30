@@ -6,7 +6,7 @@ using Utils;
 
 namespace Tests.TestClients
 {
-    public class TestTcpClient_Slow : TcpClient
+    public class TestTcpClient_Slow : PingPongTcpClient
     {
         public TestTcpClient_Slow(ILogger systemLogger, ILogger responseLogger)
             : base(systemLogger, responseLogger) { }

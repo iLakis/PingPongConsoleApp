@@ -14,7 +14,7 @@ string responseLoggerCategory = "ResponseLogger";
 var clientLogger = loggerFactory.CreateLogger(clientLoggerCategory);
 var responseLogger = loggerFactory.CreateLogger(responseLoggerCategory);
 
-var client = new TcpClient(clientLogger, responseLogger);
+var client = new PingPongTcpClient(clientLogger, responseLogger);
 
 // Enable SSL logging
 var listener = new SslEventListener();
