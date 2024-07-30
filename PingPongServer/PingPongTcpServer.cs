@@ -11,25 +11,21 @@ using Microsoft.Extensions.Logging;
 using Utils;
 
 namespace PingPongServer {
-    public class TcpServer {
-        protected const int Port = 5001;
-        protected string ServerSslPass;
+    public class PingPongTcpServer {
         protected static X509Certificate2 ServerCertificate;
         protected static XmlSchemaSet schemaSet;
-        protected const string Separator = "<EOF>";
-        private int _readTimeout = 5000;
-        private int _writeTimeout = 5000;
+        protected IServerConfig _config;
+        protected readonly ILogger<PingPongTcpServer> _logger;
 
-        protected readonly ILogger<TcpServer> _logger;
-        protected IConfiguration _configuration;
 
-        public TcpServer(ILogger<TcpServer> logger, IConfiguration? configuration = null) {
+        public PingPongTcpServer(ILogger<PingPongTcpServer> logger, IConfigLoader<DefaultServerConfig> configLoader = null) {
             _logger = logger;
-            if (configuration != null) {
-                _configuration = configuration;
+            if (configLoader == null) {
+                _logger.LogWarning("No configuration loader provided, using default JsonConfigLoader.");
+                configLoader = new JsonConfigLoader<DefaultServerConfig>(Path.Combine(Directory.GetCurrentDirectory(), "appsettings.server.json"), _logger);
             }
+            _config = configLoader.LoadConfig();
             try {
-                LoadConfiguration();
                 LoadCertificate();
                 LoadXsdSchema();
 
@@ -42,14 +38,14 @@ namespace PingPongServer {
 
         public async Task StartAsync(CancellationToken token) {
             ThreadPool.SetMinThreads(100, 100);
-            TcpListener listener = new TcpListener(IPAddress.Any, Port);
+            TcpListener listener = new TcpListener(IPAddress.Any, _config.Port);
             listener.Start();
-            _logger.LogInformation($"Server started on port {Port}");
+            _logger.LogInformation($"Server started on port {_config.Port}");
 
             try {
                 while (!token.IsCancellationRequested) {
                     if (listener.Pending()) {
-                        System.Net.Sockets.TcpClient client = listener.AcceptTcpClient();
+                        TcpClient client = listener.AcceptTcpClient();
                         _logger.LogInformation("Client connected");
                         _ = Task.Run(() => HandleClientAsync(client, token));
                     } else {
@@ -62,10 +58,10 @@ namespace PingPongServer {
             }
         }
 
-        protected virtual async Task HandleClientAsync(System.Net.Sockets.TcpClient client, CancellationToken token) {
+        protected virtual async Task HandleClientAsync(TcpClient client, CancellationToken token) {
             var sslStream = new SslStream(client.GetStream(), false);
-            sslStream.ReadTimeout = _readTimeout;
-            sslStream.WriteTimeout = _writeTimeout;
+            sslStream.ReadTimeout = _config.ReadTimeout;
+            sslStream.WriteTimeout = _config.WriteTimeout;
             try {
                 await AuthenticateSsl(sslStream);
 
@@ -80,9 +76,9 @@ namespace PingPongServer {
                         string line = await reader.ReadLineAsync();
                         if (!string.IsNullOrWhiteSpace(line)) {
                             messageBuilder.AppendLine(line);
-                            if (line.EndsWith(Separator)) {
+                            if (line.EndsWith(_config.Separator)) {
                                 string message = messageBuilder.ToString();
-                                message = message.Replace(Separator, "");
+                                message = message.Replace(_config.Separator, "");
                                 _logger.LogInformation($"Received message: {message}", message);
                                 try {
                                     using (var stringReader = new StringReader(message)) {
@@ -133,61 +129,6 @@ namespace PingPongServer {
             }
 
         }
-        protected void LoadConfiguration() {
-            List<string> usingDefaults = new List<string>();
-            try {
-                _logger.LogInformation("Loading configuration...");
-                if (_configuration == null) {
-                    _logger.LogInformation("Configuration file not given, searching for the file");
-                    _configuration = new ConfigurationBuilder()
-                                        .SetBasePath(Directory.GetCurrentDirectory())
-                                        .AddJsonFile("appsettings.server.json", optional: false, reloadOnChange: true)
-                                        .Build();
-                }
-
-                var configParams = new Dictionary<string, Action<string>> {
-                    { "ServerSslPass", value => ServerSslPass = value },
-                    { "ReadTimeout", value => TryParseInt(value, "ReadTimeout", v => _readTimeout = v, usingDefaults) },
-                    { "WriteTimeout", value => TryParseInt(value, "WriteTimeout", v => _writeTimeout = v, usingDefaults) }
-                };
-
-                foreach (var param in configParams) {
-                    var value = _configuration[param.Key];
-                    if (!string.IsNullOrEmpty(value)) {
-                        param.Value(value);
-                    } else {
-                        _logger.LogError($"{param.Key} was not found in config file");
-                        usingDefaults.Add(param.Key);
-                    }
-                }
-
-                if (usingDefaults.Count > 0) {                  
-                    _logger.LogWarning($"Configuration loaded with errors: Could not find or parse: {string.Join(", ", usingDefaults)}");
-                    _logger.LogWarning("Using default values for missing variables.");
-                } else {
-                    _logger.LogInformation("Configuration loaded successfully.");
-                }
-            } catch (KeyNotFoundException ex) {
-                _logger.LogError($"Variable not found in the config file: {ex.Message}");
-                throw;
-            } catch (FormatException ex) {
-                _logger.LogError($"Wrong format while parsing config file: {ex.Message}");
-                throw;
-            } catch (Exception ex) {
-                _logger.LogError($"Error loading configuration: {ex.Message}");
-                throw;
-            }
-        }
-        private void TryParseInt(string value, string paramName, Action<int> setValue, List<string> usingDefaults) {
-            if (int.TryParse(value, out int result)) {
-                setValue(result);
-            } else {
-                _logger.LogError($"{paramName} in config is not a valid integer.");
-                usingDefaults.Add(paramName);
-            }
-        }
-
-
         protected void LoadCertificate() {
             string certPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ServerCertificate\\server.pfx");
 
@@ -197,7 +138,7 @@ namespace PingPongServer {
 
             ServerCertificate = new X509Certificate2(
                 certPath,
-                ServerSslPass,
+                _config.ServerSslPass,
                 X509KeyStorageFlags.PersistKeySet | X509KeyStorageFlags.MachineKeySet);
             _logger.LogInformation("Certificate loaded successfully.");
         }
@@ -223,7 +164,7 @@ namespace PingPongServer {
         }
         protected void SendPong(StreamWriter writer) {
             var pongVar = new pong { timestamp = DateTime.UtcNow };
-            var pongMessage = Utils.XmlTools.SerializeToXml(pongVar) + Separator;
+            var pongMessage = Utils.XmlTools.SerializeToXml(pongVar) + _config.Separator;
             writer.WriteLine(pongMessage);
             _logger.LogInformation($"Sent: {pongVar.timestamp}");
         }

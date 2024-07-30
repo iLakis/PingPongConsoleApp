@@ -9,7 +9,7 @@ using Microsoft.Extensions.Configuration;
 namespace PingPongTests {
     public class BasicTests {
         private readonly MemoryLoggerProvider _memoryLoggerProvider;
-        private readonly ILogger<TcpServer> _serverLogger;
+        private readonly ILogger<PingPongTcpServer> _serverLogger;
         private readonly ILoggerFactory _loggerFactory;
         private readonly XmlSchemaSet _schemaSet;
 
@@ -20,7 +20,7 @@ namespace PingPongTests {
                 .BuildServiceProvider();
 
             _loggerFactory = serviceProvider.GetService<ILoggerFactory>();
-            _serverLogger = _loggerFactory.CreateLogger<TcpServer>();
+            _serverLogger = _loggerFactory.CreateLogger<PingPongTcpServer>();
 
             _schemaSet = new XmlSchemaSet();
             var schemaPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "schema.xsd");
@@ -32,7 +32,7 @@ namespace PingPongTests {
             var cts = new CancellationTokenSource();
             var token = cts.Token;
 
-            var server = new TcpServer(_serverLogger);
+            var server = new PingPongTcpServer(_serverLogger);
             var serverTask = Task.Run(() => server.StartAsync(token));
 
             await Task.Delay(1000); // Wait for server to boot up
@@ -69,7 +69,7 @@ namespace PingPongTests {
                 clientTask.Dispose();
             }
 
-            var serverLogs = _memoryLoggerProvider.GetLogs(typeof(TcpServer).FullName);
+            var serverLogs = _memoryLoggerProvider.GetLogs(typeof(PingPongTcpServer).FullName);
             var serverMessages = serverLogs.Where(log => log.Contains("Received message:")).ToList();
 
             var clientLogs = _memoryLoggerProvider.GetLogs(clientLoggerCategory);

@@ -9,15 +9,15 @@ using Utils;
 
 namespace Tests.TestServers
 {
-    public class TestServer_SpammingMessages : TcpServer
+    public class TestServer_SpammingMessages : PingPongTcpServer
     {
-        public TestServer_SpammingMessages(ILogger<TcpServer> logger) : base(logger) { }
+        public TestServer_SpammingMessages(ILogger<PingPongTcpServer> logger) : base(logger) { }
 
         public async Task StartSendingPongs(int count, int delayMs, CancellationToken token)
         {
-            TcpListener listener = new TcpListener(IPAddress.Any, Port);
+            TcpListener listener = new TcpListener(IPAddress.Any, _config.Port);
             listener.Start();
-            _logger.LogInformation($"TestServer started on port {Port}");
+            _logger.LogInformation($"TestServer started on port {_config.Port}");
 
             try
             {
@@ -72,10 +72,10 @@ namespace Tests.TestServers
                     if (!string.IsNullOrWhiteSpace(line))
                     {
                         messageBuilder.AppendLine(line);
-                        if (line.EndsWith(Separator))
+                        if (line.EndsWith(_config.Separator))
                         {
                             string message = messageBuilder.ToString();
-                            message = message.Replace(Separator, "");
+                            message = message.Replace(_config.Separator, "");
                             _logger.LogInformation($"Received message: {message}");
 
                             try
@@ -118,7 +118,7 @@ namespace Tests.TestServers
                 for (int i = 0; i < count && !token.IsCancellationRequested; i++)
                 {
                     var pongVar = new pong { timestamp = DateTime.UtcNow };
-                    var pongMessage = XmlTools.SerializeToXml(pongVar) + Separator;
+                    var pongMessage = XmlTools.SerializeToXml(pongVar) + _config.Separator;
                     await writer.WriteLineAsync(pongMessage);
                     _logger.LogInformation($"Sent: {pongVar.timestamp}");
                     await Task.Delay(delayMs, token);

@@ -12,9 +12,9 @@ using Utils;
 
 namespace Tests.TestServers
 {
-    public class TestTcpServer_Slow : TcpServer
+    public class TestTcpServer_Slow : PingPongTcpServer
     {
-        public TestTcpServer_Slow(ILogger<TcpServer> logger) : base(logger) { }
+        public TestTcpServer_Slow(ILogger<PingPongTcpServer> logger) : base(logger) { }
         protected override async Task HandleClientAsync(System.Net.Sockets.TcpClient client, CancellationToken token)
         {
             var sslStream = new SslStream(client.GetStream(), false);
@@ -39,10 +39,10 @@ namespace Tests.TestServers
                         if (!string.IsNullOrWhiteSpace(line))
                         {
                             messageBuilder.AppendLine(line);
-                            if (line.EndsWith(Separator))
+                            if (line.EndsWith(_config.Separator))
                             {
                                 string message = messageBuilder.ToString();
-                                message = message.Replace(Separator, "");
+                                message = message.Replace(_config.Separator, "");
                                 _logger.LogInformation($"Received message: {message}", message);
 
                                 try

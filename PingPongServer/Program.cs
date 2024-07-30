@@ -5,11 +5,11 @@ using Utils;
 
 var serviceProvider = new ServiceCollection()
     .AddLogging (configure => configure.AddConsole())
-    .AddSingleton<TcpServer>()
+    .AddSingleton<PingPongTcpServer>()
     .BuildServiceProvider ();
 
-var logger = serviceProvider.GetService<ILogger<TcpServer>>();
-var server = serviceProvider.GetService<TcpServer>();
+var logger = serviceProvider.GetService<ILogger<PingPongTcpServer>>();
+var server = serviceProvider.GetService<PingPongTcpServer>();
 
 // Enable SSL logging
 var listener = new SslEventListener();

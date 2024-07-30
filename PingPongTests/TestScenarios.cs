@@ -13,7 +13,7 @@ namespace PingPongTests
 {
     public class TestScenarios {
         private readonly MemoryLoggerProvider _memoryLoggerProvider;
-        private readonly ILogger<TcpServer> _serverLogger;
+        private readonly ILogger<PingPongTcpServer> _serverLogger;
         private readonly ILoggerFactory _loggerFactory;
         private readonly XmlSchemaSet _schemaSet;
 
@@ -24,7 +24,7 @@ namespace PingPongTests
                 .BuildServiceProvider();
 
             _loggerFactory = serviceProvider.GetService<ILoggerFactory>();
-            _serverLogger = _loggerFactory.CreateLogger<TcpServer>();
+            _serverLogger = _loggerFactory.CreateLogger<PingPongTcpServer>();
 
             _schemaSet = new XmlSchemaSet();
             var schemaPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "schema.xsd");
@@ -36,7 +36,7 @@ namespace PingPongTests
             var cts = new CancellationTokenSource();
             var token = cts.Token;
 
-            var server = new TcpServer(_serverLogger);
+            var server = new PingPongTcpServer(_serverLogger);
             var serverTask = Task.Run(() => { server.StartAsync(token); });
 
             await Task.Delay(1000); // Wait for server to boot up
@@ -78,7 +78,7 @@ namespace PingPongTests
                 _serverLogger.LogError($"Unexpected error during testing: {ex.Message}");
             }
 
-            var serverLogs = _memoryLoggerProvider.GetLogs(typeof(TcpServer).FullName);
+            var serverLogs = _memoryLoggerProvider.GetLogs(typeof(PingPongTcpServer).FullName);
             var serverMessages = serverLogs.Where(log => log.Contains("Received message:")).ToList();
 
             Assert.NotEmpty(serverMessages);
@@ -152,7 +152,7 @@ namespace PingPongTests
             var cts = new CancellationTokenSource();
             var token = cts.Token;
 
-            var server = new TcpServer(_serverLogger);
+            var server = new PingPongTcpServer(_serverLogger);
             var serverTask = Task.Run(() => server.StartAsync(token));
 
             await Task.Delay(1000); // Wait for server to boot up
@@ -188,7 +188,7 @@ namespace PingPongTests
                 clientTask.Dispose();
             }
 
-            var serverLogs = _memoryLoggerProvider.GetLogs(typeof(TcpServer).FullName);
+            var serverLogs = _memoryLoggerProvider.GetLogs(typeof(PingPongTcpServer).FullName);
             var serverMessages = serverLogs.Where(log => log.Contains("Received message:")).ToList();
 
             var clientLogs = _memoryLoggerProvider.GetLogs(clientLoggerCategory);
@@ -211,7 +211,7 @@ namespace PingPongTests
             var reconnectionAttempts = clientLogs.Count(log => log.Contains("Attempting to reconnect"));
             Assert.True(reconnectionAttempts <= 5, "Client attempted to reconnect more than the maximum allowed attempts"); // TODO read attemts variable from config
 
-            ValidateLogs(clientLoggerCategory, clientResponseLoggerCategory, typeof(TcpServer).FullName);
+            ValidateLogs(clientLoggerCategory, clientResponseLoggerCategory, typeof(PingPongTcpServer).FullName);
             
         }
 
@@ -255,7 +255,7 @@ namespace PingPongTests
                 clientTask.Dispose();
             }
 
-            ValidateLogs(clientLoggerCategory, clietnResponseLoggerCategory, typeof(TcpServer).FullName);
+            ValidateLogs(clientLoggerCategory, clietnResponseLoggerCategory, typeof(PingPongTcpServer).FullName);
         }
         [Fact]
         public async Task TestServerShutdown() {
@@ -265,8 +265,8 @@ namespace PingPongTests
             var serverToken = serverCts.Token;
             var clientToken = clientCts.Token;
 
-            var serverLogger = _loggerFactory.CreateLogger<TcpServer>();
-            var server = new TcpServer(serverLogger);
+            var serverLogger = _loggerFactory.CreateLogger<PingPongTcpServer>();
+            var server = new PingPongTcpServer(serverLogger);
             var serverTask = Task.Run(() => server.StartAsync(serverToken));
 
             await Task.Delay(1000); // Wait for server to boot up
@@ -306,7 +306,7 @@ namespace PingPongTests
                 clientTask.Dispose();
             }
 
-            var serverLogs = _memoryLoggerProvider.GetLogs(typeof(TcpServer).FullName);
+            var serverLogs = _memoryLoggerProvider.GetLogs(typeof(PingPongTcpServer).FullName);
             var serverMessages = serverLogs.Where(log => log.Contains("Received message:")).ToList();
 
             var clientLogs = _memoryLoggerProvider.GetLogs(clientSystemLoggerCategory);
