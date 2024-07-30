@@ -32,7 +32,6 @@ namespace PingPongClient {
             }
             _config = configLoader.LoadConfig();
             try {
-                //LoadConfiguration();
                 LoadCertificate();
                 LoadXsdSchema();
             } catch (Exception ex) {
@@ -219,62 +218,6 @@ namespace PingPongClient {
             // return true;
 
         }
-       /* protected void LoadConfiguration() {
-            List<string> usingDefaults = new List<string>();
-            try {
-                _systemLogger.LogInformation("Loading configuration...");
-                if(_configuration == null) {
-                    _systemLogger.LogInformation("Configuration file not given, searching for the file");
-                    var configuration = new ConfigurationBuilder()
-                                        .SetBasePath(Directory.GetCurrentDirectory())
-                                        .AddJsonFile("appsettings.client.json", optional: false, reloadOnChange: true)
-                                        .Build();
-                    _configuration = configuration;
-                }
-
-                var configParams = new Dictionary<string, Action<string>> {
-                    { "ClientSslPass", value => ClientSslPass = value },
-                    { "Interval", value => TryParseInt(value, "Interval", v => Interval = v, usingDefaults) },
-                    { "MaxReconnectAttempts", value => TryParseInt(value, "MaxReconnectAttempts", v => _maxReconnectAttempts = v, usingDefaults) },
-                    { "ReconnectDelay", value => TryParseInt(value, "ReconnectDelay", v => _reconnectDelay = v, usingDefaults) },
-                    { "ReadTimeout", value => TryParseInt(value, "ReadTimeout", v => _readTimeout = v, usingDefaults) },
-                    { "WriteTimeout", value => TryParseInt(value, "WriteTimeout", v => _writeTimeout = v, usingDefaults) },
-                    { "HighLatencyThresholdMs", value => TryParseInt(value, "HighLatencyThresholdMs", v => HighLatencyThresholdMs = v, usingDefaults) },
-                    { "LowLatencyThresholdMs", value => TryParseInt(value, "LowLatencyThresholdMs", v => LowLatencyThresholdMs = v, usingDefaults) },
-                    { "MaxReadTimeoutMs", value => TryParseInt(value, "MaxReadTimeout", v => MaxReadTimeoutMs = v, usingDefaults) },
-                    { "MinReadTimeoutMs", value => TryParseInt(value, "MinReadTimeout", v => MinReadTimeoutMs = v, usingDefaults) },
-                    { "MaxWriteTimeoutMs", value => TryParseInt(value, "MaxWriteTimeout", v => MaxWriteTimeoutMs = v, usingDefaults) },
-                    { "MinWriteTimeoutMs", value => TryParseInt(value, "MinWriteTimeout", v => MinWriteTimeoutMs = v, usingDefaults) },
-                    { "MaxIntervalMs", value => TryParseInt(value, "MaxInterval", v => MaxIntervalMs = v, usingDefaults) },
-                    { "MinIntervalMs", value => TryParseInt(value, "MinInterval", v => MinIntervalMs = v, usingDefaults) }
-                };
-                foreach (var param in configParams) {
-                    var value = _configuration[param.Key];
-                    if (!string.IsNullOrEmpty(value)) {
-                        param.Value(value);
-                    } else {
-                        _systemLogger.LogError($"{param.Key} was not found in config file");
-                        usingDefaults.Add(param.Key);
-                    }
-                }
-
-                if (usingDefaults.Count > 0) {
-                    _systemLogger.LogWarning($"Configuration loaded with errors: Could not find or parse: {string.Join(", ", usingDefaults)}");
-                    _systemLogger.LogWarning("Using default values for missing variables.");
-                } else {
-                    _systemLogger.LogInformation("Configuration loaded successfully.");
-                }
-            } catch (KeyNotFoundException ex) {
-                _systemLogger.LogError($"Variable not found in the config file: {ex.Message}");
-                throw;                        
-            } catch (FormatException ex) {
-                _systemLogger.LogError($"Wrong format while parsing config file: {ex.Message}");
-                throw;
-            } catch (Exception ex) {
-                _systemLogger.LogError($"Error loading configuration: {ex.Message}");
-                throw;
-            }
-        }*/
         protected void LoadCertificate() {
             try {
                 string certPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ClientCertificate\\client.pfx");
@@ -311,14 +254,6 @@ namespace PingPongClient {
             _systemLogger.LogWarning("Disconnecting the client.");
             _sslStream?.Close();
             _client?.Close();
-        }
-        private void TryParseInt(string value, string paramName, Action<int> setValue, List<string> usingDefaults) {
-            if (int.TryParse(value, out int result)) {
-                setValue(result);
-            } else {
-                _systemLogger.LogError($"{paramName} in config is not a valid integer.");
-                usingDefaults.Add(paramName);
-            }
         }
     }
 }
