@@ -1,7 +1,10 @@
 ﻿{
   "Interval": 1000,
-  "ClientSslPass": "PPClient",
-  "ClientSslExportPass": "PPClientExport",
+  "SslPass": "PPClient",
+  "SslExportPass": "PPClientExport",
   "MaxReconnectAttempts": 3,
-  "ReconnectDelay": 2000
+  "ReconnectDelay": 2000,
+  "Separator": "<EOF>",
+  "Port": 5001,
+  "ServerAddress": "localhost"
 }

@@ -42,6 +42,7 @@ namespace PingPongTests {
             var clientLogger = _loggerFactory.CreateLogger(clientLoggerCategory);
             var responseLogger = _loggerFactory.CreateLogger(responseLoggerCategory);
 
+
             var client = new TcpClient(clientLogger, responseLogger);
             var clientTask = Task.Run(() => client.StartAsync(token));
 
@@ -81,8 +82,10 @@ namespace PingPongTests {
             Assert.True(serverMessages.Count > 0, "Server received no messages");
             Assert.All(serverMessages, msg => Assert.True(XmlTools.ValidateXml(StringTools.RemovePrefix(msg, "Received message: "), _schemaSet)));
 
-            Assert.DoesNotContain(serverLogs, log => log.Contains("error", System.StringComparison.OrdinalIgnoreCase));
-            Assert.DoesNotContain(clientLogs, log => log.Contains("error", System.StringComparison.OrdinalIgnoreCase));
+            var serverErrorLogs = serverLogs.Where(log => log.Contains("error", StringComparison.OrdinalIgnoreCase)).ToList();
+            Assert.True(!serverErrorLogs.Any(), $"Found error logs: {string.Join(Environment.NewLine, serverErrorLogs)}");
+            var clientErrorLogs = clientLogs.Where(log => log.Contains("error", StringComparison.OrdinalIgnoreCase)).ToList();
+            Assert.True(!clientErrorLogs.Any(), $"Found error logs: {string.Join(Environment.NewLine, clientErrorLogs)}");
         }
 
         [Fact]
@@ -93,12 +96,8 @@ namespace PingPongTests {
             var clientResponseLogger = _loggerFactory.CreateLogger(clientResponseLoggerCategory);
             var path = Directory.GetCurrentDirectory() + "\\TestConfigs\\Client\\";
 
-            var configuration = new ConfigurationBuilder()
-                .SetBasePath(path)
-                .AddJsonFile("TestClientConfig_MissingValues.json", optional: false, reloadOnChange: true)
-                .Build();
-
-            var client = new TcpClient(clientSystemLogger, clientResponseLogger, configuration);
+            IConfigLoader<DefaultClientConfig> configLoader = new JsonConfigLoader<DefaultClientConfig>(Path.Combine(path, "TestClientConfig_MissingValues.json"), clientSystemLogger);
+            var client = new TcpClient(clientSystemLogger, clientResponseLogger, configLoader);
 
             var clientLogs = _memoryLoggerProvider.GetLogs(clientSystemLoggerCategory);
 
@@ -116,12 +115,9 @@ namespace PingPongTests {
             var clientResponseLogger = _loggerFactory.CreateLogger(clientResponseLoggerCategory);
             var path = Directory.GetCurrentDirectory() + "\\TestConfigs\\Client\\";
 
-            var configuration = new ConfigurationBuilder()
-                .SetBasePath(path)
-                .AddJsonFile("TestClientConfig_InvalidValues.json", optional: false, reloadOnChange: true)
-                .Build();
+            IConfigLoader<DefaultClientConfig> configLoader = new JsonConfigLoader<DefaultClientConfig>(Path.Combine(path, "TestClientConfig_InvalidValues.json"), clientSystemLogger);
 
-            var client = new TcpClient(clientSystemLogger, clientResponseLogger, configuration);
+            var client = new TcpClient(clientSystemLogger, clientResponseLogger, configLoader);
 
             var clientLogs = _memoryLoggerProvider.GetLogs(clientSystemLoggerCategory);
 

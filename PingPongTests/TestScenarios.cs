@@ -7,6 +7,7 @@ using Utils;
 using System.Xml.Schema;
 using Tests.TestClients;
 using Tests.TestServers;
+using Microsoft.Extensions.Configuration;
 
 namespace PingPongTests
 {
@@ -42,33 +43,39 @@ namespace PingPongTests
 
             var clientTasks = new List<Task>();
             var clients = new List<(TcpClient client, string clientLoggerCategory, string responseLoggerCategory)>();
-            for (int i = 0; i < 200; i++) { // Amount of clients
-                string clientLoggerCategory = $"TcpClient_{i}";
-                string responseLoggerCategory = $"ResponseLogger_{i}";
-                var clientLogger = _loggerFactory.CreateLogger(clientLoggerCategory);
-                var responseLogger = _loggerFactory.CreateLogger(responseLoggerCategory);
+            var path = Directory.GetCurrentDirectory() + "\\TestConfigs\\Client\\";
 
-                var client = new TcpClient(clientLogger, responseLogger);
-                clients.Add((client, clientLoggerCategory, responseLoggerCategory));
+            for (int i = 0; i < 500; i++) { // Amount of clients
+                string clientSystemLoggerCategory = $"TcpClient_{i}";
+                string clientResponseLoggerCategory = $"ClientResponseLogger_{i}";
+                var clientSystemLogger = _loggerFactory.CreateLogger(clientSystemLoggerCategory);
+                var clientResponseLogger = _loggerFactory.CreateLogger(clientResponseLoggerCategory);
+                IConfigLoader<DefaultClientConfig> configLoader = new JsonConfigLoader<DefaultClientConfig>(Path.Combine(path, "TestClientConfig_LowInterval.json"), clientSystemLogger);
+
+                var client = new TcpClient(clientSystemLogger, clientResponseLogger, configLoader);
+                clients.Add((client, clientSystemLoggerCategory, clientResponseLoggerCategory));
                 clientTasks.Add(Task.Run(() => client.StartAsync(token)));
                 //await Task.Delay(200); // Delay between connections
             }
 
-            await Task.Delay(10000); // Wait to ensure some communication occurs
-
+            await Task.Delay(15000); // Wait to ensure some communication occurs
 
             try {
-
                 cts.Cancel();
-               await Task.WhenAll(serverTask);
+                await Task.WhenAll(serverTask);
+                if (serverTask.IsCompleted) {
+                    serverTask.Dispose();
+                }
+                foreach (var task in clientTasks) {
+                    await Task.WhenAll(task);
+                    if (task.IsCompleted) {
+                        task.Dispose();
+                    }
+                }
             } catch (OperationCanceledException) {
-
-            } catch (Exception) {
-
-            }
-
-            if (serverTask.IsCompleted) {
-                serverTask.Dispose();
+                //Expected exception
+            } catch (Exception ex) {
+                _serverLogger.LogError($"Unexpected error during testing: {ex.Message}");
             }
 
             var serverLogs = _memoryLoggerProvider.GetLogs(typeof(TcpServer).FullName);
@@ -76,17 +83,25 @@ namespace PingPongTests
 
             Assert.NotEmpty(serverMessages);
             Assert.All(serverMessages, msg => Assert.True(XmlTools.ValidateXml(StringTools.RemovePrefix(msg, "Received message: "), _schemaSet)));
+            var serverErrorLogs = serverLogs.Where(log => log.Contains("error", StringComparison.OrdinalIgnoreCase)).ToList();
+            Assert.True(!serverErrorLogs.Any(), $"Found error logs: {string.Join(Environment.NewLine, serverErrorLogs)}");
+
 
             foreach (var (client, clientLoggerCategory, responseLoggerCategory) in clients) {
                 var responseLogs = _memoryLoggerProvider.GetLogs(responseLoggerCategory);
                 var clientMessages = responseLogs.Where(log => log.Contains("Received response:")).ToList();
+                if (responseLoggerCategory.Contains("495")) {
+                    Assert.NotEmpty(clientMessages); // just to stop debugging at certain client
+                }
 
                 Assert.True(clientMessages.Count > 0, $"{clientLoggerCategory} has no messages");
                 Assert.All(clientMessages, msg => 
                 Assert.True(XmlTools.ValidateXml(StringTools.RemovePrefix(msg, "Received response: "), _schemaSet), $"{clientLoggerCategory} reveived invalid response"));
 
                 var clientLogs = _memoryLoggerProvider.GetLogs(clientLoggerCategory);
-                Assert.DoesNotContain(clientLogs, log => log.Contains("error", StringComparison.OrdinalIgnoreCase));
+                var clientErrorLogs = clientLogs.Where(log => log.Contains("error", StringComparison.OrdinalIgnoreCase)).ToList();
+                Assert.True(!clientErrorLogs.Any(), $"Found error logs: {string.Join(Environment.NewLine, clientErrorLogs)}");
+
             }
 
         }
@@ -343,8 +358,10 @@ namespace PingPongTests
             Assert.NotEmpty(serverMessages);
             Assert.All(serverMessages, msg => Assert.True(XmlTools.ValidateXml(StringTools.RemovePrefix(msg, "Received message: "), _schemaSet), "Server received invalid response"));
 
-            Assert.DoesNotContain(serverLogs, log => log.Contains("error", StringComparison.OrdinalIgnoreCase));
-            Assert.DoesNotContain(clientLogs, log => log.Contains("error", StringComparison.OrdinalIgnoreCase));
+            var serverErrorLogs = serverLogs.Where(log => log.Contains("error", StringComparison.OrdinalIgnoreCase)).ToList();
+            Assert.True(!serverErrorLogs.Any(), $"Found error logs: {string.Join(Environment.NewLine, serverErrorLogs)}");
+            var clientErrorLogs = clientLogs.Where(log => log.Contains("error", StringComparison.OrdinalIgnoreCase)).ToList();
+            Assert.True(!clientErrorLogs.Any(), $"Found error logs: {string.Join(Environment.NewLine, clientErrorLogs)}");
         }
             
     }

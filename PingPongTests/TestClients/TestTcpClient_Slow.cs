@@ -33,9 +33,9 @@ namespace Tests.TestClients
                         string line = await reader.ReadLineAsync();
                         if (!string.IsNullOrWhiteSpace(line)) {
                             responseBuilder.AppendLine(line);
-                            if (line.EndsWith(Separator)) {
+                            if (line.EndsWith(_config.Separator)) {
                                 string response = responseBuilder.ToString();
-                                response = response.Replace(Separator, "");
+                                response = response.Replace(_config.Separator, "");
                                 _responseLogger.LogInformation($"Received response: {response}", response);
 
                                 try {
@@ -57,7 +57,7 @@ namespace Tests.TestClients
                             _systemLogger.LogError("Received empty response or whitespace.");
                         }
                     }
-                    await Task.Delay(Interval, token);
+                    await Task.Delay(_config.Interval, token);
                 } catch (IOException ioEx) {
                     _systemLogger.LogError($"IO error: {ioEx.Message}");
                 } catch (OperationCanceledException ex) {

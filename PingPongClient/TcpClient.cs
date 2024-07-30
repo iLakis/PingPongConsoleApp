@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using System.Diagnostics;
 using System.Net.Security;
 using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
@@ -11,17 +12,10 @@ using Utils;
 
 namespace PingPongClient {
     public class TcpClient {
-        protected const string ServerAddress = "localhost"; //"127.0.0.1";
-        protected string ClientSslPass;
-        protected const int Port = 5001;
         protected static X509Certificate2 ClientCertificate;
-        protected static int Interval = 3000;
         protected static XmlSchemaSet schemaSet;
-        protected const string Separator = "<EOF>";
-        protected int _maxReconnectAttempts = 5;
-        protected int _reconnectDelay = 5000;
-        private int _readTimeout = 5000; 
-        private int _writeTimeout = 5000; 
+        protected DefaultClientConfig _config;
+
 
         protected System.Net.Sockets.TcpClient _client;
         protected SslStream _sslStream;
@@ -29,14 +23,16 @@ namespace PingPongClient {
         protected readonly ILogger _responseLogger;
         protected IConfiguration _configuration;
 
-        public TcpClient(ILogger systemLogger, ILogger responseLogger, IConfiguration? configuration = null) {
+        public TcpClient(ILogger systemLogger, ILogger responseLogger, IConfigLoader<DefaultClientConfig>? configLoader = null) {
             _systemLogger = systemLogger;
             _responseLogger = responseLogger;
-            if (configuration != null) {
-                _configuration = configuration;
+            if (configLoader == null) {
+                _systemLogger.LogWarning("No configuration loader provided, using default JsonConfigLoader.");
+                configLoader = new JsonConfigLoader<DefaultClientConfig>(Path.Combine(Directory.GetCurrentDirectory(), "appsettings.client.json"), _systemLogger);
             }
+            _config = configLoader.LoadConfig();
             try {
-                LoadConfiguration();
+                //LoadConfiguration();
                 LoadCertificate();
                 LoadXsdSchema();
             } catch (Exception ex) {
@@ -79,14 +75,14 @@ namespace PingPongClient {
             token.ThrowIfCancellationRequested();
             try {
                 _client = new System.Net.Sockets.TcpClient();
-                await _client.ConnectAsync(ServerAddress, Port);
+                await _client.ConnectAsync(_config.ServerAddress, _config.Port);
                 _sslStream = new SslStream(
                     _client.GetStream(),
                     false,
                     new RemoteCertificateValidationCallback(ValidateServerCertificate));
                 AuthenticateSsl(_sslStream);
-                _sslStream.ReadTimeout = _readTimeout;
-                _sslStream.WriteTimeout = _writeTimeout;
+                _sslStream.ReadTimeout = _config.ReadTimeout;
+                _sslStream.WriteTimeout = _config.WriteTimeout;
             } catch (Exception ex) {
                 _systemLogger.LogError($"Connection error: {ex.Message}");
                 throw;
@@ -98,25 +94,30 @@ namespace PingPongClient {
             var pingSerializer = new XmlSerializer(typeof(ping));
             var pongSerializer = new XmlSerializer(typeof(pong));
             StringBuilder responseBuilder = new StringBuilder();
+            Stopwatch stopwatch = new Stopwatch();
 
             while (_client.Connected && !token.IsCancellationRequested) {
                 token.ThrowIfCancellationRequested();
                 SendPing(writer);
+
+                stopwatch.Restart();
+                bool pongReceived = false;
 
                 while (_client.Connected && !token.IsCancellationRequested) {
                     token.ThrowIfCancellationRequested();
                     string line = await reader.ReadLineAsync();
                     if (!string.IsNullOrWhiteSpace(line)) {
                         responseBuilder.AppendLine(line);
-                        if (line.EndsWith(Separator)) {
+                        if (line.EndsWith(_config.Separator)) {
                             string response = responseBuilder.ToString();
-                            response = response.Replace(Separator, "");
+                            response = response.Replace(_config.Separator, "");
                             _responseLogger.LogInformation($"Received response: {response}", response);
 
                             try {
                                 using (var stringReader = new StringReader(response)) {
                                     token.ThrowIfCancellationRequested();
                                     ReadPong(pongSerializer, stringReader);
+                                    pongReceived = true;
                                 }
                             } catch (InvalidOperationException ex) {
                                 _systemLogger.LogError($"XML Deserialization error: {ex.Message}");
@@ -132,13 +133,43 @@ namespace PingPongClient {
                         Disconnect();
                     }
                 }
-                await Task.Delay(Interval, token);
+                stopwatch.Stop();
+                if (!pongReceived) {
+                    _systemLogger.LogWarning("Pong not received within the expected time frame.");
+                    await HandleTimeoutAsync(token);
+                } else {
+                    var latency = stopwatch.ElapsedMilliseconds;
+                    _responseLogger.LogInformation($"Latency: {latency}ms");
+                    AdjustBehaviorBasedOnLatency(latency);
+                }
+                await Task.Delay(_config.Interval, token);
             }
             _systemLogger.LogWarning("Client stopped");
         }
+
+        private async Task HandleTimeoutAsync(CancellationToken token) {
+            _systemLogger.LogWarning("Handling timeout - attempting to reconnect...");
+            await ReconnectAsync(token);
+        }
+        protected virtual void AdjustBehaviorBasedOnLatency(long latency) { 
+            if (latency > _config.HighLatencyThreshold) { 
+                _systemLogger.LogWarning("High latency detected, increasing interval and timeouts.");
+                _config.Interval = Math.Min(_config.Interval + 100, _config.MaxInterval);
+                _config.ReadTimeout = Math.Min(_config.ReadTimeout + 1000, _config.MaxReadTimeout);
+                _config.WriteTimeout = Math.Min(_config.WriteTimeout + 1000, _config.MaxWriteTimeout); 
+
+            } else if (latency < _config.LowLatencyThreshold) {
+                _systemLogger.LogInformation("Low latency detected, decreasing interval and timeouts.");
+                _config.Interval = Math.Max(_config.Interval - 50, _config.MinInterval);
+                _config.ReadTimeout = Math.Max(_config.ReadTimeout - 500, _config.MinReadTimeout);
+                _config.WriteTimeout = Math.Max(_config.WriteTimeout - 500, _config.MinWriteTimeout); 
+            }
+            _sslStream.ReadTimeout = _config.ReadTimeout;
+            _sslStream.WriteTimeout = _config.WriteTimeout;
+        }
         public async Task<bool> ReconnectAsync(CancellationToken token) {
             int attempts = 0;
-            while (attempts < _maxReconnectAttempts) {
+            while (attempts < _config.MaxReconnectAttempts) {
                 token.ThrowIfCancellationRequested();
                 try {
                     _systemLogger.LogInformation("Attempting to reconnect...");
@@ -148,11 +179,11 @@ namespace PingPongClient {
                 } catch (Exception ex) {
                     _systemLogger.LogError($"Reconnection attempt {attempts + 1} failed: {ex.Message}");
                     attempts++;
-                    if (attempts >= _maxReconnectAttempts) {
+                    if (attempts >= _config.MaxReconnectAttempts) {
                         _systemLogger.LogError("Max reconnection attempts reached. Giving up.");
                         break;
                     }
-                    await Task.Delay(_reconnectDelay, token); 
+                    await Task.Delay(_config.ReconnectDelay, token); 
                 }
             }
             return false;
@@ -160,7 +191,7 @@ namespace PingPongClient {
         protected void AuthenticateSsl(SslStream sslStream) {
             _systemLogger.LogInformation("Starting SSL handshake...");
             sslStream.AuthenticateAsClient(
-                ServerAddress,
+                _config.ServerAddress,
                 new X509CertificateCollection { ClientCertificate },
                 SslProtocols.Tls12 | SslProtocols.Tls13,
                 checkCertificateRevocation: true);//true. false for testing
@@ -168,7 +199,7 @@ namespace PingPongClient {
         }
         protected void SendPing(StreamWriter writer) {
             var pingVar = new ping { timestamp = DateTime.UtcNow };           
-            var pingMessage = Utils.XmlTools.SerializeToXml(pingVar) + Separator;
+            var pingMessage = XmlTools.SerializeToXml(pingVar) + _config.Separator;
             writer.WriteLine(pingMessage);
             _systemLogger.LogInformation($"Sent: {pingVar.timestamp}");
         }
@@ -188,7 +219,7 @@ namespace PingPongClient {
             // return true;
 
         }
-        protected void LoadConfiguration() {
+       /* protected void LoadConfiguration() {
             List<string> usingDefaults = new List<string>();
             try {
                 _systemLogger.LogInformation("Loading configuration...");
@@ -207,10 +238,16 @@ namespace PingPongClient {
                     { "MaxReconnectAttempts", value => TryParseInt(value, "MaxReconnectAttempts", v => _maxReconnectAttempts = v, usingDefaults) },
                     { "ReconnectDelay", value => TryParseInt(value, "ReconnectDelay", v => _reconnectDelay = v, usingDefaults) },
                     { "ReadTimeout", value => TryParseInt(value, "ReadTimeout", v => _readTimeout = v, usingDefaults) },
-                    { "WriteTimeout", value => TryParseInt(value, "WriteTimeout", v => _writeTimeout = v, usingDefaults) }
+                    { "WriteTimeout", value => TryParseInt(value, "WriteTimeout", v => _writeTimeout = v, usingDefaults) },
+                    { "HighLatencyThresholdMs", value => TryParseInt(value, "HighLatencyThresholdMs", v => HighLatencyThresholdMs = v, usingDefaults) },
+                    { "LowLatencyThresholdMs", value => TryParseInt(value, "LowLatencyThresholdMs", v => LowLatencyThresholdMs = v, usingDefaults) },
+                    { "MaxReadTimeoutMs", value => TryParseInt(value, "MaxReadTimeout", v => MaxReadTimeoutMs = v, usingDefaults) },
+                    { "MinReadTimeoutMs", value => TryParseInt(value, "MinReadTimeout", v => MinReadTimeoutMs = v, usingDefaults) },
+                    { "MaxWriteTimeoutMs", value => TryParseInt(value, "MaxWriteTimeout", v => MaxWriteTimeoutMs = v, usingDefaults) },
+                    { "MinWriteTimeoutMs", value => TryParseInt(value, "MinWriteTimeout", v => MinWriteTimeoutMs = v, usingDefaults) },
+                    { "MaxIntervalMs", value => TryParseInt(value, "MaxInterval", v => MaxIntervalMs = v, usingDefaults) },
+                    { "MinIntervalMs", value => TryParseInt(value, "MinInterval", v => MinIntervalMs = v, usingDefaults) }
                 };
-
-
                 foreach (var param in configParams) {
                     var value = _configuration[param.Key];
                     if (!string.IsNullOrEmpty(value)) {
@@ -222,9 +259,8 @@ namespace PingPongClient {
                 }
 
                 if (usingDefaults.Count > 0) {
-                    _systemLogger.LogError($"Could not find or parse: {string.Join(", ", usingDefaults)}");
+                    _systemLogger.LogWarning($"Configuration loaded with errors: Could not find or parse: {string.Join(", ", usingDefaults)}");
                     _systemLogger.LogWarning("Using default values for missing variables.");
-                    _systemLogger.LogWarning("Configuration loaded with errors");
                 } else {
                     _systemLogger.LogInformation("Configuration loaded successfully.");
                 }
@@ -238,7 +274,7 @@ namespace PingPongClient {
                 _systemLogger.LogError($"Error loading configuration: {ex.Message}");
                 throw;
             }
-        }
+        }*/
         protected void LoadCertificate() {
             try {
                 string certPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ClientCertificate\\client.pfx");
@@ -249,7 +285,7 @@ namespace PingPongClient {
 
                 ClientCertificate = new X509Certificate2(
                     certPath,
-                    ClientSslPass,
+                    _config.SslPass,
                     X509KeyStorageFlags.MachineKeySet);
                 _systemLogger.LogInformation("Certificate loaded successfully.");
             } catch (Exception ex) {

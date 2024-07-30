@@ -161,10 +161,9 @@ namespace PingPongServer {
                     }
                 }
 
-                if (usingDefaults.Count > 0) {
-                    _logger.LogError($"Could not find or parse: {string.Join(", ", usingDefaults)}");
+                if (usingDefaults.Count > 0) {                  
+                    _logger.LogWarning($"Configuration loaded with errors: Could not find or parse: {string.Join(", ", usingDefaults)}");
                     _logger.LogWarning("Using default values for missing variables.");
-                    _logger.LogWarning("Configuration loaded with errors");
                 } else {
                     _logger.LogInformation("Configuration loaded successfully.");
                 }

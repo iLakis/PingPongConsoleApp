@@ -34,10 +34,10 @@ namespace Tests.TestClients
                 if (!string.IsNullOrWhiteSpace(line))
                 {
                     responseBuilder.AppendLine(line);
-                    if (line.EndsWith(Separator))
+                    if (line.EndsWith(_config.Separator))
                     {
                         string response = responseBuilder.ToString();
-                        response = response.Replace(Separator, "");
+                        response = response.Replace(_config.Separator, "");
                         _responseLogger.LogInformation($"Received response: {response}", response);
 
                         try
@@ -72,7 +72,7 @@ namespace Tests.TestClients
                 while (!token.IsCancellationRequested)
                 {
                     SendPing(writer);
-                    await Task.Delay(Interval, token);
+                    await Task.Delay(_config.Interval, token);
                 }
             }
             catch (TaskCanceledException ex)

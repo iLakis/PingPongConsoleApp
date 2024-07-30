@@ -1,9 +1,12 @@
 {
   "Interval": "not_valid_integer",
-  "ClientSslPass": "PPClient",
-  "ClientSslExportPass": "PPClientExport",
+  "SslPass": "PPClient",
+  "SslExportPass": "PPClientExport",
   "MaxReconnectAttempts": 5,
   "ReconnectDelay": 0.123,
   "ReadTimeout": -0.666,
-  "WriteTimeout": 5000
+  "WriteTimeout": 5000,
+  "Separator": "<EOF>",
+  "Port": 5001,
+  "ServerAddress": "localhost"
 }
