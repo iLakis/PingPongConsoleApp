@@ -9,8 +9,11 @@ using System.Xml.Serialization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Utils;
+using Utils.Configs;
+using Utils.Configs.Server;
 
-namespace PingPongServer {
+namespace PingPongServer
+{
     public class PingPongTcpServer {
         protected static X509Certificate2 ServerCertificate;
         protected static XmlSchemaSet schemaSet;
@@ -111,9 +114,11 @@ namespace PingPongServer {
                     _logger.LogError($"Inner exception: {ex.InnerException.Message}");
                 }
             } catch (IOException ioEx) {
-                _logger.LogError($"IO error: {ioEx.Message}");
-                if (ioEx.InnerException != null) {
-                    _logger.LogError($"Inner exception: {ioEx.InnerException.Message}");
+                if (!token.IsCancellationRequested) { // without this can throw IO error after server work should be stopped.
+                    _logger.LogError($"IO error: {ioEx.Message}");
+                    if (ioEx.InnerException != null) {
+                        _logger.LogError($"Inner exception: {ioEx.InnerException.Message}");
+                    }
                 }
             } catch (OperationCanceledException ex) {
                 _logger.LogWarning($"Task cancelled");
@@ -124,6 +129,7 @@ namespace PingPongServer {
                     _logger.LogError($"Inner exception: {ex.InnerException.Message}");
                 }
             } finally {
+                sslStream.Close();
                 client.Close(); // Ensure the client is closed on error
                 _logger.LogWarning("Client connection closed.");
             }

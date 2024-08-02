@@ -35,6 +35,7 @@ namespace Tests.TestServers
 
                         await Task.WhenAll(readingTask, sendingTask);
 
+                        sslStream.Close();
                         client.Close();
                         _logger.LogWarning("Client connection closed.");
                     }

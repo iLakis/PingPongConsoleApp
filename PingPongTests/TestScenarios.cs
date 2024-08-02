@@ -8,14 +8,18 @@ using System.Xml.Schema;
 using Tests.TestClients;
 using Tests.TestServers;
 using Microsoft.Extensions.Configuration;
+using Utils.Configs;
+using Utils.Configs.Client;
 
 namespace PingPongTests
 {
     public class TestScenarios {
         private readonly MemoryLoggerProvider _memoryLoggerProvider;
         private readonly ILogger<PingPongTcpServer> _serverLogger;
+        private readonly ILogger<SslEventListener> _sslListenerLogger;
         private readonly ILoggerFactory _loggerFactory;
         private readonly XmlSchemaSet _schemaSet;
+        private readonly SslEventListener _sslListener;
 
         public TestScenarios() {
             _memoryLoggerProvider = new MemoryLoggerProvider();
@@ -25,10 +29,11 @@ namespace PingPongTests
 
             _loggerFactory = serviceProvider.GetService<ILoggerFactory>();
             _serverLogger = _loggerFactory.CreateLogger<PingPongTcpServer>();
-
+            _sslListenerLogger = _loggerFactory.CreateLogger<SslEventListener>();
             _schemaSet = new XmlSchemaSet();
             var schemaPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "schema.xsd");
             _schemaSet.Add("", schemaPath);
+            _sslListener = new SslEventListener(_sslListenerLogger);
         }
 
         [Fact]
@@ -117,13 +122,17 @@ namespace PingPongTests
 
 
             var testServer = new TestServer_SpammingMessages(serverLogger);
-            var serverTask = testServer.StartSendingPongs(20000, 1, cts.Token);
+            //var serverTask = testServer.StartSendingPongs(20000, 1, cts.Token);
 
             await Task.Delay(1000);
 
             
             var client = new TestTcpClient_NonStopListening(clientSystemLogger, clientResponseLogger);
             var clientTask = client.StartAsync(cts.Token);
+
+            await Task.Delay(10000); // wait to ensure client establishes connection pool
+
+            var serverTask = testServer.StartSendingPongs(20000, 1, cts.Token);
 
             await Task.Delay(22000); 
        
@@ -132,7 +141,7 @@ namespace PingPongTests
                 await Task.Delay(1000);
                 //await Task.WhenAny(serverTask, clientTask);
             } catch (OperationCanceledException ex) {
-
+                //expected
             } catch (Exception ex) {
                 clientSystemLogger.LogError($"Unexpected error: {ex.Message}");
             }
@@ -165,10 +174,10 @@ namespace PingPongTests
             var client = new PingPongTcpClient(clientLogger, responseLogger);
             var clientTask = Task.Run(() => client.StartAsync(token));
 
-            await Task.Delay(5000); // Wait to ensure some communication occurs
+            await Task.Delay(10000); // Wait to ensure some communication occurs
 
             // Simulate connection loss
-            client.Disconnect();
+            client.DisconnectCurrentConnection();
 
             await Task.Delay(20000); // Wait to ensure reconnection and some communication occurs
 
@@ -195,7 +204,7 @@ namespace PingPongTests
             var clientResponseLogs = _memoryLoggerProvider.GetLogs(clientResponseLoggerCategory);
             var clientMessages = clientResponseLogs.Where(log => log.Contains("Received response:")).ToList();
 
-            var logsAfterReconnect = clientLogs.SkipWhile(log => !log.Contains("Reconnected successfully.")).Skip(1).ToList();
+            var logsAfterReconnect = clientLogs.SkipWhile(log => !log.Contains("Connection swapped successfully.")).Skip(1).ToList();
             var firstMessageAfterReconnect = logsAfterReconnect.FirstOrDefault(log => log.Contains("Sent:"));
             var firstMessageTimestamp = ExtractTimestamp(firstMessageAfterReconnect);
 
@@ -214,7 +223,6 @@ namespace PingPongTests
             ValidateLogs(clientLoggerCategory, clientResponseLoggerCategory, typeof(PingPongTcpServer).FullName);
             
         }
-
         [Fact]
         public async Task TestClientWithSlowConnection() {
             var cts = new CancellationTokenSource();
@@ -321,8 +329,6 @@ namespace PingPongTests
             Assert.True(clientLogs.Contains("Max reconnection attempts reached. Giving up."), "Client didn't reach max reconnection attempts");
             Assert.False(clientLogs.Contains("Reconnection attempt 6"), "Client exceeded reconnection cap"); //TODO get the cap from config
         }
-
-
         private DateTime ExtractTimestamp(string log) {
             try {
                 // Try to extract timestamp from "Sent: " log

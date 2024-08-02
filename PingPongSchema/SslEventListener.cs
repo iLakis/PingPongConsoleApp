@@ -1,7 +1,12 @@
-﻿using System.Diagnostics.Tracing;
+﻿using Microsoft.Extensions.Logging;
+using System.Diagnostics.Tracing;
 
 namespace Utils {
     public class SslEventListener : EventListener {
+        private ILogger _logger;
+        public SslEventListener(ILogger logger) {
+            _logger = logger;
+        }
         protected override void OnEventSourceCreated(EventSource eventSource) {
             if (eventSource.Name.Equals("System.Net.Security") || eventSource.Name.Equals("System.Net.Sockets")) {
                 EnableEvents(eventSource, EventLevel.LogAlways, EventKeywords.All);
@@ -10,15 +15,15 @@ namespace Utils {
 
         protected override void OnEventWritten(EventWrittenEventArgs eventData) {
             if (eventData.EventName != "EventCounters") {
-                Console.WriteLine($"Event: {eventData.EventName} - {eventData.Message}");
+                _logger.LogInformation($"Event: {eventData.EventName} - {eventData.Message}");
                 if (eventData.Payload != null) {
                     foreach (var payload in eventData.Payload) {
                         if (payload is System.Collections.IDictionary payloadDict) {
                             foreach (var key in payloadDict.Keys) {
-                                Console.WriteLine($"{key}: {payloadDict[key]}");
+                                _logger.LogInformation($"{key}: {payloadDict[key]}");
                             }
                         } else {
-                            Console.WriteLine($"Payload: {payload}");
+                            _logger.LogInformation($"Payload: {payload}");
                         }
                     }
                 }

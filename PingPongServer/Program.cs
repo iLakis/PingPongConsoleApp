@@ -8,11 +8,13 @@ var serviceProvider = new ServiceCollection()
     .AddSingleton<PingPongTcpServer>()
     .BuildServiceProvider ();
 
-var logger = serviceProvider.GetService<ILogger<PingPongTcpServer>>();
-var server = serviceProvider.GetService<PingPongTcpServer>();
+var loggerFactory = serviceProvider.GetService<ILoggerFactory>();
 
+var logger = loggerFactory.CreateLogger<ILogger<PingPongTcpServer>>();
+var server = serviceProvider.GetService<PingPongTcpServer>();
+var sslListenerLogger = loggerFactory.CreateLogger<SslEventListener>();
 // Enable SSL logging
-var listener = new SslEventListener();
+var listener = new SslEventListener(sslListenerLogger);
 
 var cts = new CancellationTokenSource();
 var token = cts.Token;

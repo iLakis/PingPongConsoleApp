@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using PingPongClient;
+using System.Net.Security;
 using System.Text;
 using System.Xml.Serialization;
 using Utils;
@@ -11,15 +12,15 @@ namespace Tests.TestClients
         public TestTcpClient_Slow(ILogger systemLogger, ILogger responseLogger)
             : base(systemLogger, responseLogger) { }
 
-        protected override async Task CommunicateAsync(CancellationToken token)
+        protected override async Task CommunicateAsync(SslStream connection, CancellationToken token)
         {
-            using StreamReader reader = new StreamReader(_sslStream);
-            using StreamWriter writer = new StreamWriter(_sslStream) { AutoFlush = true };
+            using StreamReader reader = new StreamReader(_currentConnection);
+            using StreamWriter writer = new StreamWriter(_currentConnection) { AutoFlush = true };
             var pingSerializer = new XmlSerializer(typeof(ping));
             var pongSerializer = new XmlSerializer(typeof(pong));
             StringBuilder responseBuilder = new StringBuilder();
 
-            while (_client.Connected && !token.IsCancellationRequested)
+            while (!token.IsCancellationRequested) //_client.Connected && 
             {
                 try {
                     token.ThrowIfCancellationRequested();
@@ -27,7 +28,7 @@ namespace Tests.TestClients
                     await Task.Delay(2000, token); // Delay
                     SendPing(writer);
 
-                    while (_client.Connected && !token.IsCancellationRequested) {
+                    while (!token.IsCancellationRequested) {//_client.Connected && 
                         await Task.Delay(2000, token); // Delay
                         token.ThrowIfCancellationRequested();
                         string line = await reader.ReadLineAsync();
@@ -65,7 +66,7 @@ namespace Tests.TestClients
                 } catch (Exception ex) {
                     _systemLogger.LogError($"Unexpected error: {ex.Message}");
                 } finally {
-                    Disconnect();
+                    DisconnectCurrentConnection();
                 }
             }
             _systemLogger.LogWarning("Client stopped");

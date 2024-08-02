@@ -11,10 +11,10 @@ namespace Tests.TestClients
     {
         public TestTcpClient_NonStopListening(ILogger systemLogger, ILogger responseLogger)
             : base(systemLogger, responseLogger) { }
-        protected override async Task CommunicateAsync(CancellationToken token)
+        protected override async Task CommunicateAsync(SslStream connection, CancellationToken token)
         {
-            using StreamReader reader = new StreamReader(_sslStream);
-            using StreamWriter writer = new StreamWriter(_sslStream) { AutoFlush = true };
+            using StreamReader reader = new StreamReader(_currentConnection);
+            using StreamWriter writer = new StreamWriter(_currentConnection) { AutoFlush = true };
             var pingSerializer = new XmlSerializer(typeof(ping));
             var pongSerializer = new XmlSerializer(typeof(pong));
             StringBuilder responseBuilder = new StringBuilder();
@@ -30,38 +30,40 @@ namespace Tests.TestClients
         {
             while (!token.IsCancellationRequested)
             {
-                string line = await reader.ReadLineAsync();
-                if (!string.IsNullOrWhiteSpace(line))
-                {
-                    responseBuilder.AppendLine(line);
-                    if (line.EndsWith(_config.Separator))
-                    {
-                        string response = responseBuilder.ToString();
-                        response = response.Replace(_config.Separator, "");
-                        _responseLogger.LogInformation($"Received response: {response}", response);
+                try {
 
-                        try
-                        {
-                            using (var stringReader = new StringReader(response))
-                            {
-                                if (token.IsCancellationRequested) throw new TaskCanceledException();
-                                ReadPong(pongSerializer, stringReader);
+                    string line = await reader.ReadLineAsync();
+                    if (!string.IsNullOrWhiteSpace(line)) {
+                        responseBuilder.AppendLine(line);
+                        if (line.EndsWith(_config.Separator)) {
+                            string response = responseBuilder.ToString();
+                            response = response.Replace(_config.Separator, "");
+                            _responseLogger.LogInformation($"Received response: {response}", response);
+
+                            try {
+                                using (var stringReader = new StringReader(response)) {
+                                    if (token.IsCancellationRequested) throw new TaskCanceledException();
+                                    ReadPong(pongSerializer, stringReader);
+                                }
+                            } catch (InvalidOperationException ex) {
+                                _systemLogger.LogError($"XML Deserialization error: {ex.Message}");
+                                if (ex.InnerException != null) {
+                                    _systemLogger.LogError($"Inner exception: {ex.InnerException.Message}");
+                                }
                             }
+                            responseBuilder.Clear();
                         }
-                        catch (InvalidOperationException ex)
-                        {
-                            _systemLogger.LogError($"XML Deserialization error: {ex.Message}");
-                            if (ex.InnerException != null)
-                            {
-                                _systemLogger.LogError($"Inner exception: {ex.InnerException.Message}");
-                            }
-                        }
-                        responseBuilder.Clear();
+                    } else {
+                        _systemLogger.LogError("Received empty response or whitespace.");
+                        await HandleConnectionErrorAsync(token);
                     }
-                }
-                else
-                {
-                    _systemLogger.LogError("Received empty response or whitespace.");
+
+                } catch (IOException ex) {
+                    _systemLogger.LogError($"IO error: {ex.Message}");
+                } catch (ObjectDisposedException ex) {
+                    _systemLogger.LogError($"Object disposed error: {ex.Message}");                  
+                } finally {
+                    await HandleConnectionErrorAsync(token);
                 }
             }
         }
@@ -80,6 +82,12 @@ namespace Tests.TestClients
                 //_systemLogger.LogError($"Task cancelled: {ex.Message}");
                 _systemLogger.LogWarning($"Task cancelled: {ex.Message}");
             }
+        }
+
+        private async Task HandleConnectionErrorAsync(CancellationToken token) {
+            _systemLogger.LogWarning("Handling connection error, attempting to swap connection...");
+            DisconnectCurrentConnection();
+            await SwapConnectionAsync(token);
         }
     }
 }

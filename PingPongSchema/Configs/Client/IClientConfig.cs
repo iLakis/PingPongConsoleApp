@@ -1,6 +1,7 @@
-﻿
-namespace Utils {
-    public interface IClientConfig {
+﻿namespace Utils.Configs.Client
+{
+    public interface IClientConfig
+    {
         public string SslPass { get; set; }
         public int Interval { get; set; }
         public int MaxReconnectAttempts { get; set; }

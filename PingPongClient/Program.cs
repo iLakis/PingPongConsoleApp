@@ -13,11 +13,12 @@ string clientLoggerCategory = "TcpClient";
 string responseLoggerCategory = "ResponseLogger";
 var clientLogger = loggerFactory.CreateLogger(clientLoggerCategory);
 var responseLogger = loggerFactory.CreateLogger(responseLoggerCategory);
+var sslListenerLogger = loggerFactory.CreateLogger<SslEventListener>();
 
 var client = new PingPongTcpClient(clientLogger, responseLogger);
 
 // Enable SSL logging
-var listener = new SslEventListener();
+var listener = new SslEventListener(sslListenerLogger);
 var cts = new CancellationTokenSource();
 var token = cts.Token;
 

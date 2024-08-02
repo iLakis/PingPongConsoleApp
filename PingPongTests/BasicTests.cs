@@ -5,13 +5,18 @@ using PingPongServer;
 using Utils;
 using System.Xml.Schema;
 using Microsoft.Extensions.Configuration;
+using Utils.Configs;
+using Utils.Configs.Client;
 
-namespace PingPongTests {
+namespace PingPongTests
+{
     public class BasicTests {
         private readonly MemoryLoggerProvider _memoryLoggerProvider;
         private readonly ILogger<PingPongTcpServer> _serverLogger;
         private readonly ILoggerFactory _loggerFactory;
         private readonly XmlSchemaSet _schemaSet;
+        private readonly ILogger<SslEventListener> _sslListenerLogger;
+        private readonly SslEventListener _sslListener;
 
         public BasicTests() {
             _memoryLoggerProvider = new MemoryLoggerProvider();
@@ -21,10 +26,11 @@ namespace PingPongTests {
 
             _loggerFactory = serviceProvider.GetService<ILoggerFactory>();
             _serverLogger = _loggerFactory.CreateLogger<PingPongTcpServer>();
-
+            _sslListenerLogger = _loggerFactory.CreateLogger<SslEventListener>();
             _schemaSet = new XmlSchemaSet();
             var schemaPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "schema.xsd");
             _schemaSet.Add("", schemaPath);
+            _sslListener = new SslEventListener(_sslListenerLogger);
         }
 
         [Fact]
@@ -46,7 +52,7 @@ namespace PingPongTests {
             var client = new PingPongTcpClient(clientLogger, responseLogger);
             var clientTask = Task.Run(() => client.StartAsync(token));
 
-            await Task.Delay(6000); // Wait to ensure some communication occurs
+            await Task.Delay(15000); // Wait to ensure some communication occurs
 
             cts.Cancel();
             try {
@@ -68,6 +74,7 @@ namespace PingPongTests {
             if (clientTask.IsCompleted) {
                 clientTask.Dispose();
             }
+            var sslLogs = _memoryLoggerProvider.GetLogs(typeof(SslEventListener).FullName);
 
             var serverLogs = _memoryLoggerProvider.GetLogs(typeof(PingPongTcpServer).FullName);
             var serverMessages = serverLogs.Where(log => log.Contains("Received message:")).ToList();
