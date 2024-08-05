@@ -10,6 +10,7 @@ using Tests.TestServers;
 using Microsoft.Extensions.Configuration;
 using Utils.Configs;
 using Utils.Configs.Client;
+using Newtonsoft.Json.Linq;
 
 namespace PingPongTests
 {
@@ -120,28 +121,22 @@ namespace PingPongTests
             var serverLogger = _loggerFactory.CreateLogger<TestServer_SpammingMessages>();
             var cts = new CancellationTokenSource();
 
-
-            var testServer = new TestServer_SpammingMessages(serverLogger);
+            var server = new TestServer_SpammingMessages(serverLogger);
+            var serverTask = Task.Run(() => server.StartAsync(cts.Token));
             //var serverTask = testServer.StartSendingPongs(20000, 1, cts.Token);
 
             await Task.Delay(1000);
 
-            
-            var client = new TestTcpClient_NonStopListening(clientSystemLogger, clientResponseLogger);
-            var clientTask = client.StartAsync(cts.Token);
+            var client = new TestClient_NonStopListening(clientSystemLogger, clientResponseLogger);
+            var clientTask =Task.Run(() => client.StartAsync(cts.Token));
 
-            await Task.Delay(10000); // wait to ensure client establishes connection pool
+            await Task.Delay(30000);
 
-            var serverTask = testServer.StartSendingPongs(20000, 1, cts.Token);
-
-            await Task.Delay(22000); 
-       
             try {
                 cts.Cancel();
                 await Task.Delay(1000);
-                //await Task.WhenAny(serverTask, clientTask);
             } catch (OperationCanceledException ex) {
-                //expected
+                //clientSystemLogger.LogWarning($"Operation canceled: {ex.Message}");
             } catch (Exception ex) {
                 clientSystemLogger.LogError($"Unexpected error: {ex.Message}");
             }

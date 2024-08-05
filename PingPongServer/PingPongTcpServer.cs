@@ -33,7 +33,7 @@ namespace PingPongServer
                 LoadXsdSchema();
 
             } catch(Exception ex) {
-                _logger.LogError($"Error in TcpServer constructor: {ex.Message}");
+                _logger.LogError($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Error in TcpServer constructor: {ex.Message}");
                 throw;
             }
         
@@ -43,7 +43,7 @@ namespace PingPongServer
             ThreadPool.SetMinThreads(100, 100);
             TcpListener listener = new TcpListener(IPAddress.Any, _config.Port);
             listener.Start();
-            _logger.LogInformation($"Server started on port {_config.Port}");
+            _logger.LogInformation($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Server started on port {_config.Port}");
 
             try {
                 while (!token.IsCancellationRequested) {
@@ -91,10 +91,10 @@ namespace PingPongServer
                                         SendPong(writer);
                                     }
                                 } catch (InvalidOperationException ex) {
-                                    _logger.LogError($"XML Deserialization error: {ex.Message}");
+                                    _logger.LogError($"[{DateTime.UtcNow:HH:mm:ss.fff}]: XML Deserialization error: {ex.Message}");
                                     if (ex.InnerException != null) {
-                                        //Console.WriteLine($"Inner exception: {ex.InnerException.Message}");
-                                        _logger.LogError($"Inner exception: {ex.InnerException.Message}");
+                                        //Console.WriteLine($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Inner exception: {ex.InnerException.Message}");
+                                        _logger.LogError($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Inner exception: {ex.InnerException.Message}");
                                     }
                                 }
                                 messageBuilder.Clear();
@@ -109,24 +109,24 @@ namespace PingPongServer
                 }
 
             } catch (AuthenticationException ex) {
-                _logger.LogError($"Authentication failed: {ex.Message}");
+                _logger.LogError($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Authentication failed: {ex.Message}");
                 if (ex.InnerException != null) {
-                    _logger.LogError($"Inner exception: {ex.InnerException.Message}");
+                    _logger.LogError($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Inner exception: {ex.InnerException.Message}");
                 }
             } catch (IOException ioEx) {
                 if (!token.IsCancellationRequested) { // without this can throw IO error after server work should be stopped.
-                    _logger.LogError($"IO error: {ioEx.Message}");
+                    _logger.LogError($"[{DateTime.UtcNow:HH:mm:ss.fff}]: IO error: {ioEx.Message}");
                     if (ioEx.InnerException != null) {
-                        _logger.LogError($"Inner exception: {ioEx.InnerException.Message}");
+                        _logger.LogError($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Inner exception: {ioEx.InnerException.Message}");
                     }
                 }
-            } catch (OperationCanceledException ex) {
-                _logger.LogWarning($"Task cancelled");
+            } catch (TaskCanceledException ex) {
+                _logger.LogWarning($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Task cancelled");
                 
             } catch (Exception ex) {
-                _logger.LogInformation($"Error: {ex.Message}");
+                _logger.LogInformation($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Error: {ex.Message}");
                 if (ex.InnerException != null) {
-                    _logger.LogError($"Inner exception: {ex.InnerException.Message}");
+                    _logger.LogError($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Inner exception: {ex.InnerException.Message}");
                 }
             } finally {
                 sslStream.Close();
@@ -159,27 +159,28 @@ namespace PingPongServer
             _logger.LogInformation("Schema loaded successfully.");
         }
         protected async Task AuthenticateSsl(SslStream sslStream) {
-            Console.WriteLine("Authenticating SSL...");
+            //Console.WriteLine("Authenticating SSL...");
+            _logger.LogInformation("Authenticating SSL...");
             await sslStream.AuthenticateAsServerAsync(
                 ServerCertificate,
                 clientCertificateRequired: false,
                 enabledSslProtocols: SslProtocols.Tls12 | SslProtocols.Tls13,
                 checkCertificateRevocation: false); //true. false for testing 
-            Console.WriteLine("SSL authentication succeeded.");
+            //Console.WriteLine("SSL authentication succeeded.");
             _logger.LogInformation("SSL authentication succeeded.");
         }
         protected void SendPong(StreamWriter writer) {
             var pongVar = new pong { timestamp = DateTime.UtcNow };
             var pongMessage = Utils.XmlTools.SerializeToXml(pongVar) + _config.Separator;
             writer.WriteLine(pongMessage);
-            _logger.LogInformation($"Sent: {pongVar.timestamp}");
+            _logger.LogInformation($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Sent: {pongVar.timestamp}");
         }
         protected void ReadPing(StringReader stringReader, XmlSerializer pingSerializer) {
             var pingVar = (ping)pingSerializer.Deserialize(stringReader);
             var receivedTime = DateTime.UtcNow;
             var sentTime = pingVar.timestamp;
             var deliveryTime = receivedTime - sentTime;
-            _logger.LogInformation($"Received: {pingVar.timestamp}, Delivery Time: {deliveryTime.TotalMilliseconds}ms");
+            _logger.LogInformation($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Received: {pingVar.timestamp}, Delivery Time: {deliveryTime.TotalMilliseconds}ms");
         }
     }
 }

@@ -9,9 +9,9 @@ using Utils;
 
 namespace Tests.TestServers
 {
-    public class TestServer_SpammingMessages : PingPongTcpServer
+    public class TestTcpServer_SpammingMessages : PingPongTcpServer
     {
-        public TestServer_SpammingMessages(ILogger<PingPongTcpServer> logger) : base(logger) { }
+        public TestTcpServer_SpammingMessages(ILogger<PingPongTcpServer> logger) : base(logger) { }
 
         public async Task StartSendingPongs(int count, int delayMs, CancellationToken token)
         {

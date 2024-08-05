@@ -54,7 +54,7 @@ namespace Utils.Connection {
         }
 
         private async Task InitializeAsync(CancellationToken token) {
-            _logger.LogInformation("Initializing connection pool.");
+            _logger.LogInformation($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Initializing connection pool.");
             for (int i = 0; i < _poolSize; i++) {
                 try {
                     var connection = await CreateConnectionAsync(token);
@@ -63,7 +63,7 @@ namespace Utils.Connection {
                     }
                     _connections.Enqueue(connection);
                 } catch (Exception ex) {
-                    _logger.LogError($"Error while creating a connection: {ex.Message}");
+                    _logger.LogError($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Error while creating a connection: {ex.Message}");
                 }
             }
             _logger.LogInformation("Connection pool initialized.");
@@ -83,32 +83,32 @@ namespace Utils.Connection {
                 SslProtocols.Tls12 | SslProtocols.Tls13, true);
             */
             AuthenticateSsl(sslStream);
-            _logger.LogInformation("New connection created.");
+            _logger.LogInformation($"[{DateTime.UtcNow:HH:mm:ss.fff}]: New connection created.");
             return sslStream;
         }
         protected void AuthenticateSsl(SslStream sslStream) {
-            _logger.LogInformation("Starting SSL handshake...");
+            _logger.LogInformation($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Starting SSL handshake...");
             sslStream.AuthenticateAsClient(
                 _serverAddress,
                 new X509CertificateCollection { _clientCertificate },
                 SslProtocols.Tls12 | SslProtocols.Tls13,
                 checkCertificateRevocation: true);//true. false for testing
-            _logger.LogInformation("SSL handshake completed.");
+            _logger.LogInformation($"[{DateTime.UtcNow:HH:mm:ss.fff}]: SSL handshake completed.");
         }
         public async Task<bool> ReconnectAsync(CancellationToken token, SslStream connection) {
             int attempts = 0;
             while (attempts < _maxReconnectAttempts) {
                 token.ThrowIfCancellationRequested();
                 try {
-                    _logger.LogInformation("Attempting to reconnect...");
+                    _logger.LogInformation($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Attempting to reconnect...");
                     connection = await CreateConnectionAsync(token);
-                    _logger.LogInformation("Reconnected successfully.");
+                    _logger.LogInformation($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Reconnected successfully.");
                     return true;
                 } catch (Exception ex) {
-                    _logger.LogError($"Attempt {attempts + 1} to reconnect failed: {ex.Message}");
+                    _logger.LogError($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Attempt {attempts + 1} to reconnect failed: {ex.Message}");
                     attempts++;
                     if (attempts >= _maxReconnectAttempts) {
-                        _logger.LogError("Max reconnection attempts reached. Giving up.");
+                        _logger.LogError($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Max reconnection attempts reached. Giving up.");
                         throw;
                     }
                     await Task.Delay(_reconnectDelay, token);
@@ -124,12 +124,12 @@ namespace Utils.Connection {
                     //_logger.LogInformation("Connection retrieved from pool.");
                     return connection;
                 } else {
-                    _logger.LogWarning("Invalid connection detected. Creating a new one.");
+                    _logger.LogWarning($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Invalid connection detected. Creating a new one.");
                     await CloseConnectionAsync(connection);
                     return await CreateConnectionAsync(token);
                 }
             } else {
-                _logger.LogWarning("No available connection. Creating a new one.");
+                _logger.LogWarning($"[{DateTime.UtcNow:HH:mm:ss.fff}]: No available connection. Creating a new one.");
                 return await CreateConnectionAsync(token);
             }
         }
@@ -137,7 +137,7 @@ namespace Utils.Connection {
             return sslPolicyErrors == SslPolicyErrors.None;
 
             // All certificates are accepted for testing purposes:
-            // _logger.LogError($"Ignoring certificate validation errors: {sslPolicyErrors}");
+            // _logger.LogError($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Ignoring certificate validation errors: {sslPolicyErrors}");
             // return true;
         }
         private bool IsConnectionValid(SslStream connection) {
@@ -152,15 +152,15 @@ namespace Utils.Connection {
                 if (connection != null) { //&& connection.CanRead && connection.CanWrite) {
                     await connection.ShutdownAsync();
                 } else {
-                    _logger.LogError("Attempting to close a null connection.");
+                    _logger.LogError($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Attempting to close a null connection.");
                 }
             } catch (ObjectDisposedException) {
                 // Connection already disposed
             } catch (Exception ex) {
-                _logger.LogError($"Error while shutting down connection: {ex.Message}");
+                _logger.LogError($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Error while shutting down connection: {ex.Message}");
             } finally {
                 connection?.Dispose();
-                _logger.LogWarning("Connection closed.");
+                _logger.LogWarning($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Connection closed.");
                 _semaphore.Release();
             }
         }
@@ -168,21 +168,27 @@ namespace Utils.Connection {
             while (_connections.TryDequeue(out var connection)) {
                 await CloseConnectionAsync(connection);
             }
-            _logger.LogInformation("All connections closed.");
+            _logger.LogInformation($"[{DateTime.UtcNow:HH:mm:ss.fff}]: All connections closed.");
         }
         public async Task ReturnConnectionToPool(SslStream connection, CancellationToken token) {
-            _logger.LogInformation("Returning connection to pool.");
-            if (IsConnectionValid(connection)) {
-                _connections.Enqueue(connection);
-                _logger.LogInformation("Connection returned to pool.");
-            } else {
-                _logger.LogWarning("Connection is not valid and cannot be returned to pool. Creating a new one.");
-                await CloseConnectionAsync(connection); // or _=
-                var newConnection = await CreateConnectionAsync(token);
-                _connections.Enqueue(newConnection);
-                _logger.LogInformation("New connection added to pool.");
+            try {
+                token.ThrowIfCancellationRequested();
+                _logger.LogInformation($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Returning connection to pool.");
+                if (IsConnectionValid(connection)) {
+                    _connections.Enqueue(connection);
+                    _logger.LogInformation($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Connection returned to pool.");
+                } else {
+                    _logger.LogWarning($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Connection is not valid and cannot be returned to pool. Creating a new one.");
+                    await CloseConnectionAsync(connection); // or _=
+                    var newConnection = await CreateConnectionAsync(token);
+                    _connections.Enqueue(newConnection);
+                    _logger.LogInformation($"[{DateTime.UtcNow:HH:mm:ss.fff}]: New connection added to pool.");
+                }
+                _semaphore.Release();
+            } catch (OperationCanceledException ex){
+                _logger.LogError($"[{DateTime.UtcNow:HH: mm: ss.fff}]: Returning connection to pool canceled");
             }
-            _semaphore.Release();
+            
         }
 
     }

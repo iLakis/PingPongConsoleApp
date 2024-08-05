@@ -38,12 +38,12 @@ namespace PingPongClient
                 LoadCertificate();
                 LoadXsdSchema();
             } catch (Exception ex) {
-                _systemLogger.LogError($"Error in TcpClient constructor: {ex.Message}");
+                _systemLogger.LogError($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Error in TcpClient constructor: {ex.Message}");
                 throw;
             }          
         }
         public async Task StartAsync(CancellationToken token) {
-            _connectionPool = await ConnectionPool.CreateAsync(3, _config.ServerAddress, _config.Port, _clientCertificate, _systemLogger, token, _config.MaxReconnectAttempts, _config.ReconnectDelay);
+            _connectionPool = await ConnectionPool.CreateAsync(2, _config.ServerAddress, _config.Port, _clientCertificate, _systemLogger, token, _config.MaxReconnectAttempts, _config.ReconnectDelay);
             try {
                 while (!token.IsCancellationRequested) {              
                     try {
@@ -51,25 +51,25 @@ namespace PingPongClient
                         _systemLogger.LogInformation("Got connection from pool.");
                         await CommunicateAsync(_currentConnection, token);
                     } catch (AuthenticationException ex) {
-                        _systemLogger.LogError($"Authentication failed: {ex.Message}");
+                        _systemLogger.LogError($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Authentication failed: {ex.Message}");
                         if (ex.InnerException != null) {
-                            _systemLogger.LogError($"Inner exception: {ex.InnerException.Message}");
+                            _systemLogger.LogError($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Inner exception: {ex.InnerException.Message}");
                         }
                     } catch (ObjectDisposedException ex) {
-                        _systemLogger.LogError($"Object Disposed error: {ex.Message}");
+                        _systemLogger.LogError($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Object Disposed error: {ex.Message}");
                     } catch (IOException ioEx) {
-                        _systemLogger.LogError($"IO error: {ioEx.Message}");
+                        _systemLogger.LogError($"[{DateTime.UtcNow:HH:mm:ss.fff}]: IO error: {ioEx.Message}");
                         if (ioEx.InnerException != null) {
-                            _systemLogger.LogError($"Inner exception: {ioEx.InnerException.Message}");
+                            _systemLogger.LogError($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Inner exception: {ioEx.InnerException.Message}");
                         }
                     } catch (OperationCanceledException ex) { // cancellation token throws this, not TaskCancelledException
                         if (ex.InnerException != null) {
-                            _systemLogger.LogWarning($"Task cancelled: {ex.InnerException.Message}");
+                            _systemLogger.LogWarning($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Task cancelled: {ex.InnerException.Message}");
                         } else {
-                            _systemLogger.LogWarning($"Task cancelled");
+                            _systemLogger.LogWarning($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Task cancelled");
                         }
                     } catch (Exception ex) {
-                        _systemLogger.LogError($"Error during communication: {ex.Message}");
+                        _systemLogger.LogError($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Error during communication: {ex.Message}");
                     } finally {
                         var brokenConnection = _currentConnection;
                         await SwapConnectionAsync(token);
@@ -90,7 +90,7 @@ namespace PingPongClient
                 _currentConnection.WriteTimeout = _config.WriteTimeout;
                 //_systemLogger.LogInformation("Got connection from pool.");
             } catch (Exception ex) {
-                _systemLogger.LogError($"Connection error: {ex.Message}");
+                _systemLogger.LogError($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Connection error: {ex.Message}");
                 throw;
             }
         }
@@ -126,9 +126,9 @@ namespace PingPongClient
                                     pongReceived = true;
                                 }
                             } catch (InvalidOperationException ex) {
-                                _systemLogger.LogError($"XML Deserialization error: {ex.Message}");
+                                _systemLogger.LogError($"[{DateTime.UtcNow:HH:mm:ss.fff}]: XML Deserialization error: {ex.Message}");
                                 if (ex.InnerException != null) {
-                                    _systemLogger.LogError($"Inner exception: {ex.InnerException.Message}");
+                                    _systemLogger.LogError($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Inner exception: {ex.InnerException.Message}");
                                 }
                             }
                             responseBuilder.Clear();
@@ -154,7 +154,7 @@ namespace PingPongClient
             //_systemLogger.LogWarning("Client stopped");
         }
 
-        private async Task HandleTimeoutAsync(CancellationToken token) {
+        protected async Task HandleTimeoutAsync(CancellationToken token) {
             _systemLogger.LogWarning("Handling timeout - attempting to reconnect...");
             await SwapConnectionAsync(token);
         }
@@ -181,9 +181,9 @@ namespace PingPongClient
                 _systemLogger.LogInformation("Connection swapped successfully.");
                 return; 
             } catch (OperationCanceledException ex) {
-                _systemLogger.LogWarning($"Connection swap canceled");
+                _systemLogger.LogWarning($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Connection swap canceled");
             } catch (Exception ex) {
-                _systemLogger.LogError($"Error during connection swap: {ex.Message}");
+                _systemLogger.LogError($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Error during connection swap: {ex.Message}");
             }
             return;
         }
@@ -191,7 +191,7 @@ namespace PingPongClient
             var pingVar = new ping { timestamp = DateTime.UtcNow };           
             var pingMessage = XmlTools.SerializeToXml(pingVar) + _config.Separator;
             writer.WriteLine(pingMessage);
-            _systemLogger.LogInformation($"Sent: {pingVar.timestamp}");
+            _systemLogger.LogInformation($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Sent: {pingVar.timestamp}");
         }
         protected void ReadPong(XmlSerializer pongSerializer, StringReader stringReader) {
             var pongVar = (pong)pongSerializer.Deserialize(stringReader);
@@ -214,7 +214,7 @@ namespace PingPongClient
                     X509KeyStorageFlags.MachineKeySet);
                 _systemLogger.LogInformation("Certificate loaded successfully.");
             } catch (Exception ex) {
-                _systemLogger.LogError($"Error loading certificate: {ex.Message}");
+                _systemLogger.LogError($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Error loading certificate: {ex.Message}");
                 throw;
             }
         }
@@ -228,7 +228,7 @@ namespace PingPongClient
                 _schemaSet.Add("", schemaPath);
                 _systemLogger.LogInformation("Schema loaded successfully.");
             } catch (Exception ex) {
-                _systemLogger.LogError($"Error loading schema: {ex.Message}");
+                _systemLogger.LogError($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Error loading schema: {ex.Message}");
                 throw;
             }
         }
