@@ -24,7 +24,7 @@ namespace PingPongServer
         public PingPongTcpServer(ILogger<PingPongTcpServer> logger, IConfigLoader<DefaultServerConfig> configLoader = null) {
             _logger = logger;
             if (configLoader == null) {
-                _logger.LogWarning("No configuration loader provided, using default JsonConfigLoader.");
+                _logger.LogWarning($"[{DateTime.UtcNow:HH:mm:ss.fff}]: No configuration loader provided, using default JsonConfigLoader.");
                 configLoader = new JsonConfigLoader<DefaultServerConfig>(Path.Combine(Directory.GetCurrentDirectory(), "appsettings.server.json"), _logger);
             }
             _config = configLoader.LoadConfig();
@@ -49,7 +49,7 @@ namespace PingPongServer
                 while (!token.IsCancellationRequested) {
                     if (listener.Pending()) {
                         TcpClient client = listener.AcceptTcpClient();
-                        _logger.LogInformation("Client connected");
+                        _logger.LogInformation($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Client connected");
                         _ = Task.Run(() => HandleClientAsync(client, token));
                     } else {
                         await Task.Delay(100, token);
@@ -57,7 +57,7 @@ namespace PingPongServer
                 }
             } finally {
                 listener.Stop();
-                _logger.LogWarning("Server stopped");
+                _logger.LogWarning($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Server stopped");
             }
         }
 
@@ -101,11 +101,11 @@ namespace PingPongServer
                             }
 
                         } else {
-                            _logger.LogWarning("Received empty message or whitespace.");
+                            _logger.LogWarning($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Received empty message or whitespace.");
                             break; // Exit the loop if the message is null
                         }
                     }
-                    _logger.LogWarning("Client disconnected.");
+                    _logger.LogWarning($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Client disconnected.");
                 }
 
             } catch (AuthenticationException ex) {
@@ -131,7 +131,7 @@ namespace PingPongServer
             } finally {
                 sslStream.Close();
                 client.Close(); // Ensure the client is closed on error
-                _logger.LogWarning("Client connection closed.");
+                _logger.LogWarning($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Client connection closed.");
             }
 
         }
@@ -146,7 +146,7 @@ namespace PingPongServer
                 certPath,
                 _config.ServerSslPass,
                 X509KeyStorageFlags.PersistKeySet | X509KeyStorageFlags.MachineKeySet);
-            _logger.LogInformation("Certificate loaded successfully.");
+            _logger.LogInformation($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Certificate loaded successfully.");
         }
 
         protected void LoadXsdSchema() {
@@ -156,18 +156,18 @@ namespace PingPongServer
                 throw new FileNotFoundException("XML schema file not found", schemaPath);
             }
             schemaSet.Add("", schemaPath);
-            _logger.LogInformation("Schema loaded successfully.");
+            _logger.LogInformation($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Schema loaded successfully.");
         }
         protected async Task AuthenticateSsl(SslStream sslStream) {
             //Console.WriteLine("Authenticating SSL...");
-            _logger.LogInformation("Authenticating SSL...");
+            _logger.LogInformation($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Authenticating SSL...");
             await sslStream.AuthenticateAsServerAsync(
                 ServerCertificate,
                 clientCertificateRequired: false,
                 enabledSslProtocols: SslProtocols.Tls12 | SslProtocols.Tls13,
                 checkCertificateRevocation: false); //true. false for testing 
             //Console.WriteLine("SSL authentication succeeded.");
-            _logger.LogInformation("SSL authentication succeeded.");
+            _logger.LogInformation($"[{DateTime.UtcNow:HH:mm:ss.fff}]: SSL authentication succeeded.");
         }
         protected void SendPong(StreamWriter writer) {
             var pongVar = new pong { timestamp = DateTime.UtcNow };
@@ -180,7 +180,7 @@ namespace PingPongServer
             var receivedTime = DateTime.UtcNow;
             var sentTime = pingVar.timestamp;
             var deliveryTime = receivedTime - sentTime;
-            _logger.LogInformation($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Received: {pingVar.timestamp}, Delivery Time: {deliveryTime.TotalMilliseconds}ms");
+            _logger.LogInformation($"Received: {pingVar.timestamp}, Delivery Time: {deliveryTime.TotalMilliseconds}ms");
         }
     }
 }

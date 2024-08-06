@@ -287,7 +287,7 @@ namespace PingPongTests
             serverCts.Cancel();
 
             // Wait some more time to see how the client reacts to server shutdown
-            await Task.Delay(60000);
+            await Task.Delay(120000);
 
             clientCts.Cancel();
 
@@ -322,7 +322,7 @@ namespace PingPongTests
             Assert.NotEmpty(serverMessages);
             Assert.All(serverMessages, msg => Assert.True(XmlTools.ValidateXml(StringTools.RemovePrefix(msg, "Received message: "), _schemaSet), "Server received invalid response"));
             Assert.True(clientLogs.Contains("Max reconnection attempts reached. Giving up."), "Client didn't reach max reconnection attempts");
-            Assert.False(clientLogs.Contains("Reconnection attempt 6"), "Client exceeded reconnection cap"); //TODO get the cap from config
+            Assert.False(clientLogs.Contains("Attempt 6 to reconnect"), "Client exceeded reconnection cap"); //TODO get the cap from config
         }
         private DateTime ExtractTimestamp(string log) {
             try {

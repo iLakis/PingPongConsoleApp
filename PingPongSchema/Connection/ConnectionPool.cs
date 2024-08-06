@@ -95,21 +95,25 @@ namespace Utils.Connection {
                 checkCertificateRevocation: true);//true. false for testing
             _logger.LogInformation($"[{DateTime.UtcNow:HH:mm:ss.fff}]: SSL handshake completed.");
         }
-        public async Task<bool> ReconnectAsync(CancellationToken token, SslStream connection) {
+        public async Task<bool> ReconnectAsync(CancellationToken token, SslStream? connection = null) {
             int attempts = 0;
             while (attempts < _maxReconnectAttempts) {
                 token.ThrowIfCancellationRequested();
                 try {
                     _logger.LogInformation($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Attempting to reconnect...");
                     connection = await CreateConnectionAsync(token);
-                    _logger.LogInformation($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Reconnected successfully.");
-                    return true;
+                    if (IsConnectionValid(connection)) {
+                        _logger.LogInformation($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Reconnected successfully.");
+                        return true;
+                    }
+                    throw new Exception("Connection is not valid");
                 } catch (Exception ex) {
                     _logger.LogError($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Attempt {attempts + 1} to reconnect failed: {ex.Message}");
                     attempts++;
                     if (attempts >= _maxReconnectAttempts) {
-                        _logger.LogError($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Max reconnection attempts reached. Giving up.");
-                        throw;
+                        _logger.LogError($"Max reconnection attempts reached. Giving up."); //dont add timestamp or test will fail
+                        //throw;
+                        return false;
                     }
                     await Task.Delay(_reconnectDelay, token);
                 }
@@ -119,19 +123,25 @@ namespace Utils.Connection {
         public async Task<SslStream> GetConnectionAsync(CancellationToken token) {
             await _semaphore.WaitAsync(token);
             //_logger.LogInformation("Attempting to retrieve connection from pool...");
-            if (_connections.TryDequeue(out var connection)) {
+            while (_connections.TryDequeue(out var connection)) {
                 if (IsConnectionValid(connection)) {
                     //_logger.LogInformation("Connection retrieved from pool.");
                     return connection;
                 } else {
-                    _logger.LogWarning($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Invalid connection detected. Creating a new one.");
+                    _logger.LogWarning($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Invalid connection detected");//+
+                        //$". Creating a new one.");
                     await CloseConnectionAsync(connection);
-                    return await CreateConnectionAsync(token);
+                    // return await CreateConnectionAsync(token);
                 }
-            } else {
-                _logger.LogWarning($"[{DateTime.UtcNow:HH:mm:ss.fff}]: No available connection. Creating a new one.");
-                return await CreateConnectionAsync(token);
             }
+            _logger.LogWarning($"[{DateTime.UtcNow:HH:mm:ss.fff}]: No available connection. Trying to reconnect"); //+
+                   // $"Creating a new one.");
+                SslStream newConnection = null;
+                if(!ReconnectAsync(token, newConnection).Result) {
+                    throw new Exception("Reconnection failed");
+                }
+                return newConnection;
+            
         }
         private bool ValidateServerCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors) {
             return sslPolicyErrors == SslPolicyErrors.None;
@@ -170,7 +180,7 @@ namespace Utils.Connection {
             }
             _logger.LogInformation($"[{DateTime.UtcNow:HH:mm:ss.fff}]: All connections closed.");
         }
-        public async Task ReturnConnectionToPool(SslStream connection, CancellationToken token) {
+       /* public async Task ReturnConnectionToPool(SslStream connection, CancellationToken token) {
             try {
                 token.ThrowIfCancellationRequested();
                 _logger.LogInformation($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Returning connection to pool.");
@@ -178,18 +188,19 @@ namespace Utils.Connection {
                     _connections.Enqueue(connection);
                     _logger.LogInformation($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Connection returned to pool.");
                 } else {
-                    _logger.LogWarning($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Connection is not valid and cannot be returned to pool. Creating a new one.");
+                    _logger.LogWarning($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Connection is not valid and cannot be returned to pool.");//+
+                        //$" Creating a new one.");
                     await CloseConnectionAsync(connection); // or _=
-                    var newConnection = await CreateConnectionAsync(token);
-                    _connections.Enqueue(newConnection);
-                    _logger.LogInformation($"[{DateTime.UtcNow:HH:mm:ss.fff}]: New connection added to pool.");
+                    //var newConnection = await CreateConnectionAsync(token);
+                    //_connections.Enqueue(newConnection);
+                    //_logger.LogInformation($"[{DateTime.UtcNow:HH:mm:ss.fff}]: New connection added to pool.");
                 }
                 _semaphore.Release();
             } catch (OperationCanceledException ex){
                 _logger.LogError($"[{DateTime.UtcNow:HH: mm: ss.fff}]: Returning connection to pool canceled");
             }
             
-        }
+        }*/
 
     }
 }

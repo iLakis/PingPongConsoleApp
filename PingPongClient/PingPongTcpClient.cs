@@ -24,6 +24,7 @@ namespace PingPongClient
         protected readonly ILogger _systemLogger;
         protected readonly ILogger _responseLogger;
         protected IConnectionPool _connectionPool;
+        protected bool _shouldSwapConnections = true;
 
         public PingPongTcpClient(ILogger systemLogger, ILogger responseLogger, IConfigLoader<DefaultClientConfig>? configLoader = null) {
             _systemLogger = systemLogger;
@@ -71,9 +72,16 @@ namespace PingPongClient
                     } catch (Exception ex) {
                         _systemLogger.LogError($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Error during communication: {ex.Message}");
                     } finally {
-                        var brokenConnection = _currentConnection;
-                        await SwapConnectionAsync(token);
-                        _ = _connectionPool.ReturnConnectionToPool(brokenConnection, token); // can switch to await to debug. _ = does not block the thread
+                        //var brokenConnection = _currentConnection;
+                        try {
+                            if (_shouldSwapConnections) {
+                                await SwapConnectionAsync(token);
+                            }
+                        } catch (Exception ex) {
+                            _systemLogger.LogError($"[{DateTime.UtcNow:HH:mm:ss.fff}]: {ex.Message}");
+                            _shouldSwapConnections = false;
+                        }
+                        // _ = _connectionPool.ReturnConnectionToPool(brokenConnection, token); // can switch to await to debug. _ = does not block the thread
                     }
                 }
             } finally {
@@ -156,7 +164,12 @@ namespace PingPongClient
 
         protected async Task HandleTimeoutAsync(CancellationToken token) {
             _systemLogger.LogWarning("Handling timeout - attempting to reconnect...");
-            await SwapConnectionAsync(token);
+            try {
+                await SwapConnectionAsync(token);
+            } catch (Exception ex) {
+                _systemLogger.LogError($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Error during reconnection: {ex.Message}");
+                throw;
+            }
         }
         protected virtual void AdjustBehaviorBasedOnLatency(long latency) { 
             if (latency > _config.HighLatencyThreshold) { 
@@ -179,11 +192,12 @@ namespace PingPongClient
                 _systemLogger.LogInformation("Swapping connection...");
                 await GetConnectionFromPoolAsync(token);
                 _systemLogger.LogInformation("Connection swapped successfully.");
-                return; 
+                //return; 
             } catch (OperationCanceledException ex) {
                 _systemLogger.LogWarning($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Connection swap canceled");
             } catch (Exception ex) {
                 _systemLogger.LogError($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Error during connection swap: {ex.Message}");
+                throw;
             }
             return;
         }
