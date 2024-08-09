@@ -1,0 +1,51 @@
+### YamlMime:ManagedReference
+items:
+- uid: Utils
+  commentId: N:Utils
+  id: Utils
+  children:
+  - Utils.SslEventListener
+  - Utils.StringTools
+  - Utils.XmlTools
+  - Utils.ping
+  - Utils.pong
+  langs:
+  - csharp
+  - vb
+  name: Utils
+  nameWithType: Utils
+  fullName: Utils
+  type: Namespace
+  assemblies:
+  - Utils
+references:
+- uid: Utils.ping
+  commentId: T:Utils.ping
+  href: Utils.ping.html
+  name: ping
+  nameWithType: ping
+  fullName: Utils.ping
+- uid: Utils.pong
+  commentId: T:Utils.pong
+  href: Utils.pong.html
+  name: pong
+  nameWithType: pong
+  fullName: Utils.pong
+- uid: Utils.SslEventListener
+  commentId: T:Utils.SslEventListener
+  href: Utils.SslEventListener.html
+  name: SslEventListener
+  nameWithType: SslEventListener
+  fullName: Utils.SslEventListener
+- uid: Utils.StringTools
+  commentId: T:Utils.StringTools
+  href: Utils.StringTools.html
+  name: StringTools
+  nameWithType: StringTools
+  fullName: Utils.StringTools
+- uid: Utils.XmlTools
+  commentId: T:Utils.XmlTools
+  href: Utils.XmlTools.html
+  name: XmlTools
+  nameWithType: XmlTools
+  fullName: Utils.XmlTools

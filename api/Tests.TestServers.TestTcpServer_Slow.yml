@@ -1,0 +1,859 @@
+### YamlMime:ManagedReference
+items:
+- uid: Tests.TestServers.TestTcpServer_Slow
+  commentId: T:Tests.TestServers.TestTcpServer_Slow
+  id: TestTcpServer_Slow
+  parent: Tests.TestServers
+  children:
+  - Tests.TestServers.TestTcpServer_Slow.#ctor(Microsoft.Extensions.Logging.ILogger{PingPongServer.PingPongTcpServer})
+  - Tests.TestServers.TestTcpServer_Slow.HandleClientAsync(System.Net.Sockets.TcpClient,System.Threading.CancellationToken)
+  langs:
+  - csharp
+  - vb
+  name: TestTcpServer_Slow
+  nameWithType: TestTcpServer_Slow
+  fullName: Tests.TestServers.TestTcpServer_Slow
+  type: Class
+  source:
+    remote:
+      path: PingPongTests/TestServers/TestTcpServer_Slow.cs
+      branch: Client_ConnectionPool
+      repo: https://github.com/iLakis/PingPongConsoleApp.git
+    id: TestTcpServer_Slow
+    path: PingPongTests/TestServers/TestTcpServer_Slow.cs
+    startLine: 14
+  assemblies:
+  - Tests
+  namespace: Tests.TestServers
+  syntax:
+    content: 'public class TestTcpServer_Slow : PingPongTcpServer'
+    content.vb: Public Class TestTcpServer_Slow Inherits PingPongTcpServer
+  inheritance:
+  - System.Object
+  - PingPongServer.PingPongTcpServer
+  inheritedMembers:
+  - PingPongServer.PingPongTcpServer.ServerCertificate
+  - PingPongServer.PingPongTcpServer.schemaSet
+  - PingPongServer.PingPongTcpServer._config
+  - PingPongServer.PingPongTcpServer._logger
+  - PingPongServer.PingPongTcpServer.StartAsync(System.Threading.CancellationToken)
+  - PingPongServer.PingPongTcpServer.LoadCertificate
+  - PingPongServer.PingPongTcpServer.LoadXsdSchema
+  - PingPongServer.PingPongTcpServer.AuthenticateSsl(System.Net.Security.SslStream)
+  - PingPongServer.PingPongTcpServer.SendPong(System.IO.StreamWriter)
+  - PingPongServer.PingPongTcpServer.ReadPing(System.IO.StringReader,System.Xml.Serialization.XmlSerializer)
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Tests.TestServers.TestTcpServer_Slow.#ctor(Microsoft.Extensions.Logging.ILogger{PingPongServer.PingPongTcpServer})
+  commentId: M:Tests.TestServers.TestTcpServer_Slow.#ctor(Microsoft.Extensions.Logging.ILogger{PingPongServer.PingPongTcpServer})
+  id: '#ctor(Microsoft.Extensions.Logging.ILogger{PingPongServer.PingPongTcpServer})'
+  parent: Tests.TestServers.TestTcpServer_Slow
+  langs:
+  - csharp
+  - vb
+  name: TestTcpServer_Slow(ILogger<PingPongTcpServer>)
+  nameWithType: TestTcpServer_Slow.TestTcpServer_Slow(ILogger<PingPongTcpServer>)
+  fullName: Tests.TestServers.TestTcpServer_Slow.TestTcpServer_Slow(Microsoft.Extensions.Logging.ILogger<PingPongServer.PingPongTcpServer>)
+  type: Constructor
+  source:
+    remote:
+      path: PingPongTests/TestServers/TestTcpServer_Slow.cs
+      branch: Client_ConnectionPool
+      repo: https://github.com/iLakis/PingPongConsoleApp.git
+    id: .ctor
+    path: PingPongTests/TestServers/TestTcpServer_Slow.cs
+    startLine: 16
+  assemblies:
+  - Tests
+  namespace: Tests.TestServers
+  syntax:
+    content: public TestTcpServer_Slow(ILogger<PingPongTcpServer> logger)
+    parameters:
+    - id: logger
+      type: Microsoft.Extensions.Logging.ILogger{PingPongServer.PingPongTcpServer}
+    content.vb: Public Sub New(logger As ILogger(Of PingPongTcpServer))
+  overload: Tests.TestServers.TestTcpServer_Slow.#ctor*
+  nameWithType.vb: TestTcpServer_Slow.New(ILogger(Of PingPongTcpServer))
+  fullName.vb: Tests.TestServers.TestTcpServer_Slow.New(Microsoft.Extensions.Logging.ILogger(Of PingPongServer.PingPongTcpServer))
+  name.vb: New(ILogger(Of PingPongTcpServer))
+- uid: Tests.TestServers.TestTcpServer_Slow.HandleClientAsync(System.Net.Sockets.TcpClient,System.Threading.CancellationToken)
+  commentId: M:Tests.TestServers.TestTcpServer_Slow.HandleClientAsync(System.Net.Sockets.TcpClient,System.Threading.CancellationToken)
+  id: HandleClientAsync(System.Net.Sockets.TcpClient,System.Threading.CancellationToken)
+  parent: Tests.TestServers.TestTcpServer_Slow
+  langs:
+  - csharp
+  - vb
+  name: HandleClientAsync(TcpClient, CancellationToken)
+  nameWithType: TestTcpServer_Slow.HandleClientAsync(TcpClient, CancellationToken)
+  fullName: Tests.TestServers.TestTcpServer_Slow.HandleClientAsync(System.Net.Sockets.TcpClient, System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: PingPongTests/TestServers/TestTcpServer_Slow.cs
+      branch: Client_ConnectionPool
+      repo: https://github.com/iLakis/PingPongConsoleApp.git
+    id: HandleClientAsync
+    path: PingPongTests/TestServers/TestTcpServer_Slow.cs
+    startLine: 17
+  assemblies:
+  - Tests
+  namespace: Tests.TestServers
+  example: []
+  syntax:
+    content: protected override Task HandleClientAsync(TcpClient client, CancellationToken token)
+    parameters:
+    - id: client
+      type: System.Net.Sockets.TcpClient
+    - id: token
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Protected Overrides Function HandleClientAsync(client As TcpClient, token As CancellationToken) As Task
+  overridden: PingPongServer.PingPongTcpServer.HandleClientAsync(System.Net.Sockets.TcpClient,System.Threading.CancellationToken)
+  overload: Tests.TestServers.TestTcpServer_Slow.HandleClientAsync*
+references:
+- uid: Tests.TestServers
+  commentId: N:Tests.TestServers
+  href: Tests.html
+  name: Tests.TestServers
+  nameWithType: Tests.TestServers
+  fullName: Tests.TestServers
+  spec.csharp:
+  - uid: Tests
+    name: Tests
+    href: Tests.html
+  - name: .
+  - uid: Tests.TestServers
+    name: TestServers
+    href: Tests.TestServers.html
+  spec.vb:
+  - uid: Tests
+    name: Tests
+    href: Tests.html
+  - name: .
+  - uid: Tests.TestServers
+    name: TestServers
+    href: Tests.TestServers.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: PingPongServer.PingPongTcpServer
+  commentId: T:PingPongServer.PingPongTcpServer
+  parent: PingPongServer
+  href: PingPongServer.PingPongTcpServer.html
+  name: PingPongTcpServer
+  nameWithType: PingPongTcpServer
+  fullName: PingPongServer.PingPongTcpServer
+- uid: PingPongServer.PingPongTcpServer.ServerCertificate
+  commentId: F:PingPongServer.PingPongTcpServer.ServerCertificate
+  parent: PingPongServer.PingPongTcpServer
+  href: PingPongServer.PingPongTcpServer.html#PingPongServer_PingPongTcpServer_ServerCertificate
+  name: ServerCertificate
+  nameWithType: PingPongTcpServer.ServerCertificate
+  fullName: PingPongServer.PingPongTcpServer.ServerCertificate
+- uid: PingPongServer.PingPongTcpServer.schemaSet
+  commentId: F:PingPongServer.PingPongTcpServer.schemaSet
+  parent: PingPongServer.PingPongTcpServer
+  href: PingPongServer.PingPongTcpServer.html#PingPongServer_PingPongTcpServer_schemaSet
+  name: schemaSet
+  nameWithType: PingPongTcpServer.schemaSet
+  fullName: PingPongServer.PingPongTcpServer.schemaSet
+- uid: PingPongServer.PingPongTcpServer._config
+  commentId: F:PingPongServer.PingPongTcpServer._config
+  parent: PingPongServer.PingPongTcpServer
+  href: PingPongServer.PingPongTcpServer.html#PingPongServer_PingPongTcpServer__config
+  name: _config
+  nameWithType: PingPongTcpServer._config
+  fullName: PingPongServer.PingPongTcpServer._config
+- uid: PingPongServer.PingPongTcpServer._logger
+  commentId: F:PingPongServer.PingPongTcpServer._logger
+  parent: PingPongServer.PingPongTcpServer
+  href: PingPongServer.PingPongTcpServer.html#PingPongServer_PingPongTcpServer__logger
+  name: _logger
+  nameWithType: PingPongTcpServer._logger
+  fullName: PingPongServer.PingPongTcpServer._logger
+- uid: PingPongServer.PingPongTcpServer.StartAsync(System.Threading.CancellationToken)
+  commentId: M:PingPongServer.PingPongTcpServer.StartAsync(System.Threading.CancellationToken)
+  parent: PingPongServer.PingPongTcpServer
+  isExternal: true
+  href: PingPongServer.PingPongTcpServer.html#PingPongServer_PingPongTcpServer_StartAsync_System_Threading_CancellationToken_
+  name: StartAsync(CancellationToken)
+  nameWithType: PingPongTcpServer.StartAsync(CancellationToken)
+  fullName: PingPongServer.PingPongTcpServer.StartAsync(System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: PingPongServer.PingPongTcpServer.StartAsync(System.Threading.CancellationToken)
+    name: StartAsync
+    href: PingPongServer.PingPongTcpServer.html#PingPongServer_PingPongTcpServer_StartAsync_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: PingPongServer.PingPongTcpServer.StartAsync(System.Threading.CancellationToken)
+    name: StartAsync
+    href: PingPongServer.PingPongTcpServer.html#PingPongServer_PingPongTcpServer_StartAsync_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: PingPongServer.PingPongTcpServer.LoadCertificate
+  commentId: M:PingPongServer.PingPongTcpServer.LoadCertificate
+  parent: PingPongServer.PingPongTcpServer
+  href: PingPongServer.PingPongTcpServer.html#PingPongServer_PingPongTcpServer_LoadCertificate
+  name: LoadCertificate()
+  nameWithType: PingPongTcpServer.LoadCertificate()
+  fullName: PingPongServer.PingPongTcpServer.LoadCertificate()
+  spec.csharp:
+  - uid: PingPongServer.PingPongTcpServer.LoadCertificate
+    name: LoadCertificate
+    href: PingPongServer.PingPongTcpServer.html#PingPongServer_PingPongTcpServer_LoadCertificate
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: PingPongServer.PingPongTcpServer.LoadCertificate
+    name: LoadCertificate
+    href: PingPongServer.PingPongTcpServer.html#PingPongServer_PingPongTcpServer_LoadCertificate
+  - name: (
+  - name: )
+- uid: PingPongServer.PingPongTcpServer.LoadXsdSchema
+  commentId: M:PingPongServer.PingPongTcpServer.LoadXsdSchema
+  parent: PingPongServer.PingPongTcpServer
+  href: PingPongServer.PingPongTcpServer.html#PingPongServer_PingPongTcpServer_LoadXsdSchema
+  name: LoadXsdSchema()
+  nameWithType: PingPongTcpServer.LoadXsdSchema()
+  fullName: PingPongServer.PingPongTcpServer.LoadXsdSchema()
+  spec.csharp:
+  - uid: PingPongServer.PingPongTcpServer.LoadXsdSchema
+    name: LoadXsdSchema
+    href: PingPongServer.PingPongTcpServer.html#PingPongServer_PingPongTcpServer_LoadXsdSchema
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: PingPongServer.PingPongTcpServer.LoadXsdSchema
+    name: LoadXsdSchema
+    href: PingPongServer.PingPongTcpServer.html#PingPongServer_PingPongTcpServer_LoadXsdSchema
+  - name: (
+  - name: )
+- uid: PingPongServer.PingPongTcpServer.AuthenticateSsl(System.Net.Security.SslStream)
+  commentId: M:PingPongServer.PingPongTcpServer.AuthenticateSsl(System.Net.Security.SslStream)
+  parent: PingPongServer.PingPongTcpServer
+  isExternal: true
+  href: PingPongServer.PingPongTcpServer.html#PingPongServer_PingPongTcpServer_AuthenticateSsl_System_Net_Security_SslStream_
+  name: AuthenticateSsl(SslStream)
+  nameWithType: PingPongTcpServer.AuthenticateSsl(SslStream)
+  fullName: PingPongServer.PingPongTcpServer.AuthenticateSsl(System.Net.Security.SslStream)
+  spec.csharp:
+  - uid: PingPongServer.PingPongTcpServer.AuthenticateSsl(System.Net.Security.SslStream)
+    name: AuthenticateSsl
+    href: PingPongServer.PingPongTcpServer.html#PingPongServer_PingPongTcpServer_AuthenticateSsl_System_Net_Security_SslStream_
+  - name: (
+  - uid: System.Net.Security.SslStream
+    name: SslStream
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net.security.sslstream
+  - name: )
+  spec.vb:
+  - uid: PingPongServer.PingPongTcpServer.AuthenticateSsl(System.Net.Security.SslStream)
+    name: AuthenticateSsl
+    href: PingPongServer.PingPongTcpServer.html#PingPongServer_PingPongTcpServer_AuthenticateSsl_System_Net_Security_SslStream_
+  - name: (
+  - uid: System.Net.Security.SslStream
+    name: SslStream
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net.security.sslstream
+  - name: )
+- uid: PingPongServer.PingPongTcpServer.SendPong(System.IO.StreamWriter)
+  commentId: M:PingPongServer.PingPongTcpServer.SendPong(System.IO.StreamWriter)
+  parent: PingPongServer.PingPongTcpServer
+  isExternal: true
+  href: PingPongServer.PingPongTcpServer.html#PingPongServer_PingPongTcpServer_SendPong_System_IO_StreamWriter_
+  name: SendPong(StreamWriter)
+  nameWithType: PingPongTcpServer.SendPong(StreamWriter)
+  fullName: PingPongServer.PingPongTcpServer.SendPong(System.IO.StreamWriter)
+  spec.csharp:
+  - uid: PingPongServer.PingPongTcpServer.SendPong(System.IO.StreamWriter)
+    name: SendPong
+    href: PingPongServer.PingPongTcpServer.html#PingPongServer_PingPongTcpServer_SendPong_System_IO_StreamWriter_
+  - name: (
+  - uid: System.IO.StreamWriter
+    name: StreamWriter
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.io.streamwriter
+  - name: )
+  spec.vb:
+  - uid: PingPongServer.PingPongTcpServer.SendPong(System.IO.StreamWriter)
+    name: SendPong
+    href: PingPongServer.PingPongTcpServer.html#PingPongServer_PingPongTcpServer_SendPong_System_IO_StreamWriter_
+  - name: (
+  - uid: System.IO.StreamWriter
+    name: StreamWriter
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.io.streamwriter
+  - name: )
+- uid: PingPongServer.PingPongTcpServer.ReadPing(System.IO.StringReader,System.Xml.Serialization.XmlSerializer)
+  commentId: M:PingPongServer.PingPongTcpServer.ReadPing(System.IO.StringReader,System.Xml.Serialization.XmlSerializer)
+  parent: PingPongServer.PingPongTcpServer
+  isExternal: true
+  href: PingPongServer.PingPongTcpServer.html#PingPongServer_PingPongTcpServer_ReadPing_System_IO_StringReader_System_Xml_Serialization_XmlSerializer_
+  name: ReadPing(StringReader, XmlSerializer)
+  nameWithType: PingPongTcpServer.ReadPing(StringReader, XmlSerializer)
+  fullName: PingPongServer.PingPongTcpServer.ReadPing(System.IO.StringReader, System.Xml.Serialization.XmlSerializer)
+  spec.csharp:
+  - uid: PingPongServer.PingPongTcpServer.ReadPing(System.IO.StringReader,System.Xml.Serialization.XmlSerializer)
+    name: ReadPing
+    href: PingPongServer.PingPongTcpServer.html#PingPongServer_PingPongTcpServer_ReadPing_System_IO_StringReader_System_Xml_Serialization_XmlSerializer_
+  - name: (
+  - uid: System.IO.StringReader
+    name: StringReader
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.io.stringreader
+  - name: ','
+  - name: " "
+  - uid: System.Xml.Serialization.XmlSerializer
+    name: XmlSerializer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.xml.serialization.xmlserializer
+  - name: )
+  spec.vb:
+  - uid: PingPongServer.PingPongTcpServer.ReadPing(System.IO.StringReader,System.Xml.Serialization.XmlSerializer)
+    name: ReadPing
+    href: PingPongServer.PingPongTcpServer.html#PingPongServer_PingPongTcpServer_ReadPing_System_IO_StringReader_System_Xml_Serialization_XmlSerializer_
+  - name: (
+  - uid: System.IO.StringReader
+    name: StringReader
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.io.stringreader
+  - name: ','
+  - name: " "
+  - uid: System.Xml.Serialization.XmlSerializer
+    name: XmlSerializer
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.xml.serialization.xmlserializer
+  - name: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: PingPongServer
+  commentId: N:PingPongServer
+  href: PingPongServer.html
+  name: PingPongServer
+  nameWithType: PingPongServer
+  fullName: PingPongServer
+- uid: Tests.TestServers.TestTcpServer_Slow.#ctor*
+  commentId: Overload:Tests.TestServers.TestTcpServer_Slow.#ctor
+  href: Tests.TestServers.TestTcpServer_Slow.html#Tests_TestServers_TestTcpServer_Slow__ctor_Microsoft_Extensions_Logging_ILogger_PingPongServer_PingPongTcpServer__
+  name: TestTcpServer_Slow
+  nameWithType: TestTcpServer_Slow.TestTcpServer_Slow
+  fullName: Tests.TestServers.TestTcpServer_Slow.TestTcpServer_Slow
+  nameWithType.vb: TestTcpServer_Slow.New
+  fullName.vb: Tests.TestServers.TestTcpServer_Slow.New
+  name.vb: New
+- uid: Microsoft.Extensions.Logging.ILogger{PingPongServer.PingPongTcpServer}
+  commentId: T:Microsoft.Extensions.Logging.ILogger{PingPongServer.PingPongTcpServer}
+  parent: Microsoft.Extensions.Logging
+  definition: Microsoft.Extensions.Logging.ILogger`1
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<PingPongTcpServer>
+  nameWithType: ILogger<PingPongTcpServer>
+  fullName: Microsoft.Extensions.Logging.ILogger<PingPongServer.PingPongTcpServer>
+  nameWithType.vb: ILogger(Of PingPongTcpServer)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of PingPongServer.PingPongTcpServer)
+  name.vb: ILogger(Of PingPongTcpServer)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - uid: PingPongServer.PingPongTcpServer
+    name: PingPongTcpServer
+    href: PingPongServer.PingPongTcpServer.html
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: PingPongServer.PingPongTcpServer
+    name: PingPongTcpServer
+    href: PingPongServer.PingPongTcpServer.html
+  - name: )
+- uid: Microsoft.Extensions.Logging.ILogger`1
+  commentId: T:Microsoft.Extensions.Logging.ILogger`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  name: ILogger<TCategoryName>
+  nameWithType: ILogger<TCategoryName>
+  fullName: Microsoft.Extensions.Logging.ILogger<TCategoryName>
+  nameWithType.vb: ILogger(Of TCategoryName)
+  fullName.vb: Microsoft.Extensions.Logging.ILogger(Of TCategoryName)
+  name.vb: ILogger(Of TCategoryName)
+  spec.csharp:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: <
+  - name: TCategoryName
+  - name: '>'
+  spec.vb:
+  - uid: Microsoft.Extensions.Logging.ILogger`1
+    name: ILogger
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TCategoryName
+  - name: )
+- uid: Microsoft.Extensions.Logging
+  commentId: N:Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Logging
+  nameWithType: Microsoft.Extensions.Logging
+  fullName: Microsoft.Extensions.Logging
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: PingPongServer.PingPongTcpServer.HandleClientAsync(System.Net.Sockets.TcpClient,System.Threading.CancellationToken)
+  commentId: M:PingPongServer.PingPongTcpServer.HandleClientAsync(System.Net.Sockets.TcpClient,System.Threading.CancellationToken)
+  parent: PingPongServer.PingPongTcpServer
+  isExternal: true
+  href: PingPongServer.PingPongTcpServer.html#PingPongServer_PingPongTcpServer_HandleClientAsync_System_Net_Sockets_TcpClient_System_Threading_CancellationToken_
+  name: HandleClientAsync(TcpClient, CancellationToken)
+  nameWithType: PingPongTcpServer.HandleClientAsync(TcpClient, CancellationToken)
+  fullName: PingPongServer.PingPongTcpServer.HandleClientAsync(System.Net.Sockets.TcpClient, System.Threading.CancellationToken)
+  spec.csharp:
+  - uid: PingPongServer.PingPongTcpServer.HandleClientAsync(System.Net.Sockets.TcpClient,System.Threading.CancellationToken)
+    name: HandleClientAsync
+    href: PingPongServer.PingPongTcpServer.html#PingPongServer_PingPongTcpServer_HandleClientAsync_System_Net_Sockets_TcpClient_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.Net.Sockets.TcpClient
+    name: TcpClient
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net.sockets.tcpclient
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+  spec.vb:
+  - uid: PingPongServer.PingPongTcpServer.HandleClientAsync(System.Net.Sockets.TcpClient,System.Threading.CancellationToken)
+    name: HandleClientAsync
+    href: PingPongServer.PingPongTcpServer.html#PingPongServer_PingPongTcpServer_HandleClientAsync_System_Net_Sockets_TcpClient_System_Threading_CancellationToken_
+  - name: (
+  - uid: System.Net.Sockets.TcpClient
+    name: TcpClient
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net.sockets.tcpclient
+  - name: ','
+  - name: " "
+  - uid: System.Threading.CancellationToken
+    name: CancellationToken
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  - name: )
+- uid: Tests.TestServers.TestTcpServer_Slow.HandleClientAsync*
+  commentId: Overload:Tests.TestServers.TestTcpServer_Slow.HandleClientAsync
+  href: Tests.TestServers.TestTcpServer_Slow.html#Tests_TestServers_TestTcpServer_Slow_HandleClientAsync_System_Net_Sockets_TcpClient_System_Threading_CancellationToken_
+  name: HandleClientAsync
+  nameWithType: TestTcpServer_Slow.HandleClientAsync
+  fullName: Tests.TestServers.TestTcpServer_Slow.HandleClientAsync
+- uid: System.Net.Sockets.TcpClient
+  commentId: T:System.Net.Sockets.TcpClient
+  parent: System.Net.Sockets
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.net.sockets.tcpclient
+  name: TcpClient
+  nameWithType: TcpClient
+  fullName: System.Net.Sockets.TcpClient
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Net.Sockets
+  commentId: N:System.Net.Sockets
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Net.Sockets
+  nameWithType: System.Net.Sockets
+  fullName: System.Net.Sockets
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Net
+    name: Net
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net
+  - name: .
+  - uid: System.Net.Sockets
+    name: Sockets
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net.sockets
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Net
+    name: Net
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net
+  - name: .
+  - uid: System.Net.Sockets
+    name: Sockets
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net.sockets
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks

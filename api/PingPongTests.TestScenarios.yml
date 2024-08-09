@@ -1,0 +1,591 @@
+### YamlMime:ManagedReference
+items:
+- uid: PingPongTests.TestScenarios
+  commentId: T:PingPongTests.TestScenarios
+  id: TestScenarios
+  parent: PingPongTests
+  children:
+  - PingPongTests.TestScenarios.#ctor
+  - PingPongTests.TestScenarios.TestClientOverload
+  - PingPongTests.TestScenarios.TestClientReconnection
+  - PingPongTests.TestScenarios.TestClientWithSlowConnection
+  - PingPongTests.TestScenarios.TestServerOverload
+  - PingPongTests.TestScenarios.TestServerShutdown
+  langs:
+  - csharp
+  - vb
+  name: TestScenarios
+  nameWithType: TestScenarios
+  fullName: PingPongTests.TestScenarios
+  type: Class
+  source:
+    remote:
+      path: PingPongTests/TestScenarios.cs
+      branch: Client_ConnectionPool
+      repo: https://github.com/iLakis/PingPongConsoleApp.git
+    id: TestScenarios
+    path: PingPongTests/TestScenarios.cs
+    startLine: 16
+  assemblies:
+  - Tests
+  namespace: PingPongTests
+  syntax:
+    content: public class TestScenarios
+    content.vb: Public Class TestScenarios
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: PingPongTests.TestScenarios.#ctor
+  commentId: M:PingPongTests.TestScenarios.#ctor
+  id: '#ctor'
+  parent: PingPongTests.TestScenarios
+  langs:
+  - csharp
+  - vb
+  name: TestScenarios()
+  nameWithType: TestScenarios.TestScenarios()
+  fullName: PingPongTests.TestScenarios.TestScenarios()
+  type: Constructor
+  source:
+    remote:
+      path: PingPongTests/TestScenarios.cs
+      branch: Client_ConnectionPool
+      repo: https://github.com/iLakis/PingPongConsoleApp.git
+    id: .ctor
+    path: PingPongTests/TestScenarios.cs
+    startLine: 24
+  assemblies:
+  - Tests
+  namespace: PingPongTests
+  syntax:
+    content: public TestScenarios()
+    content.vb: Public Sub New()
+  overload: PingPongTests.TestScenarios.#ctor*
+  nameWithType.vb: TestScenarios.New()
+  fullName.vb: PingPongTests.TestScenarios.New()
+  name.vb: New()
+- uid: PingPongTests.TestScenarios.TestServerOverload
+  commentId: M:PingPongTests.TestScenarios.TestServerOverload
+  id: TestServerOverload
+  parent: PingPongTests.TestScenarios
+  langs:
+  - csharp
+  - vb
+  name: TestServerOverload()
+  nameWithType: TestScenarios.TestServerOverload()
+  fullName: PingPongTests.TestScenarios.TestServerOverload()
+  type: Method
+  source:
+    remote:
+      path: PingPongTests/TestScenarios.cs
+      branch: Client_ConnectionPool
+      repo: https://github.com/iLakis/PingPongConsoleApp.git
+    id: TestServerOverload
+    path: PingPongTests/TestScenarios.cs
+    startLine: 39
+  assemblies:
+  - Tests
+  namespace: PingPongTests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task TestServerOverload()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function TestServerOverload() As Task
+  overload: PingPongTests.TestScenarios.TestServerOverload*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: PingPongTests.TestScenarios.TestClientOverload
+  commentId: M:PingPongTests.TestScenarios.TestClientOverload
+  id: TestClientOverload
+  parent: PingPongTests.TestScenarios
+  langs:
+  - csharp
+  - vb
+  name: TestClientOverload()
+  nameWithType: TestScenarios.TestClientOverload()
+  fullName: PingPongTests.TestScenarios.TestClientOverload()
+  type: Method
+  source:
+    remote:
+      path: PingPongTests/TestScenarios.cs
+      branch: Client_ConnectionPool
+      repo: https://github.com/iLakis/PingPongConsoleApp.git
+    id: TestClientOverload
+    path: PingPongTests/TestScenarios.cs
+    startLine: 114
+  assemblies:
+  - Tests
+  namespace: PingPongTests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task TestClientOverload()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function TestClientOverload() As Task
+  overload: PingPongTests.TestScenarios.TestClientOverload*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: PingPongTests.TestScenarios.TestClientReconnection
+  commentId: M:PingPongTests.TestScenarios.TestClientReconnection
+  id: TestClientReconnection
+  parent: PingPongTests.TestScenarios
+  langs:
+  - csharp
+  - vb
+  name: TestClientReconnection()
+  nameWithType: TestScenarios.TestClientReconnection()
+  fullName: PingPongTests.TestScenarios.TestClientReconnection()
+  type: Method
+  source:
+    remote:
+      path: PingPongTests/TestScenarios.cs
+      branch: Client_ConnectionPool
+      repo: https://github.com/iLakis/PingPongConsoleApp.git
+    id: TestClientReconnection
+    path: PingPongTests/TestScenarios.cs
+    startLine: 153
+  assemblies:
+  - Tests
+  namespace: PingPongTests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task TestClientReconnection()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function TestClientReconnection() As Task
+  overload: PingPongTests.TestScenarios.TestClientReconnection*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: PingPongTests.TestScenarios.TestClientWithSlowConnection
+  commentId: M:PingPongTests.TestScenarios.TestClientWithSlowConnection
+  id: TestClientWithSlowConnection
+  parent: PingPongTests.TestScenarios
+  langs:
+  - csharp
+  - vb
+  name: TestClientWithSlowConnection()
+  nameWithType: TestScenarios.TestClientWithSlowConnection()
+  fullName: PingPongTests.TestScenarios.TestClientWithSlowConnection()
+  type: Method
+  source:
+    remote:
+      path: PingPongTests/TestScenarios.cs
+      branch: Client_ConnectionPool
+      repo: https://github.com/iLakis/PingPongConsoleApp.git
+    id: TestClientWithSlowConnection
+    path: PingPongTests/TestScenarios.cs
+    startLine: 220
+  assemblies:
+  - Tests
+  namespace: PingPongTests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task TestClientWithSlowConnection()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function TestClientWithSlowConnection() As Task
+  overload: PingPongTests.TestScenarios.TestClientWithSlowConnection*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+- uid: PingPongTests.TestScenarios.TestServerShutdown
+  commentId: M:PingPongTests.TestScenarios.TestServerShutdown
+  id: TestServerShutdown
+  parent: PingPongTests.TestScenarios
+  langs:
+  - csharp
+  - vb
+  name: TestServerShutdown()
+  nameWithType: TestScenarios.TestServerShutdown()
+  fullName: PingPongTests.TestScenarios.TestServerShutdown()
+  type: Method
+  source:
+    remote:
+      path: PingPongTests/TestScenarios.cs
+      branch: Client_ConnectionPool
+      repo: https://github.com/iLakis/PingPongConsoleApp.git
+    id: TestServerShutdown
+    path: PingPongTests/TestScenarios.cs
+    startLine: 262
+  assemblies:
+  - Tests
+  namespace: PingPongTests
+  syntax:
+    content: >-
+      [Fact]
+
+      public Task TestServerShutdown()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: >-
+      <Fact>
+
+      Public Function TestServerShutdown() As Task
+  overload: PingPongTests.TestScenarios.TestServerShutdown*
+  attributes:
+  - type: Xunit.FactAttribute
+    ctor: Xunit.FactAttribute.#ctor
+    arguments: []
+references:
+- uid: PingPongTests
+  commentId: N:PingPongTests
+  href: PingPongTests.html
+  name: PingPongTests
+  nameWithType: PingPongTests
+  fullName: PingPongTests
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: PingPongTests.TestScenarios.#ctor*
+  commentId: Overload:PingPongTests.TestScenarios.#ctor
+  href: PingPongTests.TestScenarios.html#PingPongTests_TestScenarios__ctor
+  name: TestScenarios
+  nameWithType: TestScenarios.TestScenarios
+  fullName: PingPongTests.TestScenarios.TestScenarios
+  nameWithType.vb: TestScenarios.New
+  fullName.vb: PingPongTests.TestScenarios.New
+  name.vb: New
+- uid: PingPongTests.TestScenarios.TestServerOverload*
+  commentId: Overload:PingPongTests.TestScenarios.TestServerOverload
+  href: PingPongTests.TestScenarios.html#PingPongTests_TestScenarios_TestServerOverload
+  name: TestServerOverload
+  nameWithType: TestScenarios.TestServerOverload
+  fullName: PingPongTests.TestScenarios.TestServerOverload
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: PingPongTests.TestScenarios.TestClientOverload*
+  commentId: Overload:PingPongTests.TestScenarios.TestClientOverload
+  href: PingPongTests.TestScenarios.html#PingPongTests_TestScenarios_TestClientOverload
+  name: TestClientOverload
+  nameWithType: TestScenarios.TestClientOverload
+  fullName: PingPongTests.TestScenarios.TestClientOverload
+- uid: PingPongTests.TestScenarios.TestClientReconnection*
+  commentId: Overload:PingPongTests.TestScenarios.TestClientReconnection
+  href: PingPongTests.TestScenarios.html#PingPongTests_TestScenarios_TestClientReconnection
+  name: TestClientReconnection
+  nameWithType: TestScenarios.TestClientReconnection
+  fullName: PingPongTests.TestScenarios.TestClientReconnection
+- uid: PingPongTests.TestScenarios.TestClientWithSlowConnection*
+  commentId: Overload:PingPongTests.TestScenarios.TestClientWithSlowConnection
+  href: PingPongTests.TestScenarios.html#PingPongTests_TestScenarios_TestClientWithSlowConnection
+  name: TestClientWithSlowConnection
+  nameWithType: TestScenarios.TestClientWithSlowConnection
+  fullName: PingPongTests.TestScenarios.TestClientWithSlowConnection
+- uid: PingPongTests.TestScenarios.TestServerShutdown*
+  commentId: Overload:PingPongTests.TestScenarios.TestServerShutdown
+  href: PingPongTests.TestScenarios.html#PingPongTests_TestScenarios_TestServerShutdown
+  name: TestServerShutdown
+  nameWithType: TestScenarios.TestServerShutdown
+  fullName: PingPongTests.TestScenarios.TestServerShutdown

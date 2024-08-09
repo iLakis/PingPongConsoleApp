@@ -1,0 +1,567 @@
+### YamlMime:ManagedReference
+items:
+- uid: Utils.Configs.Server.DefaultServerConfig
+  commentId: T:Utils.Configs.Server.DefaultServerConfig
+  id: DefaultServerConfig
+  parent: Utils.Configs.Server
+  children:
+  - Utils.Configs.Server.DefaultServerConfig.Port
+  - Utils.Configs.Server.DefaultServerConfig.ReadTimeout
+  - Utils.Configs.Server.DefaultServerConfig.Separator
+  - Utils.Configs.Server.DefaultServerConfig.ServerSslPass
+  - Utils.Configs.Server.DefaultServerConfig.WriteTimeout
+  langs:
+  - csharp
+  - vb
+  name: DefaultServerConfig
+  nameWithType: DefaultServerConfig
+  fullName: Utils.Configs.Server.DefaultServerConfig
+  type: Class
+  source:
+    remote:
+      path: PingPongSchema/Configs/Server/DefaultServerConfig.cs
+      branch: Client_ConnectionPool
+      repo: https://github.com/iLakis/PingPongConsoleApp.git
+    id: DefaultServerConfig
+    path: PingPongSchema/Configs/Server/DefaultServerConfig.cs
+    startLine: 2
+  assemblies:
+  - Utils
+  namespace: Utils.Configs.Server
+  syntax:
+    content: 'public class DefaultServerConfig : IServerConfig'
+    content.vb: Public Class DefaultServerConfig Implements IServerConfig
+  inheritance:
+  - System.Object
+  implements:
+  - Utils.Configs.Server.IServerConfig
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Utils.Configs.Server.DefaultServerConfig.Port
+  commentId: P:Utils.Configs.Server.DefaultServerConfig.Port
+  id: Port
+  parent: Utils.Configs.Server.DefaultServerConfig
+  langs:
+  - csharp
+  - vb
+  name: Port
+  nameWithType: DefaultServerConfig.Port
+  fullName: Utils.Configs.Server.DefaultServerConfig.Port
+  type: Property
+  source:
+    remote:
+      path: PingPongSchema/Configs/Server/DefaultServerConfig.cs
+      branch: Client_ConnectionPool
+      repo: https://github.com/iLakis/PingPongConsoleApp.git
+    id: Port
+    path: PingPongSchema/Configs/Server/DefaultServerConfig.cs
+    startLine: 4
+  assemblies:
+  - Utils
+  namespace: Utils.Configs.Server
+  example: []
+  syntax:
+    content: public int Port { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property Port As Integer
+  overload: Utils.Configs.Server.DefaultServerConfig.Port*
+  implements:
+  - Utils.Configs.Server.IServerConfig.Port
+- uid: Utils.Configs.Server.DefaultServerConfig.ServerSslPass
+  commentId: P:Utils.Configs.Server.DefaultServerConfig.ServerSslPass
+  id: ServerSslPass
+  parent: Utils.Configs.Server.DefaultServerConfig
+  langs:
+  - csharp
+  - vb
+  name: ServerSslPass
+  nameWithType: DefaultServerConfig.ServerSslPass
+  fullName: Utils.Configs.Server.DefaultServerConfig.ServerSslPass
+  type: Property
+  source:
+    remote:
+      path: PingPongSchema/Configs/Server/DefaultServerConfig.cs
+      branch: Client_ConnectionPool
+      repo: https://github.com/iLakis/PingPongConsoleApp.git
+    id: ServerSslPass
+    path: PingPongSchema/Configs/Server/DefaultServerConfig.cs
+    startLine: 5
+  assemblies:
+  - Utils
+  namespace: Utils.Configs.Server
+  example: []
+  syntax:
+    content: public string ServerSslPass { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property ServerSslPass As String
+  overload: Utils.Configs.Server.DefaultServerConfig.ServerSslPass*
+  implements:
+  - Utils.Configs.Server.IServerConfig.ServerSslPass
+- uid: Utils.Configs.Server.DefaultServerConfig.ReadTimeout
+  commentId: P:Utils.Configs.Server.DefaultServerConfig.ReadTimeout
+  id: ReadTimeout
+  parent: Utils.Configs.Server.DefaultServerConfig
+  langs:
+  - csharp
+  - vb
+  name: ReadTimeout
+  nameWithType: DefaultServerConfig.ReadTimeout
+  fullName: Utils.Configs.Server.DefaultServerConfig.ReadTimeout
+  type: Property
+  source:
+    remote:
+      path: PingPongSchema/Configs/Server/DefaultServerConfig.cs
+      branch: Client_ConnectionPool
+      repo: https://github.com/iLakis/PingPongConsoleApp.git
+    id: ReadTimeout
+    path: PingPongSchema/Configs/Server/DefaultServerConfig.cs
+    startLine: 6
+  assemblies:
+  - Utils
+  namespace: Utils.Configs.Server
+  example: []
+  syntax:
+    content: public int ReadTimeout { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property ReadTimeout As Integer
+  overload: Utils.Configs.Server.DefaultServerConfig.ReadTimeout*
+  implements:
+  - Utils.Configs.Server.IServerConfig.ReadTimeout
+- uid: Utils.Configs.Server.DefaultServerConfig.WriteTimeout
+  commentId: P:Utils.Configs.Server.DefaultServerConfig.WriteTimeout
+  id: WriteTimeout
+  parent: Utils.Configs.Server.DefaultServerConfig
+  langs:
+  - csharp
+  - vb
+  name: WriteTimeout
+  nameWithType: DefaultServerConfig.WriteTimeout
+  fullName: Utils.Configs.Server.DefaultServerConfig.WriteTimeout
+  type: Property
+  source:
+    remote:
+      path: PingPongSchema/Configs/Server/DefaultServerConfig.cs
+      branch: Client_ConnectionPool
+      repo: https://github.com/iLakis/PingPongConsoleApp.git
+    id: WriteTimeout
+    path: PingPongSchema/Configs/Server/DefaultServerConfig.cs
+    startLine: 7
+  assemblies:
+  - Utils
+  namespace: Utils.Configs.Server
+  example: []
+  syntax:
+    content: public int WriteTimeout { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property WriteTimeout As Integer
+  overload: Utils.Configs.Server.DefaultServerConfig.WriteTimeout*
+  implements:
+  - Utils.Configs.Server.IServerConfig.WriteTimeout
+- uid: Utils.Configs.Server.DefaultServerConfig.Separator
+  commentId: P:Utils.Configs.Server.DefaultServerConfig.Separator
+  id: Separator
+  parent: Utils.Configs.Server.DefaultServerConfig
+  langs:
+  - csharp
+  - vb
+  name: Separator
+  nameWithType: DefaultServerConfig.Separator
+  fullName: Utils.Configs.Server.DefaultServerConfig.Separator
+  type: Property
+  source:
+    remote:
+      path: PingPongSchema/Configs/Server/DefaultServerConfig.cs
+      branch: Client_ConnectionPool
+      repo: https://github.com/iLakis/PingPongConsoleApp.git
+    id: Separator
+    path: PingPongSchema/Configs/Server/DefaultServerConfig.cs
+    startLine: 8
+  assemblies:
+  - Utils
+  namespace: Utils.Configs.Server
+  example: []
+  syntax:
+    content: public string Separator { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property Separator As String
+  overload: Utils.Configs.Server.DefaultServerConfig.Separator*
+  implements:
+  - Utils.Configs.Server.IServerConfig.Separator
+references:
+- uid: Utils.Configs.Server
+  commentId: N:Utils.Configs.Server
+  href: Utils.html
+  name: Utils.Configs.Server
+  nameWithType: Utils.Configs.Server
+  fullName: Utils.Configs.Server
+  spec.csharp:
+  - uid: Utils
+    name: Utils
+    href: Utils.html
+  - name: .
+  - uid: Utils.Configs
+    name: Configs
+    href: Utils.Configs.html
+  - name: .
+  - uid: Utils.Configs.Server
+    name: Server
+    href: Utils.Configs.Server.html
+  spec.vb:
+  - uid: Utils
+    name: Utils
+    href: Utils.html
+  - name: .
+  - uid: Utils.Configs
+    name: Configs
+    href: Utils.Configs.html
+  - name: .
+  - uid: Utils.Configs.Server
+    name: Server
+    href: Utils.Configs.Server.html
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: Utils.Configs.Server.IServerConfig
+  commentId: T:Utils.Configs.Server.IServerConfig
+  parent: Utils.Configs.Server
+  href: Utils.Configs.Server.IServerConfig.html
+  name: IServerConfig
+  nameWithType: IServerConfig
+  fullName: Utils.Configs.Server.IServerConfig
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Utils.Configs.Server.DefaultServerConfig.Port*
+  commentId: Overload:Utils.Configs.Server.DefaultServerConfig.Port
+  href: Utils.Configs.Server.DefaultServerConfig.html#Utils_Configs_Server_DefaultServerConfig_Port
+  name: Port
+  nameWithType: DefaultServerConfig.Port
+  fullName: Utils.Configs.Server.DefaultServerConfig.Port
+- uid: Utils.Configs.Server.IServerConfig.Port
+  commentId: P:Utils.Configs.Server.IServerConfig.Port
+  parent: Utils.Configs.Server.IServerConfig
+  href: Utils.Configs.Server.IServerConfig.html#Utils_Configs_Server_IServerConfig_Port
+  name: Port
+  nameWithType: IServerConfig.Port
+  fullName: Utils.Configs.Server.IServerConfig.Port
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: Utils.Configs.Server.DefaultServerConfig.ServerSslPass*
+  commentId: Overload:Utils.Configs.Server.DefaultServerConfig.ServerSslPass
+  href: Utils.Configs.Server.DefaultServerConfig.html#Utils_Configs_Server_DefaultServerConfig_ServerSslPass
+  name: ServerSslPass
+  nameWithType: DefaultServerConfig.ServerSslPass
+  fullName: Utils.Configs.Server.DefaultServerConfig.ServerSslPass
+- uid: Utils.Configs.Server.IServerConfig.ServerSslPass
+  commentId: P:Utils.Configs.Server.IServerConfig.ServerSslPass
+  parent: Utils.Configs.Server.IServerConfig
+  href: Utils.Configs.Server.IServerConfig.html#Utils_Configs_Server_IServerConfig_ServerSslPass
+  name: ServerSslPass
+  nameWithType: IServerConfig.ServerSslPass
+  fullName: Utils.Configs.Server.IServerConfig.ServerSslPass
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: Utils.Configs.Server.DefaultServerConfig.ReadTimeout*
+  commentId: Overload:Utils.Configs.Server.DefaultServerConfig.ReadTimeout
+  href: Utils.Configs.Server.DefaultServerConfig.html#Utils_Configs_Server_DefaultServerConfig_ReadTimeout
+  name: ReadTimeout
+  nameWithType: DefaultServerConfig.ReadTimeout
+  fullName: Utils.Configs.Server.DefaultServerConfig.ReadTimeout
+- uid: Utils.Configs.Server.IServerConfig.ReadTimeout
+  commentId: P:Utils.Configs.Server.IServerConfig.ReadTimeout
+  parent: Utils.Configs.Server.IServerConfig
+  href: Utils.Configs.Server.IServerConfig.html#Utils_Configs_Server_IServerConfig_ReadTimeout
+  name: ReadTimeout
+  nameWithType: IServerConfig.ReadTimeout
+  fullName: Utils.Configs.Server.IServerConfig.ReadTimeout
+- uid: Utils.Configs.Server.DefaultServerConfig.WriteTimeout*
+  commentId: Overload:Utils.Configs.Server.DefaultServerConfig.WriteTimeout
+  href: Utils.Configs.Server.DefaultServerConfig.html#Utils_Configs_Server_DefaultServerConfig_WriteTimeout
+  name: WriteTimeout
+  nameWithType: DefaultServerConfig.WriteTimeout
+  fullName: Utils.Configs.Server.DefaultServerConfig.WriteTimeout
+- uid: Utils.Configs.Server.IServerConfig.WriteTimeout
+  commentId: P:Utils.Configs.Server.IServerConfig.WriteTimeout
+  parent: Utils.Configs.Server.IServerConfig
+  href: Utils.Configs.Server.IServerConfig.html#Utils_Configs_Server_IServerConfig_WriteTimeout
+  name: WriteTimeout
+  nameWithType: IServerConfig.WriteTimeout
+  fullName: Utils.Configs.Server.IServerConfig.WriteTimeout
+- uid: Utils.Configs.Server.DefaultServerConfig.Separator*
+  commentId: Overload:Utils.Configs.Server.DefaultServerConfig.Separator
+  href: Utils.Configs.Server.DefaultServerConfig.html#Utils_Configs_Server_DefaultServerConfig_Separator
+  name: Separator
+  nameWithType: DefaultServerConfig.Separator
+  fullName: Utils.Configs.Server.DefaultServerConfig.Separator
+- uid: Utils.Configs.Server.IServerConfig.Separator
+  commentId: P:Utils.Configs.Server.IServerConfig.Separator
+  parent: Utils.Configs.Server.IServerConfig
+  href: Utils.Configs.Server.IServerConfig.html#Utils_Configs_Server_IServerConfig_Separator
+  name: Separator
+  nameWithType: IServerConfig.Separator
+  fullName: Utils.Configs.Server.IServerConfig.Separator

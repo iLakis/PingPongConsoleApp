@@ -1,0 +1,37 @@
+### YamlMime:ManagedReference
+items:
+- uid: Tests.TestClients
+  commentId: N:Tests.TestClients
+  id: Tests.TestClients
+  children:
+  - Tests.TestClients.TestClient_NonStopListening
+  - Tests.TestClients.TestTcpClient_NonStopListening
+  - Tests.TestClients.TestTcpClient_Slow
+  langs:
+  - csharp
+  - vb
+  name: Tests.TestClients
+  nameWithType: Tests.TestClients
+  fullName: Tests.TestClients
+  type: Namespace
+  assemblies:
+  - Tests
+references:
+- uid: Tests.TestClients.TestClient_NonStopListening
+  commentId: T:Tests.TestClients.TestClient_NonStopListening
+  href: Tests.TestClients.TestClient_NonStopListening.html
+  name: TestClient_NonStopListening
+  nameWithType: TestClient_NonStopListening
+  fullName: Tests.TestClients.TestClient_NonStopListening
+- uid: Tests.TestClients.TestTcpClient_NonStopListening
+  commentId: T:Tests.TestClients.TestTcpClient_NonStopListening
+  href: Tests.TestClients.TestTcpClient_NonStopListening.html
+  name: TestTcpClient_NonStopListening
+  nameWithType: TestTcpClient_NonStopListening
+  fullName: Tests.TestClients.TestTcpClient_NonStopListening
+- uid: Tests.TestClients.TestTcpClient_Slow
+  commentId: T:Tests.TestClients.TestTcpClient_Slow
+  href: Tests.TestClients.TestTcpClient_Slow.html
+  name: TestTcpClient_Slow
+  nameWithType: TestTcpClient_Slow
+  fullName: Tests.TestClients.TestTcpClient_Slow

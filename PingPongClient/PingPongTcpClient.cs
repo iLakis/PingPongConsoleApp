@@ -143,14 +143,14 @@ namespace PingPongClient
                             break;
                         }
                     } else {
-                        _systemLogger.LogError("Received empty response or whitespace.");
+                        _systemLogger.LogError($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Received empty response or whitespace.");
                         DisconnectCurrentConnection();
                         //return;
                     }
                 }
                 stopwatch.Stop();
                 if (!pongReceived) {
-                    _systemLogger.LogWarning("Pong not received within the expected time frame.");
+                    _systemLogger.LogWarning($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Pong not received within the expected time frame.");
                     await HandleTimeoutAsync(token);
                 } else {
                     var latency = stopwatch.ElapsedMilliseconds;
@@ -162,8 +162,8 @@ namespace PingPongClient
             //_systemLogger.LogWarning("Client stopped");
         }
 
-        protected async Task HandleTimeoutAsync(CancellationToken token) {
-            _systemLogger.LogWarning("Handling timeout - attempting to reconnect...");
+        protected virtual async Task HandleTimeoutAsync(CancellationToken token) {
+            _systemLogger.LogWarning($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Handling timeout - attempting to reconnect...");
             try {
                 await SwapConnectionAsync(token);
             } catch (Exception ex) {
@@ -189,9 +189,9 @@ namespace PingPongClient
         }
         public async Task SwapConnectionAsync(CancellationToken token) {
             try {
-                _systemLogger.LogInformation("Swapping connection...");
+                _systemLogger.LogInformation($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Swapping connection...");
                 await GetConnectionFromPoolAsync(token);
-                _systemLogger.LogInformation("Connection swapped successfully.");
+                _systemLogger.LogInformation($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Connection swapped successfully.");
                 //return; 
             } catch (OperationCanceledException ex) {
                 _systemLogger.LogWarning($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Connection swap canceled");

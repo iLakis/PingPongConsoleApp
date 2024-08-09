@@ -1,0 +1,52 @@
+{
+  "metadata": [
+    {
+      "src": [
+        {
+          "files": [
+            "PingPongClient/**/*.csproj",
+            "PingPongServer/**/*.csproj",
+            "PingPongTests/**/*.csproj",
+            "PingPongSchema/**/*.csproj"
+          ],
+          "exclude": [
+            "**/obj/**",
+            "**/bin/**",
+            "**/node_modules/**"
+          ]
+        }
+      ],
+      "dest": "api"
+    }
+  ],
+  "build": {
+    "content": [
+      {
+        "files": [
+          "**/*.{md,yml}"
+        ],
+        "exclude": [
+          "_site/**"
+        ]
+      }
+    ],
+    "resource": [
+      {
+        "files": [
+          "images/**"
+        ]
+      }
+    ],
+    "output": "_site",
+    "template": [
+      "default",
+      "modern"
+    ],
+    "globalMetadata": {
+      "_appName": "PingPongDocs",
+      "_appTitle": "PingPongDocs",
+      "_enableSearch": true,
+      "pdf": true
+    }
+  }
+}

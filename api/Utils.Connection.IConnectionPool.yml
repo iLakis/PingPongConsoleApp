@@ -1,0 +1,350 @@
+### YamlMime:ManagedReference
+items:
+- uid: Utils.Connection.IConnectionPool
+  commentId: T:Utils.Connection.IConnectionPool
+  id: IConnectionPool
+  parent: Utils.Connection
+  children:
+  - Utils.Connection.IConnectionPool.CloseAllConnectionsAsync
+  - Utils.Connection.IConnectionPool.CloseConnectionAsync(System.Net.Security.SslStream)
+  - Utils.Connection.IConnectionPool.GetConnectionAsync(System.Threading.CancellationToken)
+  langs:
+  - csharp
+  - vb
+  name: IConnectionPool
+  nameWithType: IConnectionPool
+  fullName: Utils.Connection.IConnectionPool
+  type: Interface
+  source:
+    remote:
+      path: PingPongSchema/Connection/IConnectionPool.cs
+      branch: Client_ConnectionPool
+      repo: https://github.com/iLakis/PingPongConsoleApp.git
+    id: IConnectionPool
+    path: PingPongSchema/Connection/IConnectionPool.cs
+    startLine: 8
+  assemblies:
+  - Utils
+  namespace: Utils.Connection
+  syntax:
+    content: public interface IConnectionPool
+    content.vb: Public Interface IConnectionPool
+- uid: Utils.Connection.IConnectionPool.GetConnectionAsync(System.Threading.CancellationToken)
+  commentId: M:Utils.Connection.IConnectionPool.GetConnectionAsync(System.Threading.CancellationToken)
+  id: GetConnectionAsync(System.Threading.CancellationToken)
+  parent: Utils.Connection.IConnectionPool
+  langs:
+  - csharp
+  - vb
+  name: GetConnectionAsync(CancellationToken)
+  nameWithType: IConnectionPool.GetConnectionAsync(CancellationToken)
+  fullName: Utils.Connection.IConnectionPool.GetConnectionAsync(System.Threading.CancellationToken)
+  type: Method
+  source:
+    remote:
+      path: PingPongSchema/Connection/IConnectionPool.cs
+      branch: Client_ConnectionPool
+      repo: https://github.com/iLakis/PingPongConsoleApp.git
+    id: GetConnectionAsync
+    path: PingPongSchema/Connection/IConnectionPool.cs
+    startLine: 9
+  assemblies:
+  - Utils
+  namespace: Utils.Connection
+  syntax:
+    content: Task<SslStream> GetConnectionAsync(CancellationToken token)
+    parameters:
+    - id: token
+      type: System.Threading.CancellationToken
+    return:
+      type: System.Threading.Tasks.Task{System.Net.Security.SslStream}
+    content.vb: Function GetConnectionAsync(token As CancellationToken) As Task(Of SslStream)
+  overload: Utils.Connection.IConnectionPool.GetConnectionAsync*
+- uid: Utils.Connection.IConnectionPool.CloseConnectionAsync(System.Net.Security.SslStream)
+  commentId: M:Utils.Connection.IConnectionPool.CloseConnectionAsync(System.Net.Security.SslStream)
+  id: CloseConnectionAsync(System.Net.Security.SslStream)
+  parent: Utils.Connection.IConnectionPool
+  langs:
+  - csharp
+  - vb
+  name: CloseConnectionAsync(SslStream)
+  nameWithType: IConnectionPool.CloseConnectionAsync(SslStream)
+  fullName: Utils.Connection.IConnectionPool.CloseConnectionAsync(System.Net.Security.SslStream)
+  type: Method
+  source:
+    remote:
+      path: PingPongSchema/Connection/IConnectionPool.cs
+      branch: Client_ConnectionPool
+      repo: https://github.com/iLakis/PingPongConsoleApp.git
+    id: CloseConnectionAsync
+    path: PingPongSchema/Connection/IConnectionPool.cs
+    startLine: 11
+  assemblies:
+  - Utils
+  namespace: Utils.Connection
+  syntax:
+    content: Task CloseConnectionAsync(SslStream connection)
+    parameters:
+    - id: connection
+      type: System.Net.Security.SslStream
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function CloseConnectionAsync(connection As SslStream) As Task
+  overload: Utils.Connection.IConnectionPool.CloseConnectionAsync*
+- uid: Utils.Connection.IConnectionPool.CloseAllConnectionsAsync
+  commentId: M:Utils.Connection.IConnectionPool.CloseAllConnectionsAsync
+  id: CloseAllConnectionsAsync
+  parent: Utils.Connection.IConnectionPool
+  langs:
+  - csharp
+  - vb
+  name: CloseAllConnectionsAsync()
+  nameWithType: IConnectionPool.CloseAllConnectionsAsync()
+  fullName: Utils.Connection.IConnectionPool.CloseAllConnectionsAsync()
+  type: Method
+  source:
+    remote:
+      path: PingPongSchema/Connection/IConnectionPool.cs
+      branch: Client_ConnectionPool
+      repo: https://github.com/iLakis/PingPongConsoleApp.git
+    id: CloseAllConnectionsAsync
+    path: PingPongSchema/Connection/IConnectionPool.cs
+    startLine: 12
+  assemblies:
+  - Utils
+  namespace: Utils.Connection
+  syntax:
+    content: Task CloseAllConnectionsAsync()
+    return:
+      type: System.Threading.Tasks.Task
+    content.vb: Function CloseAllConnectionsAsync() As Task
+  overload: Utils.Connection.IConnectionPool.CloseAllConnectionsAsync*
+references:
+- uid: Utils.Connection
+  commentId: N:Utils.Connection
+  href: Utils.html
+  name: Utils.Connection
+  nameWithType: Utils.Connection
+  fullName: Utils.Connection
+  spec.csharp:
+  - uid: Utils
+    name: Utils
+    href: Utils.html
+  - name: .
+  - uid: Utils.Connection
+    name: Connection
+    href: Utils.Connection.html
+  spec.vb:
+  - uid: Utils
+    name: Utils
+    href: Utils.html
+  - name: .
+  - uid: Utils.Connection
+    name: Connection
+    href: Utils.Connection.html
+- uid: Utils.Connection.IConnectionPool.GetConnectionAsync*
+  commentId: Overload:Utils.Connection.IConnectionPool.GetConnectionAsync
+  href: Utils.Connection.IConnectionPool.html#Utils_Connection_IConnectionPool_GetConnectionAsync_System_Threading_CancellationToken_
+  name: GetConnectionAsync
+  nameWithType: IConnectionPool.GetConnectionAsync
+  fullName: Utils.Connection.IConnectionPool.GetConnectionAsync
+- uid: System.Threading.CancellationToken
+  commentId: T:System.Threading.CancellationToken
+  parent: System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken
+  name: CancellationToken
+  nameWithType: CancellationToken
+  fullName: System.Threading.CancellationToken
+- uid: System.Threading.Tasks.Task{System.Net.Security.SslStream}
+  commentId: T:System.Threading.Tasks.Task{System.Net.Security.SslStream}
+  parent: System.Threading.Tasks
+  definition: System.Threading.Tasks.Task`1
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<SslStream>
+  nameWithType: Task<SslStream>
+  fullName: System.Threading.Tasks.Task<System.Net.Security.SslStream>
+  nameWithType.vb: Task(Of SslStream)
+  fullName.vb: System.Threading.Tasks.Task(Of System.Net.Security.SslStream)
+  name.vb: Task(Of SslStream)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - uid: System.Net.Security.SslStream
+    name: SslStream
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net.security.sslstream
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.Net.Security.SslStream
+    name: SslStream
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net.security.sslstream
+  - name: )
+- uid: System.Threading
+  commentId: N:System.Threading
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading
+  nameWithType: System.Threading
+  fullName: System.Threading
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+- uid: System.Threading.Tasks.Task`1
+  commentId: T:System.Threading.Tasks.Task`1
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  name: Task<TResult>
+  nameWithType: Task<TResult>
+  fullName: System.Threading.Tasks.Task<TResult>
+  nameWithType.vb: Task(Of TResult)
+  fullName.vb: System.Threading.Tasks.Task(Of TResult)
+  name.vb: Task(Of TResult)
+  spec.csharp:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: <
+  - name: TResult
+  - name: '>'
+  spec.vb:
+  - uid: System.Threading.Tasks.Task`1
+    name: Task
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1
+  - name: (
+  - name: Of
+  - name: " "
+  - name: TResult
+  - name: )
+- uid: System.Threading.Tasks
+  commentId: N:System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Threading.Tasks
+  nameWithType: System.Threading.Tasks
+  fullName: System.Threading.Tasks
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Threading
+    name: Threading
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading
+  - name: .
+  - uid: System.Threading.Tasks
+    name: Tasks
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.threading.tasks
+- uid: Utils.Connection.IConnectionPool.CloseConnectionAsync*
+  commentId: Overload:Utils.Connection.IConnectionPool.CloseConnectionAsync
+  href: Utils.Connection.IConnectionPool.html#Utils_Connection_IConnectionPool_CloseConnectionAsync_System_Net_Security_SslStream_
+  name: CloseConnectionAsync
+  nameWithType: IConnectionPool.CloseConnectionAsync
+  fullName: Utils.Connection.IConnectionPool.CloseConnectionAsync
+- uid: System.Net.Security.SslStream
+  commentId: T:System.Net.Security.SslStream
+  parent: System.Net.Security
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.net.security.sslstream
+  name: SslStream
+  nameWithType: SslStream
+  fullName: System.Net.Security.SslStream
+- uid: System.Threading.Tasks.Task
+  commentId: T:System.Threading.Tasks.Task
+  parent: System.Threading.Tasks
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.threading.tasks.task
+  name: Task
+  nameWithType: Task
+  fullName: System.Threading.Tasks.Task
+- uid: System.Net.Security
+  commentId: N:System.Net.Security
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Net.Security
+  nameWithType: System.Net.Security
+  fullName: System.Net.Security
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Net
+    name: Net
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net
+  - name: .
+  - uid: System.Net.Security
+    name: Security
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net.security
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Net
+    name: Net
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net
+  - name: .
+  - uid: System.Net.Security
+    name: Security
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.net.security
+- uid: Utils.Connection.IConnectionPool.CloseAllConnectionsAsync*
+  commentId: Overload:Utils.Connection.IConnectionPool.CloseAllConnectionsAsync
+  href: Utils.Connection.IConnectionPool.html#Utils_Connection_IConnectionPool_CloseAllConnectionsAsync
+  name: CloseAllConnectionsAsync
+  nameWithType: IConnectionPool.CloseAllConnectionsAsync
+  fullName: Utils.Connection.IConnectionPool.CloseAllConnectionsAsync

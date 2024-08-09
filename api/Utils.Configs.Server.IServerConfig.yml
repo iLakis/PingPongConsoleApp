@@ -1,0 +1,268 @@
+### YamlMime:ManagedReference
+items:
+- uid: Utils.Configs.Server.IServerConfig
+  commentId: T:Utils.Configs.Server.IServerConfig
+  id: IServerConfig
+  parent: Utils.Configs.Server
+  children:
+  - Utils.Configs.Server.IServerConfig.Port
+  - Utils.Configs.Server.IServerConfig.ReadTimeout
+  - Utils.Configs.Server.IServerConfig.Separator
+  - Utils.Configs.Server.IServerConfig.ServerSslPass
+  - Utils.Configs.Server.IServerConfig.WriteTimeout
+  langs:
+  - csharp
+  - vb
+  name: IServerConfig
+  nameWithType: IServerConfig
+  fullName: Utils.Configs.Server.IServerConfig
+  type: Interface
+  source:
+    remote:
+      path: PingPongSchema/Configs/Server/IServerConfig.cs
+      branch: Client_ConnectionPool
+      repo: https://github.com/iLakis/PingPongConsoleApp.git
+    id: IServerConfig
+    path: PingPongSchema/Configs/Server/IServerConfig.cs
+    startLine: 2
+  assemblies:
+  - Utils
+  namespace: Utils.Configs.Server
+  syntax:
+    content: public interface IServerConfig
+    content.vb: Public Interface IServerConfig
+- uid: Utils.Configs.Server.IServerConfig.Port
+  commentId: P:Utils.Configs.Server.IServerConfig.Port
+  id: Port
+  parent: Utils.Configs.Server.IServerConfig
+  langs:
+  - csharp
+  - vb
+  name: Port
+  nameWithType: IServerConfig.Port
+  fullName: Utils.Configs.Server.IServerConfig.Port
+  type: Property
+  source:
+    remote:
+      path: PingPongSchema/Configs/Server/IServerConfig.cs
+      branch: Client_ConnectionPool
+      repo: https://github.com/iLakis/PingPongConsoleApp.git
+    id: Port
+    path: PingPongSchema/Configs/Server/IServerConfig.cs
+    startLine: 4
+  assemblies:
+  - Utils
+  namespace: Utils.Configs.Server
+  syntax:
+    content: int Port { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Property Port As Integer
+  overload: Utils.Configs.Server.IServerConfig.Port*
+- uid: Utils.Configs.Server.IServerConfig.ServerSslPass
+  commentId: P:Utils.Configs.Server.IServerConfig.ServerSslPass
+  id: ServerSslPass
+  parent: Utils.Configs.Server.IServerConfig
+  langs:
+  - csharp
+  - vb
+  name: ServerSslPass
+  nameWithType: IServerConfig.ServerSslPass
+  fullName: Utils.Configs.Server.IServerConfig.ServerSslPass
+  type: Property
+  source:
+    remote:
+      path: PingPongSchema/Configs/Server/IServerConfig.cs
+      branch: Client_ConnectionPool
+      repo: https://github.com/iLakis/PingPongConsoleApp.git
+    id: ServerSslPass
+    path: PingPongSchema/Configs/Server/IServerConfig.cs
+    startLine: 5
+  assemblies:
+  - Utils
+  namespace: Utils.Configs.Server
+  syntax:
+    content: string ServerSslPass { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Property ServerSslPass As String
+  overload: Utils.Configs.Server.IServerConfig.ServerSslPass*
+- uid: Utils.Configs.Server.IServerConfig.ReadTimeout
+  commentId: P:Utils.Configs.Server.IServerConfig.ReadTimeout
+  id: ReadTimeout
+  parent: Utils.Configs.Server.IServerConfig
+  langs:
+  - csharp
+  - vb
+  name: ReadTimeout
+  nameWithType: IServerConfig.ReadTimeout
+  fullName: Utils.Configs.Server.IServerConfig.ReadTimeout
+  type: Property
+  source:
+    remote:
+      path: PingPongSchema/Configs/Server/IServerConfig.cs
+      branch: Client_ConnectionPool
+      repo: https://github.com/iLakis/PingPongConsoleApp.git
+    id: ReadTimeout
+    path: PingPongSchema/Configs/Server/IServerConfig.cs
+    startLine: 6
+  assemblies:
+  - Utils
+  namespace: Utils.Configs.Server
+  syntax:
+    content: int ReadTimeout { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Property ReadTimeout As Integer
+  overload: Utils.Configs.Server.IServerConfig.ReadTimeout*
+- uid: Utils.Configs.Server.IServerConfig.WriteTimeout
+  commentId: P:Utils.Configs.Server.IServerConfig.WriteTimeout
+  id: WriteTimeout
+  parent: Utils.Configs.Server.IServerConfig
+  langs:
+  - csharp
+  - vb
+  name: WriteTimeout
+  nameWithType: IServerConfig.WriteTimeout
+  fullName: Utils.Configs.Server.IServerConfig.WriteTimeout
+  type: Property
+  source:
+    remote:
+      path: PingPongSchema/Configs/Server/IServerConfig.cs
+      branch: Client_ConnectionPool
+      repo: https://github.com/iLakis/PingPongConsoleApp.git
+    id: WriteTimeout
+    path: PingPongSchema/Configs/Server/IServerConfig.cs
+    startLine: 7
+  assemblies:
+  - Utils
+  namespace: Utils.Configs.Server
+  syntax:
+    content: int WriteTimeout { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Property WriteTimeout As Integer
+  overload: Utils.Configs.Server.IServerConfig.WriteTimeout*
+- uid: Utils.Configs.Server.IServerConfig.Separator
+  commentId: P:Utils.Configs.Server.IServerConfig.Separator
+  id: Separator
+  parent: Utils.Configs.Server.IServerConfig
+  langs:
+  - csharp
+  - vb
+  name: Separator
+  nameWithType: IServerConfig.Separator
+  fullName: Utils.Configs.Server.IServerConfig.Separator
+  type: Property
+  source:
+    remote:
+      path: PingPongSchema/Configs/Server/IServerConfig.cs
+      branch: Client_ConnectionPool
+      repo: https://github.com/iLakis/PingPongConsoleApp.git
+    id: Separator
+    path: PingPongSchema/Configs/Server/IServerConfig.cs
+    startLine: 8
+  assemblies:
+  - Utils
+  namespace: Utils.Configs.Server
+  syntax:
+    content: string Separator { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Property Separator As String
+  overload: Utils.Configs.Server.IServerConfig.Separator*
+references:
+- uid: Utils.Configs.Server
+  commentId: N:Utils.Configs.Server
+  href: Utils.html
+  name: Utils.Configs.Server
+  nameWithType: Utils.Configs.Server
+  fullName: Utils.Configs.Server
+  spec.csharp:
+  - uid: Utils
+    name: Utils
+    href: Utils.html
+  - name: .
+  - uid: Utils.Configs
+    name: Configs
+    href: Utils.Configs.html
+  - name: .
+  - uid: Utils.Configs.Server
+    name: Server
+    href: Utils.Configs.Server.html
+  spec.vb:
+  - uid: Utils
+    name: Utils
+    href: Utils.html
+  - name: .
+  - uid: Utils.Configs
+    name: Configs
+    href: Utils.Configs.html
+  - name: .
+  - uid: Utils.Configs.Server
+    name: Server
+    href: Utils.Configs.Server.html
+- uid: Utils.Configs.Server.IServerConfig.Port*
+  commentId: Overload:Utils.Configs.Server.IServerConfig.Port
+  href: Utils.Configs.Server.IServerConfig.html#Utils_Configs_Server_IServerConfig_Port
+  name: Port
+  nameWithType: IServerConfig.Port
+  fullName: Utils.Configs.Server.IServerConfig.Port
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Utils.Configs.Server.IServerConfig.ServerSslPass*
+  commentId: Overload:Utils.Configs.Server.IServerConfig.ServerSslPass
+  href: Utils.Configs.Server.IServerConfig.html#Utils_Configs_Server_IServerConfig_ServerSslPass
+  name: ServerSslPass
+  nameWithType: IServerConfig.ServerSslPass
+  fullName: Utils.Configs.Server.IServerConfig.ServerSslPass
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: Utils.Configs.Server.IServerConfig.ReadTimeout*
+  commentId: Overload:Utils.Configs.Server.IServerConfig.ReadTimeout
+  href: Utils.Configs.Server.IServerConfig.html#Utils_Configs_Server_IServerConfig_ReadTimeout
+  name: ReadTimeout
+  nameWithType: IServerConfig.ReadTimeout
+  fullName: Utils.Configs.Server.IServerConfig.ReadTimeout
+- uid: Utils.Configs.Server.IServerConfig.WriteTimeout*
+  commentId: Overload:Utils.Configs.Server.IServerConfig.WriteTimeout
+  href: Utils.Configs.Server.IServerConfig.html#Utils_Configs_Server_IServerConfig_WriteTimeout
+  name: WriteTimeout
+  nameWithType: IServerConfig.WriteTimeout
+  fullName: Utils.Configs.Server.IServerConfig.WriteTimeout
+- uid: Utils.Configs.Server.IServerConfig.Separator*
+  commentId: Overload:Utils.Configs.Server.IServerConfig.Separator
+  href: Utils.Configs.Server.IServerConfig.html#Utils_Configs_Server_IServerConfig_Separator
+  name: Separator
+  nameWithType: IServerConfig.Separator
+  fullName: Utils.Configs.Server.IServerConfig.Separator

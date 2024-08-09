@@ -1,0 +1,37 @@
+### YamlMime:ManagedReference
+items:
+- uid: Tests.TestServers
+  commentId: N:Tests.TestServers
+  id: Tests.TestServers
+  children:
+  - Tests.TestServers.TestServer_SpammingMessages
+  - Tests.TestServers.TestTcpServer_Slow
+  - Tests.TestServers.TestTcpServer_SpammingMessages
+  langs:
+  - csharp
+  - vb
+  name: Tests.TestServers
+  nameWithType: Tests.TestServers
+  fullName: Tests.TestServers
+  type: Namespace
+  assemblies:
+  - Tests
+references:
+- uid: Tests.TestServers.TestServer_SpammingMessages
+  commentId: T:Tests.TestServers.TestServer_SpammingMessages
+  href: Tests.TestServers.TestServer_SpammingMessages.html
+  name: TestServer_SpammingMessages
+  nameWithType: TestServer_SpammingMessages
+  fullName: Tests.TestServers.TestServer_SpammingMessages
+- uid: Tests.TestServers.TestTcpServer_Slow
+  commentId: T:Tests.TestServers.TestTcpServer_Slow
+  href: Tests.TestServers.TestTcpServer_Slow.html
+  name: TestTcpServer_Slow
+  nameWithType: TestTcpServer_Slow
+  fullName: Tests.TestServers.TestTcpServer_Slow
+- uid: Tests.TestServers.TestTcpServer_SpammingMessages
+  commentId: T:Tests.TestServers.TestTcpServer_SpammingMessages
+  href: Tests.TestServers.TestTcpServer_SpammingMessages.html
+  name: TestTcpServer_SpammingMessages
+  nameWithType: TestTcpServer_SpammingMessages
+  fullName: Tests.TestServers.TestTcpServer_SpammingMessages

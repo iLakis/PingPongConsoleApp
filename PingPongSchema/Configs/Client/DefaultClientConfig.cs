@@ -11,7 +11,7 @@ namespace Utils.Configs.Client
         public string SslPass { get; set; }
         public int Interval { get; set; } = 3000;
         public int MaxReconnectAttempts { get; set; } = 5;
-        public int ReconnectDelay { get; set; } = 5000;
+        public int ReconnectDelay { get; set; } = 1000;
         public int ReadTimeout { get; set; } = 5000;
         public int WriteTimeout { get; set; } = 5000;
         public int HighLatencyThreshold { get; set; } = 50;

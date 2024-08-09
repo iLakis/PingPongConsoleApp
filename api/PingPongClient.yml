@@ -1,0 +1,30 @@
+### YamlMime:ManagedReference
+items:
+- uid: PingPongClient
+  commentId: N:PingPongClient
+  id: PingPongClient
+  children:
+  - PingPongClient.PingPongTcpClient
+  langs:
+  - csharp
+  - vb
+  name: PingPongClient
+  nameWithType: PingPongClient
+  fullName: PingPongClient
+  type: Namespace
+  assemblies:
+  - PPClient
+references:
+- uid: PingPongClient.PingPongTcpClient
+  commentId: T:PingPongClient.PingPongTcpClient
+  parent: PingPongClient
+  href: PingPongClient.PingPongTcpClient.html
+  name: PingPongTcpClient
+  nameWithType: PingPongTcpClient
+  fullName: PingPongClient.PingPongTcpClient
+- uid: PingPongClient
+  commentId: N:PingPongClient
+  href: PingPongClient.html
+  name: PingPongClient
+  nameWithType: PingPongClient
+  fullName: PingPongClient

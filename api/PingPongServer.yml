@@ -1,0 +1,30 @@
+### YamlMime:ManagedReference
+items:
+- uid: PingPongServer
+  commentId: N:PingPongServer
+  id: PingPongServer
+  children:
+  - PingPongServer.PingPongTcpServer
+  langs:
+  - csharp
+  - vb
+  name: PingPongServer
+  nameWithType: PingPongServer
+  fullName: PingPongServer
+  type: Namespace
+  assemblies:
+  - PPServer
+references:
+- uid: PingPongServer.PingPongTcpServer
+  commentId: T:PingPongServer.PingPongTcpServer
+  parent: PingPongServer
+  href: PingPongServer.PingPongTcpServer.html
+  name: PingPongTcpServer
+  nameWithType: PingPongTcpServer
+  fullName: PingPongServer.PingPongTcpServer
+- uid: PingPongServer
+  commentId: N:PingPongServer
+  href: PingPongServer.html
+  name: PingPongServer
+  nameWithType: PingPongServer
+  fullName: PingPongServer

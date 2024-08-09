@@ -1,0 +1,878 @@
+### YamlMime:ManagedReference
+items:
+- uid: Utils.SslEventListener
+  commentId: T:Utils.SslEventListener
+  id: SslEventListener
+  parent: Utils
+  children:
+  - Utils.SslEventListener.#ctor(Microsoft.Extensions.Logging.ILogger)
+  - Utils.SslEventListener.OnEventSourceCreated(System.Diagnostics.Tracing.EventSource)
+  - Utils.SslEventListener.OnEventWritten(System.Diagnostics.Tracing.EventWrittenEventArgs)
+  langs:
+  - csharp
+  - vb
+  name: SslEventListener
+  nameWithType: SslEventListener
+  fullName: Utils.SslEventListener
+  type: Class
+  source:
+    remote:
+      path: PingPongSchema/SslEventListener.cs
+      branch: Client_ConnectionPool
+      repo: https://github.com/iLakis/PingPongConsoleApp.git
+    id: SslEventListener
+    path: PingPongSchema/SslEventListener.cs
+    startLine: 4
+  assemblies:
+  - Utils
+  namespace: Utils
+  syntax:
+    content: 'public class SslEventListener : EventListener, IDisposable'
+    content.vb: Public Class SslEventListener Inherits EventListener Implements IDisposable
+  inheritance:
+  - System.Object
+  - System.Diagnostics.Tracing.EventListener
+  implements:
+  - System.IDisposable
+  inheritedMembers:
+  - System.Diagnostics.Tracing.EventListener.DisableEvents(System.Diagnostics.Tracing.EventSource)
+  - System.Diagnostics.Tracing.EventListener.Dispose
+  - System.Diagnostics.Tracing.EventListener.EnableEvents(System.Diagnostics.Tracing.EventSource,System.Diagnostics.Tracing.EventLevel)
+  - System.Diagnostics.Tracing.EventListener.EnableEvents(System.Diagnostics.Tracing.EventSource,System.Diagnostics.Tracing.EventLevel,System.Diagnostics.Tracing.EventKeywords)
+  - System.Diagnostics.Tracing.EventListener.EnableEvents(System.Diagnostics.Tracing.EventSource,System.Diagnostics.Tracing.EventLevel,System.Diagnostics.Tracing.EventKeywords,System.Collections.Generic.IDictionary{System.String,System.String})
+  - System.Diagnostics.Tracing.EventListener.EventSourceIndex(System.Diagnostics.Tracing.EventSource)
+  - System.Diagnostics.Tracing.EventListener.EventSourceCreated
+  - System.Diagnostics.Tracing.EventListener.EventWritten
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.ToString
+- uid: Utils.SslEventListener.#ctor(Microsoft.Extensions.Logging.ILogger)
+  commentId: M:Utils.SslEventListener.#ctor(Microsoft.Extensions.Logging.ILogger)
+  id: '#ctor(Microsoft.Extensions.Logging.ILogger)'
+  parent: Utils.SslEventListener
+  langs:
+  - csharp
+  - vb
+  name: SslEventListener(ILogger)
+  nameWithType: SslEventListener.SslEventListener(ILogger)
+  fullName: Utils.SslEventListener.SslEventListener(Microsoft.Extensions.Logging.ILogger)
+  type: Constructor
+  source:
+    remote:
+      path: PingPongSchema/SslEventListener.cs
+      branch: Client_ConnectionPool
+      repo: https://github.com/iLakis/PingPongConsoleApp.git
+    id: .ctor
+    path: PingPongSchema/SslEventListener.cs
+    startLine: 6
+  assemblies:
+  - Utils
+  namespace: Utils
+  syntax:
+    content: public SslEventListener(ILogger logger)
+    parameters:
+    - id: logger
+      type: Microsoft.Extensions.Logging.ILogger
+    content.vb: Public Sub New(logger As ILogger)
+  overload: Utils.SslEventListener.#ctor*
+  nameWithType.vb: SslEventListener.New(ILogger)
+  fullName.vb: Utils.SslEventListener.New(Microsoft.Extensions.Logging.ILogger)
+  name.vb: New(ILogger)
+- uid: Utils.SslEventListener.OnEventSourceCreated(System.Diagnostics.Tracing.EventSource)
+  commentId: M:Utils.SslEventListener.OnEventSourceCreated(System.Diagnostics.Tracing.EventSource)
+  id: OnEventSourceCreated(System.Diagnostics.Tracing.EventSource)
+  parent: Utils.SslEventListener
+  langs:
+  - csharp
+  - vb
+  name: OnEventSourceCreated(EventSource)
+  nameWithType: SslEventListener.OnEventSourceCreated(EventSource)
+  fullName: Utils.SslEventListener.OnEventSourceCreated(System.Diagnostics.Tracing.EventSource)
+  type: Method
+  source:
+    remote:
+      path: PingPongSchema/SslEventListener.cs
+      branch: Client_ConnectionPool
+      repo: https://github.com/iLakis/PingPongConsoleApp.git
+    id: OnEventSourceCreated
+    path: PingPongSchema/SslEventListener.cs
+    startLine: 9
+  assemblies:
+  - Utils
+  namespace: Utils
+  summary: Called for all existing event sources when the event listener is created and when a new event source is attached to the listener.
+  example: []
+  syntax:
+    content: protected override void OnEventSourceCreated(EventSource eventSource)
+    parameters:
+    - id: eventSource
+      type: System.Diagnostics.Tracing.EventSource
+      description: The event source.
+    content.vb: Protected Overrides Sub OnEventSourceCreated(eventSource As EventSource)
+  overridden: System.Diagnostics.Tracing.EventListener.OnEventSourceCreated(System.Diagnostics.Tracing.EventSource)
+  overload: Utils.SslEventListener.OnEventSourceCreated*
+- uid: Utils.SslEventListener.OnEventWritten(System.Diagnostics.Tracing.EventWrittenEventArgs)
+  commentId: M:Utils.SslEventListener.OnEventWritten(System.Diagnostics.Tracing.EventWrittenEventArgs)
+  id: OnEventWritten(System.Diagnostics.Tracing.EventWrittenEventArgs)
+  parent: Utils.SslEventListener
+  langs:
+  - csharp
+  - vb
+  name: OnEventWritten(EventWrittenEventArgs)
+  nameWithType: SslEventListener.OnEventWritten(EventWrittenEventArgs)
+  fullName: Utils.SslEventListener.OnEventWritten(System.Diagnostics.Tracing.EventWrittenEventArgs)
+  type: Method
+  source:
+    remote:
+      path: PingPongSchema/SslEventListener.cs
+      branch: Client_ConnectionPool
+      repo: https://github.com/iLakis/PingPongConsoleApp.git
+    id: OnEventWritten
+    path: PingPongSchema/SslEventListener.cs
+    startLine: 15
+  assemblies:
+  - Utils
+  namespace: Utils
+  summary: Called whenever an event has been written by an event source for which the event listener has enabled events.
+  example: []
+  syntax:
+    content: protected override void OnEventWritten(EventWrittenEventArgs eventData)
+    parameters:
+    - id: eventData
+      type: System.Diagnostics.Tracing.EventWrittenEventArgs
+      description: The event arguments that describe the event.
+    content.vb: Protected Overrides Sub OnEventWritten(eventData As EventWrittenEventArgs)
+  overridden: System.Diagnostics.Tracing.EventListener.OnEventWritten(System.Diagnostics.Tracing.EventWrittenEventArgs)
+  overload: Utils.SslEventListener.OnEventWritten*
+references:
+- uid: Utils
+  commentId: N:Utils
+  href: Utils.html
+  name: Utils
+  nameWithType: Utils
+  fullName: Utils
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object
+  name: object
+  nameWithType: object
+  fullName: object
+  nameWithType.vb: Object
+  fullName.vb: Object
+  name.vb: Object
+- uid: System.Diagnostics.Tracing.EventListener
+  commentId: T:System.Diagnostics.Tracing.EventListener
+  parent: System.Diagnostics.Tracing
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.diagnostics.tracing.eventlistener
+  name: EventListener
+  nameWithType: EventListener
+  fullName: System.Diagnostics.Tracing.EventListener
+- uid: System.IDisposable
+  commentId: T:System.IDisposable
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.idisposable
+  name: IDisposable
+  nameWithType: IDisposable
+  fullName: System.IDisposable
+- uid: System.Diagnostics.Tracing.EventListener.DisableEvents(System.Diagnostics.Tracing.EventSource)
+  commentId: M:System.Diagnostics.Tracing.EventListener.DisableEvents(System.Diagnostics.Tracing.EventSource)
+  parent: System.Diagnostics.Tracing.EventListener
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.diagnostics.tracing.eventlistener.disableevents
+  name: DisableEvents(EventSource)
+  nameWithType: EventListener.DisableEvents(EventSource)
+  fullName: System.Diagnostics.Tracing.EventListener.DisableEvents(System.Diagnostics.Tracing.EventSource)
+  spec.csharp:
+  - uid: System.Diagnostics.Tracing.EventListener.DisableEvents(System.Diagnostics.Tracing.EventSource)
+    name: DisableEvents
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.diagnostics.tracing.eventlistener.disableevents
+  - name: (
+  - uid: System.Diagnostics.Tracing.EventSource
+    name: EventSource
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.diagnostics.tracing.eventsource
+  - name: )
+  spec.vb:
+  - uid: System.Diagnostics.Tracing.EventListener.DisableEvents(System.Diagnostics.Tracing.EventSource)
+    name: DisableEvents
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.diagnostics.tracing.eventlistener.disableevents
+  - name: (
+  - uid: System.Diagnostics.Tracing.EventSource
+    name: EventSource
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.diagnostics.tracing.eventsource
+  - name: )
+- uid: System.Diagnostics.Tracing.EventListener.Dispose
+  commentId: M:System.Diagnostics.Tracing.EventListener.Dispose
+  parent: System.Diagnostics.Tracing.EventListener
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.diagnostics.tracing.eventlistener.dispose
+  name: Dispose()
+  nameWithType: EventListener.Dispose()
+  fullName: System.Diagnostics.Tracing.EventListener.Dispose()
+  spec.csharp:
+  - uid: System.Diagnostics.Tracing.EventListener.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.diagnostics.tracing.eventlistener.dispose
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Diagnostics.Tracing.EventListener.Dispose
+    name: Dispose
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.diagnostics.tracing.eventlistener.dispose
+  - name: (
+  - name: )
+- uid: System.Diagnostics.Tracing.EventListener.EnableEvents(System.Diagnostics.Tracing.EventSource,System.Diagnostics.Tracing.EventLevel)
+  commentId: M:System.Diagnostics.Tracing.EventListener.EnableEvents(System.Diagnostics.Tracing.EventSource,System.Diagnostics.Tracing.EventLevel)
+  parent: System.Diagnostics.Tracing.EventListener
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.diagnostics.tracing.eventlistener.enableevents#system-diagnostics-tracing-eventlistener-enableevents(system-diagnostics-tracing-eventsource-system-diagnostics-tracing-eventlevel)
+  name: EnableEvents(EventSource, EventLevel)
+  nameWithType: EventListener.EnableEvents(EventSource, EventLevel)
+  fullName: System.Diagnostics.Tracing.EventListener.EnableEvents(System.Diagnostics.Tracing.EventSource, System.Diagnostics.Tracing.EventLevel)
+  spec.csharp:
+  - uid: System.Diagnostics.Tracing.EventListener.EnableEvents(System.Diagnostics.Tracing.EventSource,System.Diagnostics.Tracing.EventLevel)
+    name: EnableEvents
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.diagnostics.tracing.eventlistener.enableevents#system-diagnostics-tracing-eventlistener-enableevents(system-diagnostics-tracing-eventsource-system-diagnostics-tracing-eventlevel)
+  - name: (
+  - uid: System.Diagnostics.Tracing.EventSource
+    name: EventSource
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.diagnostics.tracing.eventsource
+  - name: ','
+  - name: " "
+  - uid: System.Diagnostics.Tracing.EventLevel
+    name: EventLevel
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.diagnostics.tracing.eventlevel
+  - name: )
+  spec.vb:
+  - uid: System.Diagnostics.Tracing.EventListener.EnableEvents(System.Diagnostics.Tracing.EventSource,System.Diagnostics.Tracing.EventLevel)
+    name: EnableEvents
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.diagnostics.tracing.eventlistener.enableevents#system-diagnostics-tracing-eventlistener-enableevents(system-diagnostics-tracing-eventsource-system-diagnostics-tracing-eventlevel)
+  - name: (
+  - uid: System.Diagnostics.Tracing.EventSource
+    name: EventSource
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.diagnostics.tracing.eventsource
+  - name: ','
+  - name: " "
+  - uid: System.Diagnostics.Tracing.EventLevel
+    name: EventLevel
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.diagnostics.tracing.eventlevel
+  - name: )
+- uid: System.Diagnostics.Tracing.EventListener.EnableEvents(System.Diagnostics.Tracing.EventSource,System.Diagnostics.Tracing.EventLevel,System.Diagnostics.Tracing.EventKeywords)
+  commentId: M:System.Diagnostics.Tracing.EventListener.EnableEvents(System.Diagnostics.Tracing.EventSource,System.Diagnostics.Tracing.EventLevel,System.Diagnostics.Tracing.EventKeywords)
+  parent: System.Diagnostics.Tracing.EventListener
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.diagnostics.tracing.eventlistener.enableevents#system-diagnostics-tracing-eventlistener-enableevents(system-diagnostics-tracing-eventsource-system-diagnostics-tracing-eventlevel-system-diagnostics-tracing-eventkeywords)
+  name: EnableEvents(EventSource, EventLevel, EventKeywords)
+  nameWithType: EventListener.EnableEvents(EventSource, EventLevel, EventKeywords)
+  fullName: System.Diagnostics.Tracing.EventListener.EnableEvents(System.Diagnostics.Tracing.EventSource, System.Diagnostics.Tracing.EventLevel, System.Diagnostics.Tracing.EventKeywords)
+  spec.csharp:
+  - uid: System.Diagnostics.Tracing.EventListener.EnableEvents(System.Diagnostics.Tracing.EventSource,System.Diagnostics.Tracing.EventLevel,System.Diagnostics.Tracing.EventKeywords)
+    name: EnableEvents
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.diagnostics.tracing.eventlistener.enableevents#system-diagnostics-tracing-eventlistener-enableevents(system-diagnostics-tracing-eventsource-system-diagnostics-tracing-eventlevel-system-diagnostics-tracing-eventkeywords)
+  - name: (
+  - uid: System.Diagnostics.Tracing.EventSource
+    name: EventSource
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.diagnostics.tracing.eventsource
+  - name: ','
+  - name: " "
+  - uid: System.Diagnostics.Tracing.EventLevel
+    name: EventLevel
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.diagnostics.tracing.eventlevel
+  - name: ','
+  - name: " "
+  - uid: System.Diagnostics.Tracing.EventKeywords
+    name: EventKeywords
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.diagnostics.tracing.eventkeywords
+  - name: )
+  spec.vb:
+  - uid: System.Diagnostics.Tracing.EventListener.EnableEvents(System.Diagnostics.Tracing.EventSource,System.Diagnostics.Tracing.EventLevel,System.Diagnostics.Tracing.EventKeywords)
+    name: EnableEvents
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.diagnostics.tracing.eventlistener.enableevents#system-diagnostics-tracing-eventlistener-enableevents(system-diagnostics-tracing-eventsource-system-diagnostics-tracing-eventlevel-system-diagnostics-tracing-eventkeywords)
+  - name: (
+  - uid: System.Diagnostics.Tracing.EventSource
+    name: EventSource
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.diagnostics.tracing.eventsource
+  - name: ','
+  - name: " "
+  - uid: System.Diagnostics.Tracing.EventLevel
+    name: EventLevel
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.diagnostics.tracing.eventlevel
+  - name: ','
+  - name: " "
+  - uid: System.Diagnostics.Tracing.EventKeywords
+    name: EventKeywords
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.diagnostics.tracing.eventkeywords
+  - name: )
+- uid: System.Diagnostics.Tracing.EventListener.EnableEvents(System.Diagnostics.Tracing.EventSource,System.Diagnostics.Tracing.EventLevel,System.Diagnostics.Tracing.EventKeywords,System.Collections.Generic.IDictionary{System.String,System.String})
+  commentId: M:System.Diagnostics.Tracing.EventListener.EnableEvents(System.Diagnostics.Tracing.EventSource,System.Diagnostics.Tracing.EventLevel,System.Diagnostics.Tracing.EventKeywords,System.Collections.Generic.IDictionary{System.String,System.String})
+  parent: System.Diagnostics.Tracing.EventListener
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.diagnostics.tracing.eventlistener.enableevents#system-diagnostics-tracing-eventlistener-enableevents(system-diagnostics-tracing-eventsource-system-diagnostics-tracing-eventlevel-system-diagnostics-tracing-eventkeywords-system-collections-generic-idictionary((system-string-system-string)))
+  name: EnableEvents(EventSource, EventLevel, EventKeywords, IDictionary<string, string>)
+  nameWithType: EventListener.EnableEvents(EventSource, EventLevel, EventKeywords, IDictionary<string, string>)
+  fullName: System.Diagnostics.Tracing.EventListener.EnableEvents(System.Diagnostics.Tracing.EventSource, System.Diagnostics.Tracing.EventLevel, System.Diagnostics.Tracing.EventKeywords, System.Collections.Generic.IDictionary<string, string>)
+  nameWithType.vb: EventListener.EnableEvents(EventSource, EventLevel, EventKeywords, IDictionary(Of String, String))
+  fullName.vb: System.Diagnostics.Tracing.EventListener.EnableEvents(System.Diagnostics.Tracing.EventSource, System.Diagnostics.Tracing.EventLevel, System.Diagnostics.Tracing.EventKeywords, System.Collections.Generic.IDictionary(Of String, String))
+  name.vb: EnableEvents(EventSource, EventLevel, EventKeywords, IDictionary(Of String, String))
+  spec.csharp:
+  - uid: System.Diagnostics.Tracing.EventListener.EnableEvents(System.Diagnostics.Tracing.EventSource,System.Diagnostics.Tracing.EventLevel,System.Diagnostics.Tracing.EventKeywords,System.Collections.Generic.IDictionary{System.String,System.String})
+    name: EnableEvents
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.diagnostics.tracing.eventlistener.enableevents#system-diagnostics-tracing-eventlistener-enableevents(system-diagnostics-tracing-eventsource-system-diagnostics-tracing-eventlevel-system-diagnostics-tracing-eventkeywords-system-collections-generic-idictionary((system-string-system-string)))
+  - name: (
+  - uid: System.Diagnostics.Tracing.EventSource
+    name: EventSource
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.diagnostics.tracing.eventsource
+  - name: ','
+  - name: " "
+  - uid: System.Diagnostics.Tracing.EventLevel
+    name: EventLevel
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.diagnostics.tracing.eventlevel
+  - name: ','
+  - name: " "
+  - uid: System.Diagnostics.Tracing.EventKeywords
+    name: EventKeywords
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.diagnostics.tracing.eventkeywords
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.IDictionary`2
+    name: IDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.idictionary-2
+  - name: <
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: string
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: '>'
+  - name: )
+  spec.vb:
+  - uid: System.Diagnostics.Tracing.EventListener.EnableEvents(System.Diagnostics.Tracing.EventSource,System.Diagnostics.Tracing.EventLevel,System.Diagnostics.Tracing.EventKeywords,System.Collections.Generic.IDictionary{System.String,System.String})
+    name: EnableEvents
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.diagnostics.tracing.eventlistener.enableevents#system-diagnostics-tracing-eventlistener-enableevents(system-diagnostics-tracing-eventsource-system-diagnostics-tracing-eventlevel-system-diagnostics-tracing-eventkeywords-system-collections-generic-idictionary((system-string-system-string)))
+  - name: (
+  - uid: System.Diagnostics.Tracing.EventSource
+    name: EventSource
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.diagnostics.tracing.eventsource
+  - name: ','
+  - name: " "
+  - uid: System.Diagnostics.Tracing.EventLevel
+    name: EventLevel
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.diagnostics.tracing.eventlevel
+  - name: ','
+  - name: " "
+  - uid: System.Diagnostics.Tracing.EventKeywords
+    name: EventKeywords
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.diagnostics.tracing.eventkeywords
+  - name: ','
+  - name: " "
+  - uid: System.Collections.Generic.IDictionary`2
+    name: IDictionary
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.collections.generic.idictionary-2
+  - name: (
+  - name: Of
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: ','
+  - name: " "
+  - uid: System.String
+    name: String
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.string
+  - name: )
+  - name: )
+- uid: System.Diagnostics.Tracing.EventListener.EventSourceIndex(System.Diagnostics.Tracing.EventSource)
+  commentId: M:System.Diagnostics.Tracing.EventListener.EventSourceIndex(System.Diagnostics.Tracing.EventSource)
+  parent: System.Diagnostics.Tracing.EventListener
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.diagnostics.tracing.eventlistener.eventsourceindex
+  name: EventSourceIndex(EventSource)
+  nameWithType: EventListener.EventSourceIndex(EventSource)
+  fullName: System.Diagnostics.Tracing.EventListener.EventSourceIndex(System.Diagnostics.Tracing.EventSource)
+  spec.csharp:
+  - uid: System.Diagnostics.Tracing.EventListener.EventSourceIndex(System.Diagnostics.Tracing.EventSource)
+    name: EventSourceIndex
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.diagnostics.tracing.eventlistener.eventsourceindex
+  - name: (
+  - uid: System.Diagnostics.Tracing.EventSource
+    name: EventSource
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.diagnostics.tracing.eventsource
+  - name: )
+  spec.vb:
+  - uid: System.Diagnostics.Tracing.EventListener.EventSourceIndex(System.Diagnostics.Tracing.EventSource)
+    name: EventSourceIndex
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.diagnostics.tracing.eventlistener.eventsourceindex
+  - name: (
+  - uid: System.Diagnostics.Tracing.EventSource
+    name: EventSource
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.diagnostics.tracing.eventsource
+  - name: )
+- uid: System.Diagnostics.Tracing.EventListener.EventSourceCreated
+  commentId: E:System.Diagnostics.Tracing.EventListener.EventSourceCreated
+  parent: System.Diagnostics.Tracing.EventListener
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.diagnostics.tracing.eventlistener.eventsourcecreated
+  name: EventSourceCreated
+  nameWithType: EventListener.EventSourceCreated
+  fullName: System.Diagnostics.Tracing.EventListener.EventSourceCreated
+- uid: System.Diagnostics.Tracing.EventListener.EventWritten
+  commentId: E:System.Diagnostics.Tracing.EventListener.EventWritten
+  parent: System.Diagnostics.Tracing.EventListener
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.diagnostics.tracing.eventlistener.eventwritten
+  name: EventWritten
+  nameWithType: EventListener.EventWritten
+  fullName: System.Diagnostics.Tracing.EventListener.EventWritten
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  name: Equals(object)
+  nameWithType: object.Equals(object)
+  fullName: object.Equals(object)
+  nameWithType.vb: Object.Equals(Object)
+  fullName.vb: Object.Equals(Object)
+  name.vb: Equals(Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  name: Equals(object, object)
+  nameWithType: object.Equals(object, object)
+  fullName: object.Equals(object, object)
+  nameWithType.vb: Object.Equals(Object, Object)
+  fullName.vb: Object.Equals(Object, Object)
+  name.vb: Equals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.equals#system-object-equals(system-object-system-object)
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  name: GetHashCode()
+  nameWithType: object.GetHashCode()
+  fullName: object.GetHashCode()
+  nameWithType.vb: Object.GetHashCode()
+  fullName.vb: Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gethashcode
+  - name: (
+  - name: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  name: GetType()
+  nameWithType: object.GetType()
+  fullName: object.GetType()
+  nameWithType.vb: Object.GetType()
+  fullName.vb: Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.gettype
+  - name: (
+  - name: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  name: MemberwiseClone()
+  nameWithType: object.MemberwiseClone()
+  fullName: object.MemberwiseClone()
+  nameWithType.vb: Object.MemberwiseClone()
+  fullName.vb: Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.memberwiseclone
+  - name: (
+  - name: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  name: ReferenceEquals(object, object)
+  nameWithType: object.ReferenceEquals(object, object)
+  fullName: object.ReferenceEquals(object, object)
+  nameWithType.vb: Object.ReferenceEquals(Object, Object)
+  fullName.vb: Object.ReferenceEquals(Object, Object)
+  name.vb: ReferenceEquals(Object, Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.referenceequals
+  - name: (
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: ','
+  - name: " "
+  - uid: System.Object
+    name: Object
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object
+  - name: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  name: ToString()
+  nameWithType: object.ToString()
+  fullName: object.ToString()
+  nameWithType.vb: Object.ToString()
+  fullName.vb: Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.object.tostring
+  - name: (
+  - name: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Diagnostics.Tracing
+  commentId: N:System.Diagnostics.Tracing
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System.Diagnostics.Tracing
+  nameWithType: System.Diagnostics.Tracing
+  fullName: System.Diagnostics.Tracing
+  spec.csharp:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Diagnostics
+    name: Diagnostics
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.diagnostics
+  - name: .
+  - uid: System.Diagnostics.Tracing
+    name: Tracing
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.diagnostics.tracing
+  spec.vb:
+  - uid: System
+    name: System
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system
+  - name: .
+  - uid: System.Diagnostics
+    name: Diagnostics
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.diagnostics
+  - name: .
+  - uid: System.Diagnostics.Tracing
+    name: Tracing
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.diagnostics.tracing
+- uid: Utils.SslEventListener.#ctor*
+  commentId: Overload:Utils.SslEventListener.#ctor
+  href: Utils.SslEventListener.html#Utils_SslEventListener__ctor_Microsoft_Extensions_Logging_ILogger_
+  name: SslEventListener
+  nameWithType: SslEventListener.SslEventListener
+  fullName: Utils.SslEventListener.SslEventListener
+  nameWithType.vb: SslEventListener.New
+  fullName.vb: Utils.SslEventListener.New
+  name.vb: New
+- uid: Microsoft.Extensions.Logging.ILogger
+  commentId: T:Microsoft.Extensions.Logging.ILogger
+  parent: Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger
+  name: ILogger
+  nameWithType: ILogger
+  fullName: Microsoft.Extensions.Logging.ILogger
+- uid: Microsoft.Extensions.Logging
+  commentId: N:Microsoft.Extensions.Logging
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/microsoft
+  name: Microsoft.Extensions.Logging
+  nameWithType: Microsoft.Extensions.Logging
+  fullName: Microsoft.Extensions.Logging
+  spec.csharp:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+  spec.vb:
+  - uid: Microsoft
+    name: Microsoft
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft
+  - name: .
+  - uid: Microsoft.Extensions
+    name: Extensions
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions
+  - name: .
+  - uid: Microsoft.Extensions.Logging
+    name: Logging
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging
+- uid: System.Diagnostics.Tracing.EventListener.OnEventSourceCreated(System.Diagnostics.Tracing.EventSource)
+  commentId: M:System.Diagnostics.Tracing.EventListener.OnEventSourceCreated(System.Diagnostics.Tracing.EventSource)
+  parent: System.Diagnostics.Tracing.EventListener
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.diagnostics.tracing.eventlistener.oneventsourcecreated
+  name: OnEventSourceCreated(EventSource)
+  nameWithType: EventListener.OnEventSourceCreated(EventSource)
+  fullName: System.Diagnostics.Tracing.EventListener.OnEventSourceCreated(System.Diagnostics.Tracing.EventSource)
+  spec.csharp:
+  - uid: System.Diagnostics.Tracing.EventListener.OnEventSourceCreated(System.Diagnostics.Tracing.EventSource)
+    name: OnEventSourceCreated
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.diagnostics.tracing.eventlistener.oneventsourcecreated
+  - name: (
+  - uid: System.Diagnostics.Tracing.EventSource
+    name: EventSource
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.diagnostics.tracing.eventsource
+  - name: )
+  spec.vb:
+  - uid: System.Diagnostics.Tracing.EventListener.OnEventSourceCreated(System.Diagnostics.Tracing.EventSource)
+    name: OnEventSourceCreated
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.diagnostics.tracing.eventlistener.oneventsourcecreated
+  - name: (
+  - uid: System.Diagnostics.Tracing.EventSource
+    name: EventSource
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.diagnostics.tracing.eventsource
+  - name: )
+- uid: Utils.SslEventListener.OnEventSourceCreated*
+  commentId: Overload:Utils.SslEventListener.OnEventSourceCreated
+  href: Utils.SslEventListener.html#Utils_SslEventListener_OnEventSourceCreated_System_Diagnostics_Tracing_EventSource_
+  name: OnEventSourceCreated
+  nameWithType: SslEventListener.OnEventSourceCreated
+  fullName: Utils.SslEventListener.OnEventSourceCreated
+- uid: System.Diagnostics.Tracing.EventSource
+  commentId: T:System.Diagnostics.Tracing.EventSource
+  parent: System.Diagnostics.Tracing
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.diagnostics.tracing.eventsource
+  name: EventSource
+  nameWithType: EventSource
+  fullName: System.Diagnostics.Tracing.EventSource
+- uid: System.Diagnostics.Tracing.EventListener.OnEventWritten(System.Diagnostics.Tracing.EventWrittenEventArgs)
+  commentId: M:System.Diagnostics.Tracing.EventListener.OnEventWritten(System.Diagnostics.Tracing.EventWrittenEventArgs)
+  parent: System.Diagnostics.Tracing.EventListener
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.diagnostics.tracing.eventlistener.oneventwritten
+  name: OnEventWritten(EventWrittenEventArgs)
+  nameWithType: EventListener.OnEventWritten(EventWrittenEventArgs)
+  fullName: System.Diagnostics.Tracing.EventListener.OnEventWritten(System.Diagnostics.Tracing.EventWrittenEventArgs)
+  spec.csharp:
+  - uid: System.Diagnostics.Tracing.EventListener.OnEventWritten(System.Diagnostics.Tracing.EventWrittenEventArgs)
+    name: OnEventWritten
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.diagnostics.tracing.eventlistener.oneventwritten
+  - name: (
+  - uid: System.Diagnostics.Tracing.EventWrittenEventArgs
+    name: EventWrittenEventArgs
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.diagnostics.tracing.eventwritteneventargs
+  - name: )
+  spec.vb:
+  - uid: System.Diagnostics.Tracing.EventListener.OnEventWritten(System.Diagnostics.Tracing.EventWrittenEventArgs)
+    name: OnEventWritten
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.diagnostics.tracing.eventlistener.oneventwritten
+  - name: (
+  - uid: System.Diagnostics.Tracing.EventWrittenEventArgs
+    name: EventWrittenEventArgs
+    isExternal: true
+    href: https://learn.microsoft.com/dotnet/api/system.diagnostics.tracing.eventwritteneventargs
+  - name: )
+- uid: Utils.SslEventListener.OnEventWritten*
+  commentId: Overload:Utils.SslEventListener.OnEventWritten
+  href: Utils.SslEventListener.html#Utils_SslEventListener_OnEventWritten_System_Diagnostics_Tracing_EventWrittenEventArgs_
+  name: OnEventWritten
+  nameWithType: SslEventListener.OnEventWritten
+  fullName: Utils.SslEventListener.OnEventWritten
+- uid: System.Diagnostics.Tracing.EventWrittenEventArgs
+  commentId: T:System.Diagnostics.Tracing.EventWrittenEventArgs
+  parent: System.Diagnostics.Tracing
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.diagnostics.tracing.eventwritteneventargs
+  name: EventWrittenEventArgs
+  nameWithType: EventWrittenEventArgs
+  fullName: System.Diagnostics.Tracing.EventWrittenEventArgs

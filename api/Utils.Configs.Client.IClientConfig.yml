@@ -1,0 +1,700 @@
+### YamlMime:ManagedReference
+items:
+- uid: Utils.Configs.Client.IClientConfig
+  commentId: T:Utils.Configs.Client.IClientConfig
+  id: IClientConfig
+  parent: Utils.Configs.Client
+  children:
+  - Utils.Configs.Client.IClientConfig.HighLatencyThreshold
+  - Utils.Configs.Client.IClientConfig.Interval
+  - Utils.Configs.Client.IClientConfig.LowLatencyThreshold
+  - Utils.Configs.Client.IClientConfig.MaxInterval
+  - Utils.Configs.Client.IClientConfig.MaxReadTimeout
+  - Utils.Configs.Client.IClientConfig.MaxReconnectAttempts
+  - Utils.Configs.Client.IClientConfig.MaxWriteTimeout
+  - Utils.Configs.Client.IClientConfig.MinInterval
+  - Utils.Configs.Client.IClientConfig.MinReadTimeout
+  - Utils.Configs.Client.IClientConfig.MinWriteTimeout
+  - Utils.Configs.Client.IClientConfig.Port
+  - Utils.Configs.Client.IClientConfig.ReadTimeout
+  - Utils.Configs.Client.IClientConfig.ReconnectDelay
+  - Utils.Configs.Client.IClientConfig.Separator
+  - Utils.Configs.Client.IClientConfig.ServerAddress
+  - Utils.Configs.Client.IClientConfig.SslPass
+  - Utils.Configs.Client.IClientConfig.WriteTimeout
+  langs:
+  - csharp
+  - vb
+  name: IClientConfig
+  nameWithType: IClientConfig
+  fullName: Utils.Configs.Client.IClientConfig
+  type: Interface
+  source:
+    remote:
+      path: PingPongSchema/Configs/Client/IClientConfig.cs
+      branch: Client_ConnectionPool
+      repo: https://github.com/iLakis/PingPongConsoleApp.git
+    id: IClientConfig
+    path: PingPongSchema/Configs/Client/IClientConfig.cs
+    startLine: 2
+  assemblies:
+  - Utils
+  namespace: Utils.Configs.Client
+  syntax:
+    content: public interface IClientConfig
+    content.vb: Public Interface IClientConfig
+- uid: Utils.Configs.Client.IClientConfig.SslPass
+  commentId: P:Utils.Configs.Client.IClientConfig.SslPass
+  id: SslPass
+  parent: Utils.Configs.Client.IClientConfig
+  langs:
+  - csharp
+  - vb
+  name: SslPass
+  nameWithType: IClientConfig.SslPass
+  fullName: Utils.Configs.Client.IClientConfig.SslPass
+  type: Property
+  source:
+    remote:
+      path: PingPongSchema/Configs/Client/IClientConfig.cs
+      branch: Client_ConnectionPool
+      repo: https://github.com/iLakis/PingPongConsoleApp.git
+    id: SslPass
+    path: PingPongSchema/Configs/Client/IClientConfig.cs
+    startLine: 4
+  assemblies:
+  - Utils
+  namespace: Utils.Configs.Client
+  syntax:
+    content: string SslPass { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Property SslPass As String
+  overload: Utils.Configs.Client.IClientConfig.SslPass*
+- uid: Utils.Configs.Client.IClientConfig.Interval
+  commentId: P:Utils.Configs.Client.IClientConfig.Interval
+  id: Interval
+  parent: Utils.Configs.Client.IClientConfig
+  langs:
+  - csharp
+  - vb
+  name: Interval
+  nameWithType: IClientConfig.Interval
+  fullName: Utils.Configs.Client.IClientConfig.Interval
+  type: Property
+  source:
+    remote:
+      path: PingPongSchema/Configs/Client/IClientConfig.cs
+      branch: Client_ConnectionPool
+      repo: https://github.com/iLakis/PingPongConsoleApp.git
+    id: Interval
+    path: PingPongSchema/Configs/Client/IClientConfig.cs
+    startLine: 5
+  assemblies:
+  - Utils
+  namespace: Utils.Configs.Client
+  syntax:
+    content: int Interval { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Property Interval As Integer
+  overload: Utils.Configs.Client.IClientConfig.Interval*
+- uid: Utils.Configs.Client.IClientConfig.MaxReconnectAttempts
+  commentId: P:Utils.Configs.Client.IClientConfig.MaxReconnectAttempts
+  id: MaxReconnectAttempts
+  parent: Utils.Configs.Client.IClientConfig
+  langs:
+  - csharp
+  - vb
+  name: MaxReconnectAttempts
+  nameWithType: IClientConfig.MaxReconnectAttempts
+  fullName: Utils.Configs.Client.IClientConfig.MaxReconnectAttempts
+  type: Property
+  source:
+    remote:
+      path: PingPongSchema/Configs/Client/IClientConfig.cs
+      branch: Client_ConnectionPool
+      repo: https://github.com/iLakis/PingPongConsoleApp.git
+    id: MaxReconnectAttempts
+    path: PingPongSchema/Configs/Client/IClientConfig.cs
+    startLine: 6
+  assemblies:
+  - Utils
+  namespace: Utils.Configs.Client
+  syntax:
+    content: int MaxReconnectAttempts { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Property MaxReconnectAttempts As Integer
+  overload: Utils.Configs.Client.IClientConfig.MaxReconnectAttempts*
+- uid: Utils.Configs.Client.IClientConfig.ReconnectDelay
+  commentId: P:Utils.Configs.Client.IClientConfig.ReconnectDelay
+  id: ReconnectDelay
+  parent: Utils.Configs.Client.IClientConfig
+  langs:
+  - csharp
+  - vb
+  name: ReconnectDelay
+  nameWithType: IClientConfig.ReconnectDelay
+  fullName: Utils.Configs.Client.IClientConfig.ReconnectDelay
+  type: Property
+  source:
+    remote:
+      path: PingPongSchema/Configs/Client/IClientConfig.cs
+      branch: Client_ConnectionPool
+      repo: https://github.com/iLakis/PingPongConsoleApp.git
+    id: ReconnectDelay
+    path: PingPongSchema/Configs/Client/IClientConfig.cs
+    startLine: 7
+  assemblies:
+  - Utils
+  namespace: Utils.Configs.Client
+  syntax:
+    content: int ReconnectDelay { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Property ReconnectDelay As Integer
+  overload: Utils.Configs.Client.IClientConfig.ReconnectDelay*
+- uid: Utils.Configs.Client.IClientConfig.ReadTimeout
+  commentId: P:Utils.Configs.Client.IClientConfig.ReadTimeout
+  id: ReadTimeout
+  parent: Utils.Configs.Client.IClientConfig
+  langs:
+  - csharp
+  - vb
+  name: ReadTimeout
+  nameWithType: IClientConfig.ReadTimeout
+  fullName: Utils.Configs.Client.IClientConfig.ReadTimeout
+  type: Property
+  source:
+    remote:
+      path: PingPongSchema/Configs/Client/IClientConfig.cs
+      branch: Client_ConnectionPool
+      repo: https://github.com/iLakis/PingPongConsoleApp.git
+    id: ReadTimeout
+    path: PingPongSchema/Configs/Client/IClientConfig.cs
+    startLine: 8
+  assemblies:
+  - Utils
+  namespace: Utils.Configs.Client
+  syntax:
+    content: int ReadTimeout { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Property ReadTimeout As Integer
+  overload: Utils.Configs.Client.IClientConfig.ReadTimeout*
+- uid: Utils.Configs.Client.IClientConfig.WriteTimeout
+  commentId: P:Utils.Configs.Client.IClientConfig.WriteTimeout
+  id: WriteTimeout
+  parent: Utils.Configs.Client.IClientConfig
+  langs:
+  - csharp
+  - vb
+  name: WriteTimeout
+  nameWithType: IClientConfig.WriteTimeout
+  fullName: Utils.Configs.Client.IClientConfig.WriteTimeout
+  type: Property
+  source:
+    remote:
+      path: PingPongSchema/Configs/Client/IClientConfig.cs
+      branch: Client_ConnectionPool
+      repo: https://github.com/iLakis/PingPongConsoleApp.git
+    id: WriteTimeout
+    path: PingPongSchema/Configs/Client/IClientConfig.cs
+    startLine: 9
+  assemblies:
+  - Utils
+  namespace: Utils.Configs.Client
+  syntax:
+    content: int WriteTimeout { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Property WriteTimeout As Integer
+  overload: Utils.Configs.Client.IClientConfig.WriteTimeout*
+- uid: Utils.Configs.Client.IClientConfig.HighLatencyThreshold
+  commentId: P:Utils.Configs.Client.IClientConfig.HighLatencyThreshold
+  id: HighLatencyThreshold
+  parent: Utils.Configs.Client.IClientConfig
+  langs:
+  - csharp
+  - vb
+  name: HighLatencyThreshold
+  nameWithType: IClientConfig.HighLatencyThreshold
+  fullName: Utils.Configs.Client.IClientConfig.HighLatencyThreshold
+  type: Property
+  source:
+    remote:
+      path: PingPongSchema/Configs/Client/IClientConfig.cs
+      branch: Client_ConnectionPool
+      repo: https://github.com/iLakis/PingPongConsoleApp.git
+    id: HighLatencyThreshold
+    path: PingPongSchema/Configs/Client/IClientConfig.cs
+    startLine: 10
+  assemblies:
+  - Utils
+  namespace: Utils.Configs.Client
+  syntax:
+    content: int HighLatencyThreshold { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Property HighLatencyThreshold As Integer
+  overload: Utils.Configs.Client.IClientConfig.HighLatencyThreshold*
+- uid: Utils.Configs.Client.IClientConfig.LowLatencyThreshold
+  commentId: P:Utils.Configs.Client.IClientConfig.LowLatencyThreshold
+  id: LowLatencyThreshold
+  parent: Utils.Configs.Client.IClientConfig
+  langs:
+  - csharp
+  - vb
+  name: LowLatencyThreshold
+  nameWithType: IClientConfig.LowLatencyThreshold
+  fullName: Utils.Configs.Client.IClientConfig.LowLatencyThreshold
+  type: Property
+  source:
+    remote:
+      path: PingPongSchema/Configs/Client/IClientConfig.cs
+      branch: Client_ConnectionPool
+      repo: https://github.com/iLakis/PingPongConsoleApp.git
+    id: LowLatencyThreshold
+    path: PingPongSchema/Configs/Client/IClientConfig.cs
+    startLine: 11
+  assemblies:
+  - Utils
+  namespace: Utils.Configs.Client
+  syntax:
+    content: int LowLatencyThreshold { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Property LowLatencyThreshold As Integer
+  overload: Utils.Configs.Client.IClientConfig.LowLatencyThreshold*
+- uid: Utils.Configs.Client.IClientConfig.MaxReadTimeout
+  commentId: P:Utils.Configs.Client.IClientConfig.MaxReadTimeout
+  id: MaxReadTimeout
+  parent: Utils.Configs.Client.IClientConfig
+  langs:
+  - csharp
+  - vb
+  name: MaxReadTimeout
+  nameWithType: IClientConfig.MaxReadTimeout
+  fullName: Utils.Configs.Client.IClientConfig.MaxReadTimeout
+  type: Property
+  source:
+    remote:
+      path: PingPongSchema/Configs/Client/IClientConfig.cs
+      branch: Client_ConnectionPool
+      repo: https://github.com/iLakis/PingPongConsoleApp.git
+    id: MaxReadTimeout
+    path: PingPongSchema/Configs/Client/IClientConfig.cs
+    startLine: 12
+  assemblies:
+  - Utils
+  namespace: Utils.Configs.Client
+  syntax:
+    content: int MaxReadTimeout { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Property MaxReadTimeout As Integer
+  overload: Utils.Configs.Client.IClientConfig.MaxReadTimeout*
+- uid: Utils.Configs.Client.IClientConfig.MinReadTimeout
+  commentId: P:Utils.Configs.Client.IClientConfig.MinReadTimeout
+  id: MinReadTimeout
+  parent: Utils.Configs.Client.IClientConfig
+  langs:
+  - csharp
+  - vb
+  name: MinReadTimeout
+  nameWithType: IClientConfig.MinReadTimeout
+  fullName: Utils.Configs.Client.IClientConfig.MinReadTimeout
+  type: Property
+  source:
+    remote:
+      path: PingPongSchema/Configs/Client/IClientConfig.cs
+      branch: Client_ConnectionPool
+      repo: https://github.com/iLakis/PingPongConsoleApp.git
+    id: MinReadTimeout
+    path: PingPongSchema/Configs/Client/IClientConfig.cs
+    startLine: 13
+  assemblies:
+  - Utils
+  namespace: Utils.Configs.Client
+  syntax:
+    content: int MinReadTimeout { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Property MinReadTimeout As Integer
+  overload: Utils.Configs.Client.IClientConfig.MinReadTimeout*
+- uid: Utils.Configs.Client.IClientConfig.MaxWriteTimeout
+  commentId: P:Utils.Configs.Client.IClientConfig.MaxWriteTimeout
+  id: MaxWriteTimeout
+  parent: Utils.Configs.Client.IClientConfig
+  langs:
+  - csharp
+  - vb
+  name: MaxWriteTimeout
+  nameWithType: IClientConfig.MaxWriteTimeout
+  fullName: Utils.Configs.Client.IClientConfig.MaxWriteTimeout
+  type: Property
+  source:
+    remote:
+      path: PingPongSchema/Configs/Client/IClientConfig.cs
+      branch: Client_ConnectionPool
+      repo: https://github.com/iLakis/PingPongConsoleApp.git
+    id: MaxWriteTimeout
+    path: PingPongSchema/Configs/Client/IClientConfig.cs
+    startLine: 14
+  assemblies:
+  - Utils
+  namespace: Utils.Configs.Client
+  syntax:
+    content: int MaxWriteTimeout { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Property MaxWriteTimeout As Integer
+  overload: Utils.Configs.Client.IClientConfig.MaxWriteTimeout*
+- uid: Utils.Configs.Client.IClientConfig.MinWriteTimeout
+  commentId: P:Utils.Configs.Client.IClientConfig.MinWriteTimeout
+  id: MinWriteTimeout
+  parent: Utils.Configs.Client.IClientConfig
+  langs:
+  - csharp
+  - vb
+  name: MinWriteTimeout
+  nameWithType: IClientConfig.MinWriteTimeout
+  fullName: Utils.Configs.Client.IClientConfig.MinWriteTimeout
+  type: Property
+  source:
+    remote:
+      path: PingPongSchema/Configs/Client/IClientConfig.cs
+      branch: Client_ConnectionPool
+      repo: https://github.com/iLakis/PingPongConsoleApp.git
+    id: MinWriteTimeout
+    path: PingPongSchema/Configs/Client/IClientConfig.cs
+    startLine: 15
+  assemblies:
+  - Utils
+  namespace: Utils.Configs.Client
+  syntax:
+    content: int MinWriteTimeout { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Property MinWriteTimeout As Integer
+  overload: Utils.Configs.Client.IClientConfig.MinWriteTimeout*
+- uid: Utils.Configs.Client.IClientConfig.MaxInterval
+  commentId: P:Utils.Configs.Client.IClientConfig.MaxInterval
+  id: MaxInterval
+  parent: Utils.Configs.Client.IClientConfig
+  langs:
+  - csharp
+  - vb
+  name: MaxInterval
+  nameWithType: IClientConfig.MaxInterval
+  fullName: Utils.Configs.Client.IClientConfig.MaxInterval
+  type: Property
+  source:
+    remote:
+      path: PingPongSchema/Configs/Client/IClientConfig.cs
+      branch: Client_ConnectionPool
+      repo: https://github.com/iLakis/PingPongConsoleApp.git
+    id: MaxInterval
+    path: PingPongSchema/Configs/Client/IClientConfig.cs
+    startLine: 16
+  assemblies:
+  - Utils
+  namespace: Utils.Configs.Client
+  syntax:
+    content: int MaxInterval { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Property MaxInterval As Integer
+  overload: Utils.Configs.Client.IClientConfig.MaxInterval*
+- uid: Utils.Configs.Client.IClientConfig.MinInterval
+  commentId: P:Utils.Configs.Client.IClientConfig.MinInterval
+  id: MinInterval
+  parent: Utils.Configs.Client.IClientConfig
+  langs:
+  - csharp
+  - vb
+  name: MinInterval
+  nameWithType: IClientConfig.MinInterval
+  fullName: Utils.Configs.Client.IClientConfig.MinInterval
+  type: Property
+  source:
+    remote:
+      path: PingPongSchema/Configs/Client/IClientConfig.cs
+      branch: Client_ConnectionPool
+      repo: https://github.com/iLakis/PingPongConsoleApp.git
+    id: MinInterval
+    path: PingPongSchema/Configs/Client/IClientConfig.cs
+    startLine: 17
+  assemblies:
+  - Utils
+  namespace: Utils.Configs.Client
+  syntax:
+    content: int MinInterval { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Property MinInterval As Integer
+  overload: Utils.Configs.Client.IClientConfig.MinInterval*
+- uid: Utils.Configs.Client.IClientConfig.Separator
+  commentId: P:Utils.Configs.Client.IClientConfig.Separator
+  id: Separator
+  parent: Utils.Configs.Client.IClientConfig
+  langs:
+  - csharp
+  - vb
+  name: Separator
+  nameWithType: IClientConfig.Separator
+  fullName: Utils.Configs.Client.IClientConfig.Separator
+  type: Property
+  source:
+    remote:
+      path: PingPongSchema/Configs/Client/IClientConfig.cs
+      branch: Client_ConnectionPool
+      repo: https://github.com/iLakis/PingPongConsoleApp.git
+    id: Separator
+    path: PingPongSchema/Configs/Client/IClientConfig.cs
+    startLine: 18
+  assemblies:
+  - Utils
+  namespace: Utils.Configs.Client
+  syntax:
+    content: string Separator { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Property Separator As String
+  overload: Utils.Configs.Client.IClientConfig.Separator*
+- uid: Utils.Configs.Client.IClientConfig.Port
+  commentId: P:Utils.Configs.Client.IClientConfig.Port
+  id: Port
+  parent: Utils.Configs.Client.IClientConfig
+  langs:
+  - csharp
+  - vb
+  name: Port
+  nameWithType: IClientConfig.Port
+  fullName: Utils.Configs.Client.IClientConfig.Port
+  type: Property
+  source:
+    remote:
+      path: PingPongSchema/Configs/Client/IClientConfig.cs
+      branch: Client_ConnectionPool
+      repo: https://github.com/iLakis/PingPongConsoleApp.git
+    id: Port
+    path: PingPongSchema/Configs/Client/IClientConfig.cs
+    startLine: 19
+  assemblies:
+  - Utils
+  namespace: Utils.Configs.Client
+  syntax:
+    content: int Port { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Property Port As Integer
+  overload: Utils.Configs.Client.IClientConfig.Port*
+- uid: Utils.Configs.Client.IClientConfig.ServerAddress
+  commentId: P:Utils.Configs.Client.IClientConfig.ServerAddress
+  id: ServerAddress
+  parent: Utils.Configs.Client.IClientConfig
+  langs:
+  - csharp
+  - vb
+  name: ServerAddress
+  nameWithType: IClientConfig.ServerAddress
+  fullName: Utils.Configs.Client.IClientConfig.ServerAddress
+  type: Property
+  source:
+    remote:
+      path: PingPongSchema/Configs/Client/IClientConfig.cs
+      branch: Client_ConnectionPool
+      repo: https://github.com/iLakis/PingPongConsoleApp.git
+    id: ServerAddress
+    path: PingPongSchema/Configs/Client/IClientConfig.cs
+    startLine: 20
+  assemblies:
+  - Utils
+  namespace: Utils.Configs.Client
+  syntax:
+    content: string ServerAddress { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Property ServerAddress As String
+  overload: Utils.Configs.Client.IClientConfig.ServerAddress*
+references:
+- uid: Utils.Configs.Client
+  commentId: N:Utils.Configs.Client
+  href: Utils.html
+  name: Utils.Configs.Client
+  nameWithType: Utils.Configs.Client
+  fullName: Utils.Configs.Client
+  spec.csharp:
+  - uid: Utils
+    name: Utils
+    href: Utils.html
+  - name: .
+  - uid: Utils.Configs
+    name: Configs
+    href: Utils.Configs.html
+  - name: .
+  - uid: Utils.Configs.Client
+    name: Client
+    href: Utils.Configs.Client.html
+  spec.vb:
+  - uid: Utils
+    name: Utils
+    href: Utils.html
+  - name: .
+  - uid: Utils.Configs
+    name: Configs
+    href: Utils.Configs.html
+  - name: .
+  - uid: Utils.Configs.Client
+    name: Client
+    href: Utils.Configs.Client.html
+- uid: Utils.Configs.Client.IClientConfig.SslPass*
+  commentId: Overload:Utils.Configs.Client.IClientConfig.SslPass
+  href: Utils.Configs.Client.IClientConfig.html#Utils_Configs_Client_IClientConfig_SslPass
+  name: SslPass
+  nameWithType: IClientConfig.SslPass
+  fullName: Utils.Configs.Client.IClientConfig.SslPass
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.string
+  name: string
+  nameWithType: string
+  fullName: string
+  nameWithType.vb: String
+  fullName.vb: String
+  name.vb: String
+- uid: System
+  commentId: N:System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: Utils.Configs.Client.IClientConfig.Interval*
+  commentId: Overload:Utils.Configs.Client.IClientConfig.Interval
+  href: Utils.Configs.Client.IClientConfig.html#Utils_Configs_Client_IClientConfig_Interval
+  name: Interval
+  nameWithType: IClientConfig.Interval
+  fullName: Utils.Configs.Client.IClientConfig.Interval
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  href: https://learn.microsoft.com/dotnet/api/system.int32
+  name: int
+  nameWithType: int
+  fullName: int
+  nameWithType.vb: Integer
+  fullName.vb: Integer
+  name.vb: Integer
+- uid: Utils.Configs.Client.IClientConfig.MaxReconnectAttempts*
+  commentId: Overload:Utils.Configs.Client.IClientConfig.MaxReconnectAttempts
+  href: Utils.Configs.Client.IClientConfig.html#Utils_Configs_Client_IClientConfig_MaxReconnectAttempts
+  name: MaxReconnectAttempts
+  nameWithType: IClientConfig.MaxReconnectAttempts
+  fullName: Utils.Configs.Client.IClientConfig.MaxReconnectAttempts
+- uid: Utils.Configs.Client.IClientConfig.ReconnectDelay*
+  commentId: Overload:Utils.Configs.Client.IClientConfig.ReconnectDelay
+  href: Utils.Configs.Client.IClientConfig.html#Utils_Configs_Client_IClientConfig_ReconnectDelay
+  name: ReconnectDelay
+  nameWithType: IClientConfig.ReconnectDelay
+  fullName: Utils.Configs.Client.IClientConfig.ReconnectDelay
+- uid: Utils.Configs.Client.IClientConfig.ReadTimeout*
+  commentId: Overload:Utils.Configs.Client.IClientConfig.ReadTimeout
+  href: Utils.Configs.Client.IClientConfig.html#Utils_Configs_Client_IClientConfig_ReadTimeout
+  name: ReadTimeout
+  nameWithType: IClientConfig.ReadTimeout
+  fullName: Utils.Configs.Client.IClientConfig.ReadTimeout
+- uid: Utils.Configs.Client.IClientConfig.WriteTimeout*
+  commentId: Overload:Utils.Configs.Client.IClientConfig.WriteTimeout
+  href: Utils.Configs.Client.IClientConfig.html#Utils_Configs_Client_IClientConfig_WriteTimeout
+  name: WriteTimeout
+  nameWithType: IClientConfig.WriteTimeout
+  fullName: Utils.Configs.Client.IClientConfig.WriteTimeout
+- uid: Utils.Configs.Client.IClientConfig.HighLatencyThreshold*
+  commentId: Overload:Utils.Configs.Client.IClientConfig.HighLatencyThreshold
+  href: Utils.Configs.Client.IClientConfig.html#Utils_Configs_Client_IClientConfig_HighLatencyThreshold
+  name: HighLatencyThreshold
+  nameWithType: IClientConfig.HighLatencyThreshold
+  fullName: Utils.Configs.Client.IClientConfig.HighLatencyThreshold
+- uid: Utils.Configs.Client.IClientConfig.LowLatencyThreshold*
+  commentId: Overload:Utils.Configs.Client.IClientConfig.LowLatencyThreshold
+  href: Utils.Configs.Client.IClientConfig.html#Utils_Configs_Client_IClientConfig_LowLatencyThreshold
+  name: LowLatencyThreshold
+  nameWithType: IClientConfig.LowLatencyThreshold
+  fullName: Utils.Configs.Client.IClientConfig.LowLatencyThreshold
+- uid: Utils.Configs.Client.IClientConfig.MaxReadTimeout*
+  commentId: Overload:Utils.Configs.Client.IClientConfig.MaxReadTimeout
+  href: Utils.Configs.Client.IClientConfig.html#Utils_Configs_Client_IClientConfig_MaxReadTimeout
+  name: MaxReadTimeout
+  nameWithType: IClientConfig.MaxReadTimeout
+  fullName: Utils.Configs.Client.IClientConfig.MaxReadTimeout
+- uid: Utils.Configs.Client.IClientConfig.MinReadTimeout*
+  commentId: Overload:Utils.Configs.Client.IClientConfig.MinReadTimeout
+  href: Utils.Configs.Client.IClientConfig.html#Utils_Configs_Client_IClientConfig_MinReadTimeout
+  name: MinReadTimeout
+  nameWithType: IClientConfig.MinReadTimeout
+  fullName: Utils.Configs.Client.IClientConfig.MinReadTimeout
+- uid: Utils.Configs.Client.IClientConfig.MaxWriteTimeout*
+  commentId: Overload:Utils.Configs.Client.IClientConfig.MaxWriteTimeout
+  href: Utils.Configs.Client.IClientConfig.html#Utils_Configs_Client_IClientConfig_MaxWriteTimeout
+  name: MaxWriteTimeout
+  nameWithType: IClientConfig.MaxWriteTimeout
+  fullName: Utils.Configs.Client.IClientConfig.MaxWriteTimeout
+- uid: Utils.Configs.Client.IClientConfig.MinWriteTimeout*
+  commentId: Overload:Utils.Configs.Client.IClientConfig.MinWriteTimeout
+  href: Utils.Configs.Client.IClientConfig.html#Utils_Configs_Client_IClientConfig_MinWriteTimeout
+  name: MinWriteTimeout
+  nameWithType: IClientConfig.MinWriteTimeout
+  fullName: Utils.Configs.Client.IClientConfig.MinWriteTimeout
+- uid: Utils.Configs.Client.IClientConfig.MaxInterval*
+  commentId: Overload:Utils.Configs.Client.IClientConfig.MaxInterval
+  href: Utils.Configs.Client.IClientConfig.html#Utils_Configs_Client_IClientConfig_MaxInterval
+  name: MaxInterval
+  nameWithType: IClientConfig.MaxInterval
+  fullName: Utils.Configs.Client.IClientConfig.MaxInterval
+- uid: Utils.Configs.Client.IClientConfig.MinInterval*
+  commentId: Overload:Utils.Configs.Client.IClientConfig.MinInterval
+  href: Utils.Configs.Client.IClientConfig.html#Utils_Configs_Client_IClientConfig_MinInterval
+  name: MinInterval
+  nameWithType: IClientConfig.MinInterval
+  fullName: Utils.Configs.Client.IClientConfig.MinInterval
+- uid: Utils.Configs.Client.IClientConfig.Separator*
+  commentId: Overload:Utils.Configs.Client.IClientConfig.Separator
+  href: Utils.Configs.Client.IClientConfig.html#Utils_Configs_Client_IClientConfig_Separator
+  name: Separator
+  nameWithType: IClientConfig.Separator
+  fullName: Utils.Configs.Client.IClientConfig.Separator
+- uid: Utils.Configs.Client.IClientConfig.Port*
+  commentId: Overload:Utils.Configs.Client.IClientConfig.Port
+  href: Utils.Configs.Client.IClientConfig.html#Utils_Configs_Client_IClientConfig_Port
+  name: Port
+  nameWithType: IClientConfig.Port
+  fullName: Utils.Configs.Client.IClientConfig.Port
+- uid: Utils.Configs.Client.IClientConfig.ServerAddress*
+  commentId: Overload:Utils.Configs.Client.IClientConfig.ServerAddress
+  href: Utils.Configs.Client.IClientConfig.html#Utils_Configs_Client_IClientConfig_ServerAddress
+  name: ServerAddress
+  nameWithType: IClientConfig.ServerAddress
+  fullName: Utils.Configs.Client.IClientConfig.ServerAddress

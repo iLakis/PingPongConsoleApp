@@ -1,0 +1,105 @@
+### YamlMime:ManagedReference
+items:
+- uid: Utils.Configs.IConfigLoader`1
+  commentId: T:Utils.Configs.IConfigLoader`1
+  id: IConfigLoader`1
+  parent: Utils.Configs
+  children:
+  - Utils.Configs.IConfigLoader`1.LoadConfig
+  langs:
+  - csharp
+  - vb
+  name: IConfigLoader<T>
+  nameWithType: IConfigLoader<T>
+  fullName: Utils.Configs.IConfigLoader<T>
+  type: Interface
+  source:
+    remote:
+      path: PingPongSchema/Configs/IConfigLoader.cs
+      branch: Client_ConnectionPool
+      repo: https://github.com/iLakis/PingPongConsoleApp.git
+    id: IConfigLoader
+    path: PingPongSchema/Configs/IConfigLoader.cs
+    startLine: 2
+  assemblies:
+  - Utils
+  namespace: Utils.Configs
+  syntax:
+    content: 'public interface IConfigLoader<T> where T : class, new()'
+    typeParameters:
+    - id: T
+    content.vb: Public Interface IConfigLoader(Of T As {Class, New})
+  nameWithType.vb: IConfigLoader(Of T)
+  fullName.vb: Utils.Configs.IConfigLoader(Of T)
+  name.vb: IConfigLoader(Of T)
+- uid: Utils.Configs.IConfigLoader`1.LoadConfig
+  commentId: M:Utils.Configs.IConfigLoader`1.LoadConfig
+  id: LoadConfig
+  parent: Utils.Configs.IConfigLoader`1
+  langs:
+  - csharp
+  - vb
+  name: LoadConfig()
+  nameWithType: IConfigLoader<T>.LoadConfig()
+  fullName: Utils.Configs.IConfigLoader<T>.LoadConfig()
+  type: Method
+  source:
+    remote:
+      path: PingPongSchema/Configs/IConfigLoader.cs
+      branch: Client_ConnectionPool
+      repo: https://github.com/iLakis/PingPongConsoleApp.git
+    id: LoadConfig
+    path: PingPongSchema/Configs/IConfigLoader.cs
+    startLine: 4
+  assemblies:
+  - Utils
+  namespace: Utils.Configs
+  syntax:
+    content: T LoadConfig()
+    return:
+      type: '{T}'
+    content.vb: Function LoadConfig() As T
+  overload: Utils.Configs.IConfigLoader`1.LoadConfig*
+  nameWithType.vb: IConfigLoader(Of T).LoadConfig()
+  fullName.vb: Utils.Configs.IConfigLoader(Of T).LoadConfig()
+references:
+- uid: Utils.Configs
+  commentId: N:Utils.Configs
+  href: Utils.html
+  name: Utils.Configs
+  nameWithType: Utils.Configs
+  fullName: Utils.Configs
+  spec.csharp:
+  - uid: Utils
+    name: Utils
+    href: Utils.html
+  - name: .
+  - uid: Utils.Configs
+    name: Configs
+    href: Utils.Configs.html
+  spec.vb:
+  - uid: Utils
+    name: Utils
+    href: Utils.html
+  - name: .
+  - uid: Utils.Configs
+    name: Configs
+    href: Utils.Configs.html
+- uid: Utils.Configs.IConfigLoader`1.LoadConfig*
+  commentId: Overload:Utils.Configs.IConfigLoader`1.LoadConfig
+  href: Utils.Configs.IConfigLoader-1.html#Utils_Configs_IConfigLoader_1_LoadConfig
+  name: LoadConfig
+  nameWithType: IConfigLoader<T>.LoadConfig
+  fullName: Utils.Configs.IConfigLoader<T>.LoadConfig
+  nameWithType.vb: IConfigLoader(Of T).LoadConfig
+  fullName.vb: Utils.Configs.IConfigLoader(Of T).LoadConfig
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: T
+  name: T
+  nameWithType: T
+  fullName: T

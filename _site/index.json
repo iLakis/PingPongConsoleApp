@@ -1,0 +1,207 @@
+{
+  "PingPongDocs/getting-started.html": {
+    "href": "PingPongDocs/getting-started.html",
+    "title": "Getting Started | PingPongDocs",
+    "keywords": "Getting Started"
+  },
+  "PingPongDocs/introduction.html": {
+    "href": "PingPongDocs/introduction.html",
+    "title": "Introduction | PingPongDocs",
+    "keywords": "Introduction"
+  },
+  "api/PingPong.TcpClient.html": {
+    "href": "api/PingPong.TcpClient.html",
+    "title": "Class TcpClient | PingPongDocs",
+    "keywords": "Class TcpClient Namespace PingPong Assembly PingPong.dll public class TcpClient Inheritance object TcpClient Inherited Members object.Equals(object) object.Equals(object, object) object.GetHashCode() object.GetType() object.MemberwiseClone() object.ReferenceEquals(object, object) object.ToString() Constructors TcpClient() public TcpClient() Methods Start() public void Start()"
+  },
+  "api/PingPong.TcpServer.html": {
+    "href": "api/PingPong.TcpServer.html",
+    "title": "Class TcpServer | PingPongDocs",
+    "keywords": "Class TcpServer Namespace PingPong Assembly PingPong.dll public class TcpServer Inheritance object TcpServer Inherited Members object.Equals(object) object.Equals(object, object) object.GetHashCode() object.GetType() object.MemberwiseClone() object.ReferenceEquals(object, object) object.ToString() Methods Start() public void Start()"
+  },
+  "api/PingPong.html": {
+    "href": "api/PingPong.html",
+    "title": "Namespace PingPong | PingPongDocs",
+    "keywords": "Namespace PingPong Classes TcpClient TcpServer"
+  },
+  "api/PingPongClient.PingPongTcpClient.html": {
+    "href": "api/PingPongClient.PingPongTcpClient.html",
+    "title": "Class PingPongTcpClient | PingPongDocs",
+    "keywords": "Class PingPongTcpClient Namespace PingPongClient Assembly PPClient.dll public class PingPongTcpClient Inheritance object PingPongTcpClient Derived TestClient_NonStopListening TestTcpClient_NonStopListening TestTcpClient_Slow Inherited Members object.Equals(object) object.Equals(object, object) object.GetHashCode() object.GetType() object.MemberwiseClone() object.ReferenceEquals(object, object) object.ToString() Constructors PingPongTcpClient(ILogger, ILogger, IConfigLoader<DefaultClientConfig>?) public PingPongTcpClient(ILogger systemLogger, ILogger responseLogger, IConfigLoader<DefaultClientConfig>? configLoader = null) Parameters systemLogger ILogger responseLogger ILogger configLoader IConfigLoader<DefaultClientConfig> Fields _clientCertificate protected X509Certificate2? _clientCertificate Field Value X509Certificate2 _config protected DefaultClientConfig? _config Field Value DefaultClientConfig _connectionPool protected IConnectionPool _connectionPool Field Value IConnectionPool _currentConnection protected SslStream? _currentConnection Field Value SslStream _responseLogger protected readonly ILogger _responseLogger Field Value ILogger _schemaSet protected XmlSchemaSet? _schemaSet Field Value XmlSchemaSet _shouldSwapConnections protected bool _shouldSwapConnections Field Value bool _systemLogger protected readonly ILogger _systemLogger Field Value ILogger Methods AdjustBehaviorBasedOnLatency(long) protected virtual void AdjustBehaviorBasedOnLatency(long latency) Parameters latency long CommunicateAsync(SslStream, CancellationToken) protected virtual Task CommunicateAsync(SslStream connection, CancellationToken token) Parameters connection SslStream token CancellationToken Returns Task DisconnectAllConnections() public void DisconnectAllConnections() DisconnectCurrentConnection() public void DisconnectCurrentConnection() GetConnectionFromPoolAsync(CancellationToken) public Task GetConnectionFromPoolAsync(CancellationToken token) Parameters token CancellationToken Returns Task HandleTimeoutAsync(CancellationToken) protected Task HandleTimeoutAsync(CancellationToken token) Parameters token CancellationToken Returns Task LoadCertificate() protected void LoadCertificate() LoadXsdSchema() protected void LoadXsdSchema() ReadPong(XmlSerializer, StringReader) protected void ReadPong(XmlSerializer pongSerializer, StringReader stringReader) Parameters pongSerializer XmlSerializer stringReader StringReader SendPing(StreamWriter) protected void SendPing(StreamWriter writer) Parameters writer StreamWriter StartAsync(CancellationToken) public Task StartAsync(CancellationToken token) Parameters token CancellationToken Returns Task SwapConnectionAsync(CancellationToken) public Task SwapConnectionAsync(CancellationToken token) Parameters token CancellationToken Returns Task"
+  },
+  "api/PingPongClient.html": {
+    "href": "api/PingPongClient.html",
+    "title": "Namespace PingPongClient | PingPongDocs",
+    "keywords": "Namespace PingPongClient Classes PingPongTcpClient"
+  },
+  "api/PingPongServer.PingPongTcpServer.html": {
+    "href": "api/PingPongServer.PingPongTcpServer.html",
+    "title": "Class PingPongTcpServer | PingPongDocs",
+    "keywords": "Class PingPongTcpServer Namespace PingPongServer Assembly PPServer.dll public class PingPongTcpServer Inheritance object PingPongTcpServer Derived TestServer_SpammingMessages TestTcpServer_Slow TestTcpServer_SpammingMessages Inherited Members object.Equals(object) object.Equals(object, object) object.GetHashCode() object.GetType() object.MemberwiseClone() object.ReferenceEquals(object, object) object.ToString() Constructors PingPongTcpServer(ILogger<PingPongTcpServer>, IConfigLoader<DefaultServerConfig>) public PingPongTcpServer(ILogger<PingPongTcpServer> logger, IConfigLoader<DefaultServerConfig> configLoader = null) Parameters logger ILogger<PingPongTcpServer> configLoader IConfigLoader<DefaultServerConfig> Fields ServerCertificate protected static X509Certificate2 ServerCertificate Field Value X509Certificate2 _config protected IServerConfig _config Field Value IServerConfig _logger protected readonly ILogger<PingPongTcpServer> _logger Field Value ILogger<PingPongTcpServer> schemaSet protected static XmlSchemaSet schemaSet Field Value XmlSchemaSet Methods AuthenticateSsl(SslStream) protected Task AuthenticateSsl(SslStream sslStream) Parameters sslStream SslStream Returns Task HandleClientAsync(TcpClient, CancellationToken) protected virtual Task HandleClientAsync(TcpClient client, CancellationToken token) Parameters client TcpClient token CancellationToken Returns Task LoadCertificate() protected void LoadCertificate() LoadXsdSchema() protected void LoadXsdSchema() ReadPing(StringReader, XmlSerializer) protected void ReadPing(StringReader stringReader, XmlSerializer pingSerializer) Parameters stringReader StringReader pingSerializer XmlSerializer SendPong(StreamWriter) protected void SendPong(StreamWriter writer) Parameters writer StreamWriter StartAsync(CancellationToken) public Task StartAsync(CancellationToken token) Parameters token CancellationToken Returns Task"
+  },
+  "api/PingPongServer.html": {
+    "href": "api/PingPongServer.html",
+    "title": "Namespace PingPongServer | PingPongDocs",
+    "keywords": "Namespace PingPongServer Classes PingPongTcpServer"
+  },
+  "api/PingPongTests.BasicTests.html": {
+    "href": "api/PingPongTests.BasicTests.html",
+    "title": "Class BasicTests | PingPongDocs",
+    "keywords": "Class BasicTests Namespace PingPongTests Assembly Tests.dll public class BasicTests Inheritance object BasicTests Inherited Members object.Equals(object) object.Equals(object, object) object.GetHashCode() object.GetType() object.MemberwiseClone() object.ReferenceEquals(object, object) object.ToString() Constructors BasicTests() public BasicTests() Methods LoadConfiguration_InvalidValues() [Fact] public void LoadConfiguration_InvalidValues() LoadConfiguration_MissingValues() [Fact] public void LoadConfiguration_MissingValues() TestConnectionAndCommunication() [Fact] public Task TestConnectionAndCommunication() Returns Task"
+  },
+  "api/PingPongTests.MemoryLogger-1.html": {
+    "href": "api/PingPongTests.MemoryLogger-1.html",
+    "title": "Class MemoryLogger<T> | PingPongDocs",
+    "keywords": "Class MemoryLogger<T> Namespace PingPongTests Assembly Tests.dll public class MemoryLogger<T> : ILogger<T>, ILogger Type Parameters T Inheritance object MemoryLogger<T> Implements ILogger<T> ILogger Inherited Members object.Equals(object) object.Equals(object, object) object.GetHashCode() object.GetType() object.MemberwiseClone() object.ReferenceEquals(object, object) object.ToString() Properties Logs public IEnumerable<string> Logs { get; } Property Value IEnumerable<string> Methods BeginScope<TState>(TState) Begins a logical operation scope. public IDisposable BeginScope<TState>(TState state) Parameters state TState The identifier for the scope. Returns IDisposable An IDisposable that ends the logical operation scope on dispose. Type Parameters TState The type of the state to begin scope for. IsEnabled(LogLevel) Checks if the given logLevel is enabled. public bool IsEnabled(LogLevel logLevel) Parameters logLevel LogLevel Level to be checked. Returns bool true if enabled. Log<TState>(LogLevel, EventId, TState, Exception, Func<TState, Exception, string>) Writes a log entry. public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter) Parameters logLevel LogLevel Entry will be written on this level. eventId EventId Id of the event. state TState The entry to be written. Can be also an object. exception Exception The exception related to this entry. formatter Func<TState, Exception, string> Function to create a string message of the state and exception. Type Parameters TState The type of the object to be written."
+  },
+  "api/PingPongTests.MemoryLoggerProvider.html": {
+    "href": "api/PingPongTests.MemoryLoggerProvider.html",
+    "title": "Class MemoryLoggerProvider | PingPongDocs",
+    "keywords": "Class MemoryLoggerProvider Namespace PingPongTests Assembly Tests.dll public class MemoryLoggerProvider : ILoggerProvider, IDisposable Inheritance object MemoryLoggerProvider Implements ILoggerProvider IDisposable Inherited Members object.Equals(object) object.Equals(object, object) object.GetHashCode() object.GetType() object.MemberwiseClone() object.ReferenceEquals(object, object) object.ToString() Methods CreateLogger(string) Creates a new ILogger instance. public ILogger CreateLogger(string categoryName) Parameters categoryName string The category name for messages produced by the logger. Returns ILogger The instance of ILogger that was created. Dispose() Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources. public void Dispose() GetLogs(string) public IEnumerable<string> GetLogs(string categoryName) Parameters categoryName string Returns IEnumerable<string>"
+  },
+  "api/PingPongTests.TestScenarios.html": {
+    "href": "api/PingPongTests.TestScenarios.html",
+    "title": "Class TestScenarios | PingPongDocs",
+    "keywords": "Class TestScenarios Namespace PingPongTests Assembly Tests.dll public class TestScenarios Inheritance object TestScenarios Inherited Members object.Equals(object) object.Equals(object, object) object.GetHashCode() object.GetType() object.MemberwiseClone() object.ReferenceEquals(object, object) object.ToString() Constructors TestScenarios() public TestScenarios() Methods TestClientOverload() [Fact] public Task TestClientOverload() Returns Task TestClientReconnection() [Fact] public Task TestClientReconnection() Returns Task TestClientWithSlowConnection() [Fact] public Task TestClientWithSlowConnection() Returns Task TestServerOverload() [Fact] public Task TestServerOverload() Returns Task TestServerShutdown() [Fact] public Task TestServerShutdown() Returns Task"
+  },
+  "api/PingPongTests.html": {
+    "href": "api/PingPongTests.html",
+    "title": "Namespace PingPongTests | PingPongDocs",
+    "keywords": "Namespace PingPongTests Classes BasicTests MemoryLoggerProvider MemoryLogger<T> TestScenarios"
+  },
+  "api/Tests.TestClients.TestClient_NonStopListening.html": {
+    "href": "api/Tests.TestClients.TestClient_NonStopListening.html",
+    "title": "Class TestClient_NonStopListening | PingPongDocs",
+    "keywords": "Class TestClient_NonStopListening Namespace Tests.TestClients Assembly Tests.dll public class TestClient_NonStopListening : PingPongTcpClient Inheritance object PingPongTcpClient TestClient_NonStopListening Inherited Members PingPongTcpClient._clientCertificate PingPongTcpClient._schemaSet PingPongTcpClient._config PingPongTcpClient._currentConnection PingPongTcpClient._systemLogger PingPongTcpClient._responseLogger PingPongTcpClient._connectionPool PingPongTcpClient._shouldSwapConnections PingPongTcpClient.StartAsync(CancellationToken) PingPongTcpClient.GetConnectionFromPoolAsync(CancellationToken) PingPongTcpClient.HandleTimeoutAsync(CancellationToken) PingPongTcpClient.AdjustBehaviorBasedOnLatency(long) PingPongTcpClient.SwapConnectionAsync(CancellationToken) PingPongTcpClient.SendPing(StreamWriter) PingPongTcpClient.ReadPong(XmlSerializer, StringReader) PingPongTcpClient.LoadCertificate() PingPongTcpClient.LoadXsdSchema() PingPongTcpClient.DisconnectCurrentConnection() PingPongTcpClient.DisconnectAllConnections() object.Equals(object) object.Equals(object, object) object.GetHashCode() object.GetType() object.MemberwiseClone() object.ReferenceEquals(object, object) object.ToString() Constructors TestClient_NonStopListening(ILogger, ILogger) public TestClient_NonStopListening(ILogger systemLogger, ILogger responseLogger) Parameters systemLogger ILogger responseLogger ILogger Methods CommunicateAsync(SslStream, CancellationToken) protected override Task CommunicateAsync(SslStream connection, CancellationToken token) Parameters connection SslStream token CancellationToken Returns Task"
+  },
+  "api/Tests.TestClients.TestTcpClient_NonStopListening.html": {
+    "href": "api/Tests.TestClients.TestTcpClient_NonStopListening.html",
+    "title": "Class TestTcpClient_NonStopListening | PingPongDocs",
+    "keywords": "Class TestTcpClient_NonStopListening Namespace Tests.TestClients Assembly Tests.dll public class TestTcpClient_NonStopListening : PingPongTcpClient Inheritance object PingPongTcpClient TestTcpClient_NonStopListening Inherited Members PingPongTcpClient._clientCertificate PingPongTcpClient._schemaSet PingPongTcpClient._config PingPongTcpClient._currentConnection PingPongTcpClient._systemLogger PingPongTcpClient._responseLogger PingPongTcpClient._connectionPool PingPongTcpClient._shouldSwapConnections PingPongTcpClient.StartAsync(CancellationToken) PingPongTcpClient.GetConnectionFromPoolAsync(CancellationToken) PingPongTcpClient.HandleTimeoutAsync(CancellationToken) PingPongTcpClient.AdjustBehaviorBasedOnLatency(long) PingPongTcpClient.SwapConnectionAsync(CancellationToken) PingPongTcpClient.SendPing(StreamWriter) PingPongTcpClient.ReadPong(XmlSerializer, StringReader) PingPongTcpClient.LoadCertificate() PingPongTcpClient.LoadXsdSchema() PingPongTcpClient.DisconnectCurrentConnection() PingPongTcpClient.DisconnectAllConnections() object.Equals(object) object.Equals(object, object) object.GetHashCode() object.GetType() object.MemberwiseClone() object.ReferenceEquals(object, object) object.ToString() Constructors TestTcpClient_NonStopListening(ILogger, ILogger) public TestTcpClient_NonStopListening(ILogger systemLogger, ILogger responseLogger) Parameters systemLogger ILogger responseLogger ILogger Methods CommunicateAsync(SslStream, CancellationToken) protected override Task CommunicateAsync(SslStream connection, CancellationToken token) Parameters connection SslStream token CancellationToken Returns Task"
+  },
+  "api/Tests.TestClients.TestTcpClient_Slow.html": {
+    "href": "api/Tests.TestClients.TestTcpClient_Slow.html",
+    "title": "Class TestTcpClient_Slow | PingPongDocs",
+    "keywords": "Class TestTcpClient_Slow Namespace Tests.TestClients Assembly Tests.dll public class TestTcpClient_Slow : PingPongTcpClient Inheritance object PingPongTcpClient TestTcpClient_Slow Inherited Members PingPongTcpClient._clientCertificate PingPongTcpClient._schemaSet PingPongTcpClient._config PingPongTcpClient._currentConnection PingPongTcpClient._systemLogger PingPongTcpClient._responseLogger PingPongTcpClient._connectionPool PingPongTcpClient._shouldSwapConnections PingPongTcpClient.StartAsync(CancellationToken) PingPongTcpClient.GetConnectionFromPoolAsync(CancellationToken) PingPongTcpClient.HandleTimeoutAsync(CancellationToken) PingPongTcpClient.AdjustBehaviorBasedOnLatency(long) PingPongTcpClient.SwapConnectionAsync(CancellationToken) PingPongTcpClient.SendPing(StreamWriter) PingPongTcpClient.ReadPong(XmlSerializer, StringReader) PingPongTcpClient.LoadCertificate() PingPongTcpClient.LoadXsdSchema() PingPongTcpClient.DisconnectCurrentConnection() PingPongTcpClient.DisconnectAllConnections() object.Equals(object) object.Equals(object, object) object.GetHashCode() object.GetType() object.MemberwiseClone() object.ReferenceEquals(object, object) object.ToString() Constructors TestTcpClient_Slow(ILogger, ILogger) public TestTcpClient_Slow(ILogger systemLogger, ILogger responseLogger) Parameters systemLogger ILogger responseLogger ILogger Methods CommunicateAsync(SslStream, CancellationToken) protected override Task CommunicateAsync(SslStream connection, CancellationToken token) Parameters connection SslStream token CancellationToken Returns Task"
+  },
+  "api/Tests.TestClients.html": {
+    "href": "api/Tests.TestClients.html",
+    "title": "Namespace Tests.TestClients | PingPongDocs",
+    "keywords": "Namespace Tests.TestClients Classes TestClient_NonStopListening TestTcpClient_NonStopListening TestTcpClient_Slow"
+  },
+  "api/Tests.TestServers.TestServer_SpammingMessages.html": {
+    "href": "api/Tests.TestServers.TestServer_SpammingMessages.html",
+    "title": "Class TestServer_SpammingMessages | PingPongDocs",
+    "keywords": "Class TestServer_SpammingMessages Namespace Tests.TestServers Assembly Tests.dll public class TestServer_SpammingMessages : PingPongTcpServer Inheritance object PingPongTcpServer TestServer_SpammingMessages Inherited Members PingPongTcpServer.ServerCertificate PingPongTcpServer.schemaSet PingPongTcpServer._config PingPongTcpServer._logger PingPongTcpServer.StartAsync(CancellationToken) PingPongTcpServer.LoadCertificate() PingPongTcpServer.LoadXsdSchema() PingPongTcpServer.AuthenticateSsl(SslStream) PingPongTcpServer.SendPong(StreamWriter) PingPongTcpServer.ReadPing(StringReader, XmlSerializer) object.Equals(object) object.Equals(object, object) object.GetHashCode() object.GetType() object.MemberwiseClone() object.ReferenceEquals(object, object) object.ToString() Constructors TestServer_SpammingMessages(ILogger<PingPongTcpServer>) public TestServer_SpammingMessages(ILogger<PingPongTcpServer> logger) Parameters logger ILogger<PingPongTcpServer> Methods HandleClientAsync(TcpClient, CancellationToken) protected override Task HandleClientAsync(TcpClient client, CancellationToken token) Parameters client TcpClient token CancellationToken Returns Task"
+  },
+  "api/Tests.TestServers.TestTcpServer_Slow.html": {
+    "href": "api/Tests.TestServers.TestTcpServer_Slow.html",
+    "title": "Class TestTcpServer_Slow | PingPongDocs",
+    "keywords": "Class TestTcpServer_Slow Namespace Tests.TestServers Assembly Tests.dll public class TestTcpServer_Slow : PingPongTcpServer Inheritance object PingPongTcpServer TestTcpServer_Slow Inherited Members PingPongTcpServer.ServerCertificate PingPongTcpServer.schemaSet PingPongTcpServer._config PingPongTcpServer._logger PingPongTcpServer.StartAsync(CancellationToken) PingPongTcpServer.LoadCertificate() PingPongTcpServer.LoadXsdSchema() PingPongTcpServer.AuthenticateSsl(SslStream) PingPongTcpServer.SendPong(StreamWriter) PingPongTcpServer.ReadPing(StringReader, XmlSerializer) object.Equals(object) object.Equals(object, object) object.GetHashCode() object.GetType() object.MemberwiseClone() object.ReferenceEquals(object, object) object.ToString() Constructors TestTcpServer_Slow(ILogger<PingPongTcpServer>) public TestTcpServer_Slow(ILogger<PingPongTcpServer> logger) Parameters logger ILogger<PingPongTcpServer> Methods HandleClientAsync(TcpClient, CancellationToken) protected override Task HandleClientAsync(TcpClient client, CancellationToken token) Parameters client TcpClient token CancellationToken Returns Task"
+  },
+  "api/Tests.TestServers.TestTcpServer_SpammingMessages.html": {
+    "href": "api/Tests.TestServers.TestTcpServer_SpammingMessages.html",
+    "title": "Class TestTcpServer_SpammingMessages | PingPongDocs",
+    "keywords": "Class TestTcpServer_SpammingMessages Namespace Tests.TestServers Assembly Tests.dll public class TestTcpServer_SpammingMessages : PingPongTcpServer Inheritance object PingPongTcpServer TestTcpServer_SpammingMessages Inherited Members PingPongTcpServer.ServerCertificate PingPongTcpServer.schemaSet PingPongTcpServer._config PingPongTcpServer._logger PingPongTcpServer.StartAsync(CancellationToken) PingPongTcpServer.HandleClientAsync(TcpClient, CancellationToken) PingPongTcpServer.LoadCertificate() PingPongTcpServer.LoadXsdSchema() PingPongTcpServer.AuthenticateSsl(SslStream) PingPongTcpServer.SendPong(StreamWriter) PingPongTcpServer.ReadPing(StringReader, XmlSerializer) object.Equals(object) object.Equals(object, object) object.GetHashCode() object.GetType() object.MemberwiseClone() object.ReferenceEquals(object, object) object.ToString() Constructors TestTcpServer_SpammingMessages(ILogger<PingPongTcpServer>) public TestTcpServer_SpammingMessages(ILogger<PingPongTcpServer> logger) Parameters logger ILogger<PingPongTcpServer> Methods StartSendingPongs(int, int, CancellationToken) public Task StartSendingPongs(int count, int delayMs, CancellationToken token) Parameters count int delayMs int token CancellationToken Returns Task"
+  },
+  "api/Tests.TestServers.html": {
+    "href": "api/Tests.TestServers.html",
+    "title": "Namespace Tests.TestServers | PingPongDocs",
+    "keywords": "Namespace Tests.TestServers Classes TestServer_SpammingMessages TestTcpServer_Slow TestTcpServer_SpammingMessages"
+  },
+  "api/Utils.Configs.Client.DefaultClientConfig.html": {
+    "href": "api/Utils.Configs.Client.DefaultClientConfig.html",
+    "title": "Class DefaultClientConfig | PingPongDocs",
+    "keywords": "Class DefaultClientConfig Namespace Utils.Configs.Client Assembly Utils.dll public class DefaultClientConfig : IClientConfig Inheritance object DefaultClientConfig Implements IClientConfig Inherited Members object.Equals(object) object.Equals(object, object) object.GetHashCode() object.GetType() object.MemberwiseClone() object.ReferenceEquals(object, object) object.ToString() Properties HighLatencyThreshold public int HighLatencyThreshold { get; set; } Property Value int Interval public int Interval { get; set; } Property Value int LowLatencyThreshold public int LowLatencyThreshold { get; set; } Property Value int MaxInterval public int MaxInterval { get; set; } Property Value int MaxReadTimeout public int MaxReadTimeout { get; set; } Property Value int MaxReconnectAttempts public int MaxReconnectAttempts { get; set; } Property Value int MaxWriteTimeout public int MaxWriteTimeout { get; set; } Property Value int MinInterval public int MinInterval { get; set; } Property Value int MinReadTimeout public int MinReadTimeout { get; set; } Property Value int MinWriteTimeout public int MinWriteTimeout { get; set; } Property Value int Port public int Port { get; set; } Property Value int ReadTimeout public int ReadTimeout { get; set; } Property Value int ReconnectDelay public int ReconnectDelay { get; set; } Property Value int Separator public string Separator { get; set; } Property Value string ServerAddress public string ServerAddress { get; set; } Property Value string SslPass public string SslPass { get; set; } Property Value string WriteTimeout public int WriteTimeout { get; set; } Property Value int"
+  },
+  "api/Utils.Configs.Client.IClientConfig.html": {
+    "href": "api/Utils.Configs.Client.IClientConfig.html",
+    "title": "Interface IClientConfig | PingPongDocs",
+    "keywords": "Interface IClientConfig Namespace Utils.Configs.Client Assembly Utils.dll public interface IClientConfig Properties HighLatencyThreshold int HighLatencyThreshold { get; set; } Property Value int Interval int Interval { get; set; } Property Value int LowLatencyThreshold int LowLatencyThreshold { get; set; } Property Value int MaxInterval int MaxInterval { get; set; } Property Value int MaxReadTimeout int MaxReadTimeout { get; set; } Property Value int MaxReconnectAttempts int MaxReconnectAttempts { get; set; } Property Value int MaxWriteTimeout int MaxWriteTimeout { get; set; } Property Value int MinInterval int MinInterval { get; set; } Property Value int MinReadTimeout int MinReadTimeout { get; set; } Property Value int MinWriteTimeout int MinWriteTimeout { get; set; } Property Value int Port int Port { get; set; } Property Value int ReadTimeout int ReadTimeout { get; set; } Property Value int ReconnectDelay int ReconnectDelay { get; set; } Property Value int Separator string Separator { get; set; } Property Value string ServerAddress string ServerAddress { get; set; } Property Value string SslPass string SslPass { get; set; } Property Value string WriteTimeout int WriteTimeout { get; set; } Property Value int"
+  },
+  "api/Utils.Configs.Client.html": {
+    "href": "api/Utils.Configs.Client.html",
+    "title": "Namespace Utils.Configs.Client | PingPongDocs",
+    "keywords": "Namespace Utils.Configs.Client Classes DefaultClientConfig Interfaces IClientConfig"
+  },
+  "api/Utils.Configs.IConfigLoader-1.html": {
+    "href": "api/Utils.Configs.IConfigLoader-1.html",
+    "title": "Interface IConfigLoader<T> | PingPongDocs",
+    "keywords": "Interface IConfigLoader<T> Namespace Utils.Configs Assembly Utils.dll public interface IConfigLoader<T> where T : class, new() Type Parameters T Methods LoadConfig() T LoadConfig() Returns T"
+  },
+  "api/Utils.Configs.JsonConfigLoader-1.html": {
+    "href": "api/Utils.Configs.JsonConfigLoader-1.html",
+    "title": "Class JsonConfigLoader<T> | PingPongDocs",
+    "keywords": "Class JsonConfigLoader<T> Namespace Utils.Configs Assembly Utils.dll public class JsonConfigLoader<T> : IConfigLoader<T> where T : class, new() Type Parameters T Inheritance object JsonConfigLoader<T> Implements IConfigLoader<T> Inherited Members object.Equals(object) object.Equals(object, object) object.GetHashCode() object.GetType() object.MemberwiseClone() object.ReferenceEquals(object, object) object.ToString() Constructors JsonConfigLoader(string, ILogger) public JsonConfigLoader(string configFilePath, ILogger logger) Parameters configFilePath string logger ILogger Methods LoadConfig() public T LoadConfig() Returns T"
+  },
+  "api/Utils.Configs.Server.DefaultServerConfig.html": {
+    "href": "api/Utils.Configs.Server.DefaultServerConfig.html",
+    "title": "Class DefaultServerConfig | PingPongDocs",
+    "keywords": "Class DefaultServerConfig Namespace Utils.Configs.Server Assembly Utils.dll public class DefaultServerConfig : IServerConfig Inheritance object DefaultServerConfig Implements IServerConfig Inherited Members object.Equals(object) object.Equals(object, object) object.GetHashCode() object.GetType() object.MemberwiseClone() object.ReferenceEquals(object, object) object.ToString() Properties Port public int Port { get; set; } Property Value int ReadTimeout public int ReadTimeout { get; set; } Property Value int Separator public string Separator { get; set; } Property Value string ServerSslPass public string ServerSslPass { get; set; } Property Value string WriteTimeout public int WriteTimeout { get; set; } Property Value int"
+  },
+  "api/Utils.Configs.Server.IServerConfig.html": {
+    "href": "api/Utils.Configs.Server.IServerConfig.html",
+    "title": "Interface IServerConfig | PingPongDocs",
+    "keywords": "Interface IServerConfig Namespace Utils.Configs.Server Assembly Utils.dll public interface IServerConfig Properties Port int Port { get; set; } Property Value int ReadTimeout int ReadTimeout { get; set; } Property Value int Separator string Separator { get; set; } Property Value string ServerSslPass string ServerSslPass { get; set; } Property Value string WriteTimeout int WriteTimeout { get; set; } Property Value int"
+  },
+  "api/Utils.Configs.Server.html": {
+    "href": "api/Utils.Configs.Server.html",
+    "title": "Namespace Utils.Configs.Server | PingPongDocs",
+    "keywords": "Namespace Utils.Configs.Server Classes DefaultServerConfig Interfaces IServerConfig"
+  },
+  "api/Utils.Configs.html": {
+    "href": "api/Utils.Configs.html",
+    "title": "Namespace Utils.Configs | PingPongDocs",
+    "keywords": "Namespace Utils.Configs Classes JsonConfigLoader<T> Interfaces IConfigLoader<T>"
+  },
+  "api/Utils.Connection.ConnectionPool.html": {
+    "href": "api/Utils.Connection.ConnectionPool.html",
+    "title": "Class ConnectionPool | PingPongDocs",
+    "keywords": "Class ConnectionPool Namespace Utils.Connection Assembly Utils.dll public class ConnectionPool : IConnectionPool Inheritance object ConnectionPool Implements IConnectionPool Inherited Members object.Equals(object) object.Equals(object, object) object.GetHashCode() object.GetType() object.MemberwiseClone() object.ReferenceEquals(object, object) object.ToString() Methods AuthenticateSsl(SslStream) protected void AuthenticateSsl(SslStream sslStream) Parameters sslStream SslStream CloseAllConnectionsAsync() public Task CloseAllConnectionsAsync() Returns Task CloseConnectionAsync(SslStream) public Task CloseConnectionAsync(SslStream connection) Parameters connection SslStream Returns Task CreateAsync(int, string, int, X509Certificate2, ILogger, CancellationToken, int, int) public static Task<ConnectionPool> CreateAsync(int poolSize, string serverAddress, int port, X509Certificate2 clientCertificate, ILogger logger, CancellationToken token, int maxReconnectAttempts, int reconnectDelay) Parameters poolSize int serverAddress string port int clientCertificate X509Certificate2 logger ILogger token CancellationToken maxReconnectAttempts int reconnectDelay int Returns Task<ConnectionPool> GetConnectionAsync(CancellationToken) public Task<SslStream> GetConnectionAsync(CancellationToken token) Parameters token CancellationToken Returns Task<SslStream> ReconnectAsync(CancellationToken, SslStream?) public Task<bool> ReconnectAsync(CancellationToken token, SslStream? connection = null) Parameters token CancellationToken connection SslStream Returns Task<bool>"
+  },
+  "api/Utils.Connection.IConnectionPool.html": {
+    "href": "api/Utils.Connection.IConnectionPool.html",
+    "title": "Interface IConnectionPool | PingPongDocs",
+    "keywords": "Interface IConnectionPool Namespace Utils.Connection Assembly Utils.dll public interface IConnectionPool Methods CloseAllConnectionsAsync() Task CloseAllConnectionsAsync() Returns Task CloseConnectionAsync(SslStream) Task CloseConnectionAsync(SslStream connection) Parameters connection SslStream Returns Task GetConnectionAsync(CancellationToken) Task<SslStream> GetConnectionAsync(CancellationToken token) Parameters token CancellationToken Returns Task<SslStream>"
+  },
+  "api/Utils.Connection.html": {
+    "href": "api/Utils.Connection.html",
+    "title": "Namespace Utils.Connection | PingPongDocs",
+    "keywords": "Namespace Utils.Connection Classes ConnectionPool Interfaces IConnectionPool"
+  },
+  "api/Utils.SslEventListener.html": {
+    "href": "api/Utils.SslEventListener.html",
+    "title": "Class SslEventListener | PingPongDocs",
+    "keywords": "Class SslEventListener Namespace Utils Assembly Utils.dll public class SslEventListener : EventListener, IDisposable Inheritance object EventListener SslEventListener Implements IDisposable Inherited Members EventListener.DisableEvents(EventSource) EventListener.Dispose() EventListener.EnableEvents(EventSource, EventLevel) EventListener.EnableEvents(EventSource, EventLevel, EventKeywords) EventListener.EnableEvents(EventSource, EventLevel, EventKeywords, IDictionary<string, string>) EventListener.EventSourceIndex(EventSource) EventListener.EventSourceCreated EventListener.EventWritten object.Equals(object) object.Equals(object, object) object.GetHashCode() object.GetType() object.MemberwiseClone() object.ReferenceEquals(object, object) object.ToString() Constructors SslEventListener(ILogger) public SslEventListener(ILogger logger) Parameters logger ILogger Methods OnEventSourceCreated(EventSource) Called for all existing event sources when the event listener is created and when a new event source is attached to the listener. protected override void OnEventSourceCreated(EventSource eventSource) Parameters eventSource EventSource The event source. OnEventWritten(EventWrittenEventArgs) Called whenever an event has been written by an event source for which the event listener has enabled events. protected override void OnEventWritten(EventWrittenEventArgs eventData) Parameters eventData EventWrittenEventArgs The event arguments that describe the event."
+  },
+  "api/Utils.StringTools.html": {
+    "href": "api/Utils.StringTools.html",
+    "title": "Class StringTools | PingPongDocs",
+    "keywords": "Class StringTools Namespace Utils Assembly Utils.dll public class StringTools Inheritance object StringTools Inherited Members object.Equals(object) object.Equals(object, object) object.GetHashCode() object.GetType() object.MemberwiseClone() object.ReferenceEquals(object, object) object.ToString() Methods RemovePrefix(string, string) public static string RemovePrefix(string message, string prefix) Parameters message string prefix string Returns string"
+  },
+  "api/Utils.XmlTools.html": {
+    "href": "api/Utils.XmlTools.html",
+    "title": "Class XmlTools | PingPongDocs",
+    "keywords": "Class XmlTools Namespace Utils Assembly Utils.dll public class XmlTools Inheritance object XmlTools Inherited Members object.Equals(object) object.Equals(object, object) object.GetHashCode() object.GetType() object.MemberwiseClone() object.ReferenceEquals(object, object) object.ToString() Methods SerializeToXml<T>(T) public static string SerializeToXml<T>(T obj) Parameters obj T Returns string Type Parameters T ValidateXml(string, XmlSchemaSet) public static bool ValidateXml(string xmlMessage, XmlSchemaSet schemaSet) Parameters xmlMessage string schemaSet XmlSchemaSet Returns bool ValidateXml(XDocument, XmlSchemaSet) public static bool ValidateXml(XDocument xmlDoc, XmlSchemaSet schemaSet) Parameters xmlDoc XDocument schemaSet XmlSchemaSet Returns bool"
+  },
+  "api/Utils.html": {
+    "href": "api/Utils.html",
+    "title": "Namespace Utils | PingPongDocs",
+    "keywords": "Namespace Utils Classes SslEventListener StringTools XmlTools ping pong"
+  },
+  "api/Utils.ping.html": {
+    "href": "api/Utils.ping.html",
+    "title": "Class ping | PingPongDocs",
+    "keywords": "Class ping Namespace Utils Assembly Utils.dll [Serializable] public class ping Inheritance object ping Inherited Members object.Equals(object) object.Equals(object, object) object.GetHashCode() object.GetType() object.MemberwiseClone() object.ReferenceEquals(object, object) object.ToString() Properties timestamp public DateTime timestamp { get; set; } Property Value DateTime"
+  },
+  "api/Utils.pong.html": {
+    "href": "api/Utils.pong.html",
+    "title": "Class pong | PingPongDocs",
+    "keywords": "Class pong Namespace Utils Assembly Utils.dll [Serializable] public class pong Inheritance object pong Inherited Members object.Equals(object) object.Equals(object, object) object.GetHashCode() object.GetType() object.MemberwiseClone() object.ReferenceEquals(object, object) object.ToString() Properties timestamp public DateTime timestamp { get; set; } Property Value DateTime"
+  },
+  "index.html": {
+    "href": "index.html",
+    "title": "This is the HOMEPAGE. | PingPongDocs",
+    "keywords": "This is the HOMEPAGE. Refer to Markdown for how to write markdown files. Quick Start Notes: Add images to the images folder if the file is referencing an image."
+  }
+}

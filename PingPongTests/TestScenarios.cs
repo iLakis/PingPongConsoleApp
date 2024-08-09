@@ -223,7 +223,8 @@ namespace PingPongTests
             var cts = new CancellationTokenSource();
             var token = cts.Token;
 
-            var server = new TestTcpServer_Slow(_serverLogger);
+            //var server = new TestTcpServer_Slow(_serverLogger);
+            var server = new PingPongTcpServer(_serverLogger);
             var serverTask = Task.Run(() => server.StartAsync(token));
 
             await Task.Delay(1000); // Wait for server to boot up
@@ -236,7 +237,7 @@ namespace PingPongTests
             var client = new TestTcpClient_Slow(clientLogger, responseLogger);
             var clientTask = Task.Run(() => client.StartAsync(token));
 
-            await Task.Delay(30000); // Wait to ensure some communication occurs
+            await Task.Delay(40000); // Wait to ensure some communication occurs
 
             cts.Cancel();
 

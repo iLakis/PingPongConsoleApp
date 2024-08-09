@@ -1,0 +1,53 @@
+### YamlMime:ManagedReference
+items:
+- uid: Utils.Connection
+  commentId: N:Utils.Connection
+  id: Utils.Connection
+  children:
+  - Utils.Connection.ConnectionPool
+  - Utils.Connection.IConnectionPool
+  langs:
+  - csharp
+  - vb
+  name: Utils.Connection
+  nameWithType: Utils.Connection
+  fullName: Utils.Connection
+  type: Namespace
+  assemblies:
+  - Utils
+references:
+- uid: Utils.Connection.ConnectionPool
+  commentId: T:Utils.Connection.ConnectionPool
+  href: Utils.Connection.ConnectionPool.html
+  name: ConnectionPool
+  nameWithType: ConnectionPool
+  fullName: Utils.Connection.ConnectionPool
+- uid: Utils.Connection.IConnectionPool
+  commentId: T:Utils.Connection.IConnectionPool
+  parent: Utils.Connection
+  href: Utils.Connection.IConnectionPool.html
+  name: IConnectionPool
+  nameWithType: IConnectionPool
+  fullName: Utils.Connection.IConnectionPool
+- uid: Utils.Connection
+  commentId: N:Utils.Connection
+  href: Utils.html
+  name: Utils.Connection
+  nameWithType: Utils.Connection
+  fullName: Utils.Connection
+  spec.csharp:
+  - uid: Utils
+    name: Utils
+    href: Utils.html
+  - name: .
+  - uid: Utils.Connection
+    name: Connection
+    href: Utils.Connection.html
+  spec.vb:
+  - uid: Utils
+    name: Utils
+    href: Utils.html
+  - name: .
+  - uid: Utils.Connection
+    name: Connection
+    href: Utils.Connection.html

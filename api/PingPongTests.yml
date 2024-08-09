@@ -1,0 +1,63 @@
+### YamlMime:ManagedReference
+items:
+- uid: PingPongTests
+  commentId: N:PingPongTests
+  id: PingPongTests
+  children:
+  - PingPongTests.BasicTests
+  - PingPongTests.MemoryLoggerProvider
+  - PingPongTests.MemoryLogger`1
+  - PingPongTests.TestScenarios
+  langs:
+  - csharp
+  - vb
+  name: PingPongTests
+  nameWithType: PingPongTests
+  fullName: PingPongTests
+  type: Namespace
+  assemblies:
+  - Tests
+references:
+- uid: PingPongTests.BasicTests
+  commentId: T:PingPongTests.BasicTests
+  href: PingPongTests.BasicTests.html
+  name: BasicTests
+  nameWithType: BasicTests
+  fullName: PingPongTests.BasicTests
+- uid: PingPongTests.MemoryLogger`1
+  commentId: T:PingPongTests.MemoryLogger`1
+  href: PingPongTests.MemoryLogger-1.html
+  name: MemoryLogger<T>
+  nameWithType: MemoryLogger<T>
+  fullName: PingPongTests.MemoryLogger<T>
+  nameWithType.vb: MemoryLogger(Of T)
+  fullName.vb: PingPongTests.MemoryLogger(Of T)
+  name.vb: MemoryLogger(Of T)
+  spec.csharp:
+  - uid: PingPongTests.MemoryLogger`1
+    name: MemoryLogger
+    href: PingPongTests.MemoryLogger-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: PingPongTests.MemoryLogger`1
+    name: MemoryLogger
+    href: PingPongTests.MemoryLogger-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: PingPongTests.MemoryLoggerProvider
+  commentId: T:PingPongTests.MemoryLoggerProvider
+  href: PingPongTests.MemoryLoggerProvider.html
+  name: MemoryLoggerProvider
+  nameWithType: MemoryLoggerProvider
+  fullName: PingPongTests.MemoryLoggerProvider
+- uid: PingPongTests.TestScenarios
+  commentId: T:PingPongTests.TestScenarios
+  href: PingPongTests.TestScenarios.html
+  name: TestScenarios
+  nameWithType: TestScenarios
+  fullName: PingPongTests.TestScenarios

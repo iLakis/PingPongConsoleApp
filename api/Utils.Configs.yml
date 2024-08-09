@@ -1,0 +1,68 @@
+### YamlMime:ManagedReference
+items:
+- uid: Utils.Configs
+  commentId: N:Utils.Configs
+  id: Utils.Configs
+  children:
+  - Utils.Configs.IConfigLoader`1
+  - Utils.Configs.JsonConfigLoader`1
+  langs:
+  - csharp
+  - vb
+  name: Utils.Configs
+  nameWithType: Utils.Configs
+  fullName: Utils.Configs
+  type: Namespace
+  assemblies:
+  - Utils
+references:
+- uid: Utils.Configs.IConfigLoader`1
+  commentId: T:Utils.Configs.IConfigLoader`1
+  href: Utils.Configs.IConfigLoader-1.html
+  name: IConfigLoader<T>
+  nameWithType: IConfigLoader<T>
+  fullName: Utils.Configs.IConfigLoader<T>
+  nameWithType.vb: IConfigLoader(Of T)
+  fullName.vb: Utils.Configs.IConfigLoader(Of T)
+  name.vb: IConfigLoader(Of T)
+  spec.csharp:
+  - uid: Utils.Configs.IConfigLoader`1
+    name: IConfigLoader
+    href: Utils.Configs.IConfigLoader-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: Utils.Configs.IConfigLoader`1
+    name: IConfigLoader
+    href: Utils.Configs.IConfigLoader-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )
+- uid: Utils.Configs.JsonConfigLoader`1
+  commentId: T:Utils.Configs.JsonConfigLoader`1
+  href: Utils.Configs.JsonConfigLoader-1.html
+  name: JsonConfigLoader<T>
+  nameWithType: JsonConfigLoader<T>
+  fullName: Utils.Configs.JsonConfigLoader<T>
+  nameWithType.vb: JsonConfigLoader(Of T)
+  fullName.vb: Utils.Configs.JsonConfigLoader(Of T)
+  name.vb: JsonConfigLoader(Of T)
+  spec.csharp:
+  - uid: Utils.Configs.JsonConfigLoader`1
+    name: JsonConfigLoader
+    href: Utils.Configs.JsonConfigLoader-1.html
+  - name: <
+  - name: T
+  - name: '>'
+  spec.vb:
+  - uid: Utils.Configs.JsonConfigLoader`1
+    name: JsonConfigLoader
+    href: Utils.Configs.JsonConfigLoader-1.html
+  - name: (
+  - name: Of
+  - name: " "
+  - name: T
+  - name: )

@@ -1,0 +1,468 @@
+{
+  "source_base_path": "C:/Users/iljuh/source/repos/PingPongConsoleApp",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "type": "Resource",
+      "output": {
+        "resource": {
+          "relative_path": "index.json"
+        }
+      }
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "PingPongDocs/getting-started.md",
+      "output": {
+        ".html": {
+          "relative_path": "PingPongDocs/getting-started.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "PingPongDocs/introduction.md",
+      "output": {
+        ".html": {
+          "relative_path": "PingPongDocs/introduction.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "PingPongDocs/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "PingPongDocs/toc.html"
+        },
+        ".json": {
+          "relative_path": "PingPongDocs/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/PingPong.TcpClient.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/PingPong.TcpClient.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/PingPong.TcpServer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/PingPong.TcpServer.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/PingPong.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/PingPong.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/PingPongClient.PingPongTcpClient.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/PingPongClient.PingPongTcpClient.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/PingPongClient.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/PingPongClient.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/PingPongServer.PingPongTcpServer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/PingPongServer.PingPongTcpServer.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/PingPongServer.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/PingPongServer.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/PingPongTests.BasicTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/PingPongTests.BasicTests.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/PingPongTests.MemoryLogger-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/PingPongTests.MemoryLogger-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/PingPongTests.MemoryLoggerProvider.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/PingPongTests.MemoryLoggerProvider.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/PingPongTests.TestScenarios.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/PingPongTests.TestScenarios.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/PingPongTests.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/PingPongTests.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Tests.TestClients.TestClient_NonStopListening.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Tests.TestClients.TestClient_NonStopListening.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Tests.TestClients.TestTcpClient_NonStopListening.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Tests.TestClients.TestTcpClient_NonStopListening.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Tests.TestClients.TestTcpClient_Slow.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Tests.TestClients.TestTcpClient_Slow.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Tests.TestClients.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Tests.TestClients.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Tests.TestServers.TestServer_SpammingMessages.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Tests.TestServers.TestServer_SpammingMessages.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Tests.TestServers.TestTcpServer_Slow.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Tests.TestServers.TestTcpServer_Slow.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Tests.TestServers.TestTcpServer_SpammingMessages.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Tests.TestServers.TestTcpServer_SpammingMessages.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Tests.TestServers.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Tests.TestServers.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Utils.Configs.Client.DefaultClientConfig.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Utils.Configs.Client.DefaultClientConfig.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Utils.Configs.Client.IClientConfig.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Utils.Configs.Client.IClientConfig.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Utils.Configs.Client.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Utils.Configs.Client.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Utils.Configs.IConfigLoader-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Utils.Configs.IConfigLoader-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Utils.Configs.JsonConfigLoader-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Utils.Configs.JsonConfigLoader-1.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Utils.Configs.Server.DefaultServerConfig.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Utils.Configs.Server.DefaultServerConfig.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Utils.Configs.Server.IServerConfig.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Utils.Configs.Server.IServerConfig.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Utils.Configs.Server.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Utils.Configs.Server.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Utils.Configs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Utils.Configs.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Utils.Connection.ConnectionPool.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Utils.Connection.ConnectionPool.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Utils.Connection.IConnectionPool.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Utils.Connection.IConnectionPool.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Utils.Connection.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Utils.Connection.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Utils.SslEventListener.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Utils.SslEventListener.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Utils.StringTools.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Utils.StringTools.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Utils.XmlTools.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Utils.XmlTools.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Utils.ping.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Utils.ping.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Utils.pong.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Utils.pong.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/Utils.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/Utils.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "api/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/toc.html"
+        },
+        ".json": {
+          "relative_path": "api/toc.json"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "index.md",
+      "output": {
+        ".html": {
+          "relative_path": "index.html"
+        }
+      },
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "toc.html"
+        },
+        ".json": {
+          "relative_path": "toc.json"
+        }
+      },
+      "version": ""
+    }
+  ],
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}

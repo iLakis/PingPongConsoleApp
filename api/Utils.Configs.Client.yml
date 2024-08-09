@@ -1,0 +1,62 @@
+### YamlMime:ManagedReference
+items:
+- uid: Utils.Configs.Client
+  commentId: N:Utils.Configs.Client
+  id: Utils.Configs.Client
+  children:
+  - Utils.Configs.Client.DefaultClientConfig
+  - Utils.Configs.Client.IClientConfig
+  langs:
+  - csharp
+  - vb
+  name: Utils.Configs.Client
+  nameWithType: Utils.Configs.Client
+  fullName: Utils.Configs.Client
+  type: Namespace
+  assemblies:
+  - Utils
+references:
+- uid: Utils.Configs.Client.DefaultClientConfig
+  commentId: T:Utils.Configs.Client.DefaultClientConfig
+  parent: Utils.Configs.Client
+  href: Utils.Configs.Client.DefaultClientConfig.html
+  name: DefaultClientConfig
+  nameWithType: DefaultClientConfig
+  fullName: Utils.Configs.Client.DefaultClientConfig
+- uid: Utils.Configs.Client.IClientConfig
+  commentId: T:Utils.Configs.Client.IClientConfig
+  parent: Utils.Configs.Client
+  href: Utils.Configs.Client.IClientConfig.html
+  name: IClientConfig
+  nameWithType: IClientConfig
+  fullName: Utils.Configs.Client.IClientConfig
+- uid: Utils.Configs.Client
+  commentId: N:Utils.Configs.Client
+  href: Utils.html
+  name: Utils.Configs.Client
+  nameWithType: Utils.Configs.Client
+  fullName: Utils.Configs.Client
+  spec.csharp:
+  - uid: Utils
+    name: Utils
+    href: Utils.html
+  - name: .
+  - uid: Utils.Configs
+    name: Configs
+    href: Utils.Configs.html
+  - name: .
+  - uid: Utils.Configs.Client
+    name: Client
+    href: Utils.Configs.Client.html
+  spec.vb:
+  - uid: Utils
+    name: Utils
+    href: Utils.html
+  - name: .
+  - uid: Utils.Configs
+    name: Configs
+    href: Utils.Configs.html
+  - name: .
+  - uid: Utils.Configs.Client
+    name: Client
+    href: Utils.Configs.Client.html

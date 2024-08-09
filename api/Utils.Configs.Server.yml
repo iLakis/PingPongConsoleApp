@@ -1,0 +1,61 @@
+### YamlMime:ManagedReference
+items:
+- uid: Utils.Configs.Server
+  commentId: N:Utils.Configs.Server
+  id: Utils.Configs.Server
+  children:
+  - Utils.Configs.Server.DefaultServerConfig
+  - Utils.Configs.Server.IServerConfig
+  langs:
+  - csharp
+  - vb
+  name: Utils.Configs.Server
+  nameWithType: Utils.Configs.Server
+  fullName: Utils.Configs.Server
+  type: Namespace
+  assemblies:
+  - Utils
+references:
+- uid: Utils.Configs.Server.DefaultServerConfig
+  commentId: T:Utils.Configs.Server.DefaultServerConfig
+  href: Utils.Configs.Server.DefaultServerConfig.html
+  name: DefaultServerConfig
+  nameWithType: DefaultServerConfig
+  fullName: Utils.Configs.Server.DefaultServerConfig
+- uid: Utils.Configs.Server.IServerConfig
+  commentId: T:Utils.Configs.Server.IServerConfig
+  parent: Utils.Configs.Server
+  href: Utils.Configs.Server.IServerConfig.html
+  name: IServerConfig
+  nameWithType: IServerConfig
+  fullName: Utils.Configs.Server.IServerConfig
+- uid: Utils.Configs.Server
+  commentId: N:Utils.Configs.Server
+  href: Utils.html
+  name: Utils.Configs.Server
+  nameWithType: Utils.Configs.Server
+  fullName: Utils.Configs.Server
+  spec.csharp:
+  - uid: Utils
+    name: Utils
+    href: Utils.html
+  - name: .
+  - uid: Utils.Configs
+    name: Configs
+    href: Utils.Configs.html
+  - name: .
+  - uid: Utils.Configs.Server
+    name: Server
+    href: Utils.Configs.Server.html
+  spec.vb:
+  - uid: Utils
+    name: Utils
+    href: Utils.html
+  - name: .
+  - uid: Utils.Configs
+    name: Configs
+    href: Utils.Configs.html
+  - name: .
+  - uid: Utils.Configs.Server
+    name: Server
+    href: Utils.Configs.Server.html
