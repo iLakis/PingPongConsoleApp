@@ -58,8 +58,9 @@ namespace Tests.TestClients {
             using (var timeoutCts = CancellationTokenSource.CreateLinkedTokenSource(token)) {
                 timeoutCts.CancelAfter(_config.ReadTimeout);
                 try {
-                    while (!timeoutCts.Token.IsCancellationRequested) {
+                    while (!timeoutCts.Token.IsCancellationRequested) {                        
                         var line = await reader.ReadLineAsync().WaitAsync(timeoutCts.Token);
+                        timeoutCts.Token.ThrowIfCancellationRequested();
                         if (!string.IsNullOrWhiteSpace(line)) {
                             responseBuilder.AppendLine(line);
                             if (line.EndsWith(_config.Separator)) {
@@ -69,11 +70,13 @@ namespace Tests.TestClients {
 
                                 using (var stringReader = new StringReader(response)) {
                                     ReadPong(pongSerializer, stringReader);
+                                    responseBuilder.Clear();
                                     return true;
                                 }
                             }
                         }
                     }
+                    timeoutCts.Token.ThrowIfCancellationRequested();
                 } catch (OperationCanceledException) {
                     _systemLogger.LogError($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Reading pong message timed out.");
                     throw new TimeoutException("Reading pong message timed out.");

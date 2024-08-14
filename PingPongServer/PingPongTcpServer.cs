@@ -39,7 +39,7 @@ namespace PingPongServer
         
         }
 
-        /*public async Task StartAsync(CancellationToken token) {
+        public async Task StartAsync(CancellationToken token) {
             ThreadPool.SetMinThreads(100, 100);
             TcpListener listener = new TcpListener(IPAddress.Any, _config.Port);
             listener.Start();
@@ -59,8 +59,8 @@ namespace PingPongServer
                 listener.Stop();
                 _logger.LogWarning($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Server stopped");
             }
-        }*/
-        public async Task StartAsync(CancellationToken token) {
+        }
+        /*public async Task StartAsync(CancellationToken token) {
             ThreadPool.SetMinThreads(100, 100);
             TcpListener listener = new TcpListener(IPAddress.Any, _config.Port);
             listener.Start();
@@ -76,7 +76,7 @@ namespace PingPongServer
                 listener.Stop();
                 _logger.LogWarning($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Server stopped");
             }
-        }
+        }*/
 
 
         protected virtual async Task HandleClientAsync(TcpClient client, CancellationToken token) {

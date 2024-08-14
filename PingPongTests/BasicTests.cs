@@ -56,8 +56,8 @@ namespace PingPongTests
 
             cts.Cancel();
             try {
-                await Task.WhenAll(serverTask, clientTask);
-                //await Task.Delay(1000);
+                //await Task.WhenAll(serverTask, clientTask);
+                await Task.Delay(1000);
             } catch (OperationCanceledException ex) {
 
             } catch (Exception ex) {

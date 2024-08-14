@@ -42,7 +42,7 @@ public class TestTcpServer_Slow : PingPongTcpServer {
                                     ReadPing(stringReader, pingSerializer);
 
                                     // Симуляция задержки отправки ответа
-                                    await Task.Delay(2000, token);
+                                    await Task.Delay(6000, token);
 
                                     await SendPongWithTimeout(writer, token);
                                 }
@@ -51,7 +51,7 @@ public class TestTcpServer_Slow : PingPongTcpServer {
                                 if (ex.InnerException != null) {
                                     _logger.LogError($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Inner exception: {ex.InnerException.Message}");
                                 }
-                            }
+                            } 
                             messageBuilder.Clear();
                         }
                     } else {
@@ -75,6 +75,8 @@ public class TestTcpServer_Slow : PingPongTcpServer {
             }
         } catch (TaskCanceledException ex) {
             _logger.LogWarning($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Task cancelled");
+        } catch (TimeoutException ex) {
+            _logger.LogWarning($"[{DateTime.UtcNow:HH:mm:ss.fff}]: {ex.Message}");
         } catch (Exception ex) {
             _logger.LogInformation($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Error: {ex.Message}");
             if (ex.InnerException != null) {
@@ -93,8 +95,8 @@ public class TestTcpServer_Slow : PingPongTcpServer {
             try {
                 return await reader.ReadLineAsync().WaitAsync(timeoutCts.Token);
             } catch (OperationCanceledException) {
-                _logger.LogError("Reading client message timed out.");
-                throw;
+                //_logger.LogError($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Reading client message timed out.");
+                throw new TimeoutException("Reading client message timed out.");
             }
         }
     }
@@ -109,8 +111,8 @@ public class TestTcpServer_Slow : PingPongTcpServer {
                 await writer.WriteLineAsync(pongMessage).WaitAsync(timeoutCts.Token);
                 _logger.LogInformation($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Sent: {pongVar.timestamp}");
             } catch (OperationCanceledException) {
-                _logger.LogError("Sending pong message timed out.");
-                throw;
+                //_logger.LogError($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Sending pong message timed out.");
+                throw new TimeoutException("Reading client message timed out.");
             }
         }
     }

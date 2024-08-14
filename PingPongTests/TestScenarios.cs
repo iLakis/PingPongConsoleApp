@@ -224,7 +224,7 @@ namespace PingPongTests
             var token = cts.Token;
 
             //var server = new TestTcpServer_Slow(_serverLogger);
-            var server = new PingPongTcpServer(_serverLogger);
+            var server = new TestTcpServer_Slow(_serverLogger);
             var serverTask = Task.Run(() => server.StartAsync(token));
 
             await Task.Delay(1000); // Wait for server to boot up

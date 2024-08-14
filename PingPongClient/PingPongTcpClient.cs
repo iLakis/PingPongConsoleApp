@@ -44,7 +44,17 @@ namespace PingPongClient
             }          
         }
         public async Task StartAsync(CancellationToken token) {
-            _connectionPool = await ConnectionPool.CreateAsync(2, _config.ServerAddress, _config.Port, _clientCertificate, _systemLogger, token, _config.MaxReconnectAttempts, _config.ReconnectDelay);
+            _connectionPool = await ConnectionPool.CreateAsync(
+                2, 
+                _config.ServerAddress, 
+                _config.Port, 
+                _clientCertificate, 
+                _systemLogger, 
+                token, 
+                _config.MaxReconnectAttempts, 
+                _config.ReconnectDelay
+                );
+
             try {
                 while (!token.IsCancellationRequested) {              
                     try {
@@ -97,6 +107,9 @@ namespace PingPongClient
                 _currentConnection.ReadTimeout = _config.ReadTimeout;
                 _currentConnection.WriteTimeout = _config.WriteTimeout;
                 //_systemLogger.LogInformation("Got connection from pool.");
+            } catch (OperationCanceledException ex) {
+                _systemLogger.LogError($"[{DateTime.UtcNow:HH:mm:ss.fff}]: {ex.Message}");
+                throw;
             } catch (Exception ex) {
                 _systemLogger.LogError($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Connection error: {ex.Message}");
                 throw;
