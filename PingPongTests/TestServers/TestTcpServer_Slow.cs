@@ -6,12 +6,13 @@ using System.Security.Authentication;
 using System.Text;
 using System.Xml.Serialization;
 using Utils;
+using Utils.Connection;
 
 public class TestTcpServer_Slow : PingPongTcpServer {
     public TestTcpServer_Slow(ILogger<PingPongTcpServer> logger) : base(logger) { }
 
-    protected override async Task HandleClientAsync(TcpClient client, CancellationToken token) {
-        var sslStream = new SslStream(client.GetStream(), false);
+    protected override async Task HandleClientAsync(ClientConnection connection, CancellationToken token) {
+        var sslStream = new SslStream(connection.TcpClient.GetStream(), false);
         sslStream.ReadTimeout = _config.ReadTimeout;
         sslStream.WriteTimeout = _config.WriteTimeout;
         try {
@@ -23,7 +24,7 @@ public class TestTcpServer_Slow : PingPongTcpServer {
                 var pongSerializer = new XmlSerializer(typeof(pong));
                 StringBuilder messageBuilder = new StringBuilder();
 
-                while (client.Connected && !token.IsCancellationRequested) {
+                while (connection.TcpClient.Connected && !token.IsCancellationRequested) {
                     token.ThrowIfCancellationRequested();
 
                     // Симуляция задержки чтения
@@ -39,7 +40,7 @@ public class TestTcpServer_Slow : PingPongTcpServer {
                             try {
                                 using (var stringReader = new StringReader(message)) {
                                     token.ThrowIfCancellationRequested();
-                                    ReadPing(stringReader, pingSerializer);
+                                    ReadPing(connection, stringReader, pingSerializer);
 
                                     // Симуляция задержки отправки ответа
                                     await Task.Delay(6000, token);
@@ -84,7 +85,7 @@ public class TestTcpServer_Slow : PingPongTcpServer {
             }
         } finally {
             sslStream.Close();
-            client.Close(); // Ensure the client is closed on error
+            connection.TcpClient.Close(); // Ensure the connection.TcpClient is closed on error
             _logger.LogWarning($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Client connection closed.");
         }
     }
@@ -95,7 +96,7 @@ public class TestTcpServer_Slow : PingPongTcpServer {
             try {
                 return await reader.ReadLineAsync().WaitAsync(timeoutCts.Token);
             } catch (OperationCanceledException) {
-                //_logger.LogError($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Reading client message timed out.");
+                //_logger.LogError($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Reading connection.TcpClient message timed out.");
                 throw new TimeoutException("Reading client message timed out.");
             }
         }

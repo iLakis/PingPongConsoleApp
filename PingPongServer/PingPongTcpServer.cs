@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using Utils;
 using Utils.Configs;
 using Utils.Configs.Server;
+using Utils.Connection;
 
 namespace PingPongServer
 {
@@ -20,6 +21,10 @@ namespace PingPongServer
         protected IServerConfig _config;
         protected readonly ILogger<PingPongTcpServer> _logger;
 
+        public event EventHandler<ConnectionEventArgs> ConnectionOpened;
+        public event EventHandler<ConnectionEventArgs> ConnectionClosed;
+        public event EventHandler<ConnectionErrorEventArgs> ConnectionError;
+        private readonly Dictionary<Guid, ClientConnection> _activeConnections = new Dictionary<Guid, ClientConnection>();
 
         public PingPongTcpServer(ILogger<PingPongTcpServer> logger, IConfigLoader<DefaultServerConfig> configLoader = null) {
             _logger = logger;
@@ -40,7 +45,7 @@ namespace PingPongServer
         }
 
         public async Task StartAsync(CancellationToken token) {
-            ThreadPool.SetMinThreads(100, 100);
+            ThreadPool.SetMinThreads(100, 100); //TODO move to config
             TcpListener listener = new TcpListener(IPAddress.Any, _config.Port);
             listener.Start();
             _logger.LogInformation($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Server started on port {_config.Port}");
@@ -49,8 +54,11 @@ namespace PingPongServer
                 while (!token.IsCancellationRequested) {
                     if (listener.Pending()) {
                         TcpClient client = listener.AcceptTcpClient();
+                        var sslStream = new SslStream(client.GetStream(), false);
                         _logger.LogInformation($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Client connected");
-                        _ = Task.Run(() => HandleClientAsync(client, token));
+                        var connection = new ClientConnection(client, sslStream);
+                        OnConnectionOpened(connection);
+                        _ = Task.Run(() => HandleClientAsync(connection, token));
                     } else {
                         await Task.Delay(100, token);
                     }
@@ -79,8 +87,8 @@ namespace PingPongServer
         }*/
 
 
-        protected virtual async Task HandleClientAsync(TcpClient client, CancellationToken token) {
-            var sslStream = new SslStream(client.GetStream(), false);
+        protected virtual async Task HandleClientAsync(ClientConnection connection, CancellationToken token) {
+            var sslStream = new SslStream(connection.TcpClient.GetStream(), false);
             sslStream.ReadTimeout = _config.ReadTimeout;
             sslStream.WriteTimeout = _config.WriteTimeout;
             try {
@@ -92,7 +100,7 @@ namespace PingPongServer
                     var pongSerializer = new XmlSerializer(typeof(pong));
                     StringBuilder messageBuilder = new StringBuilder();
 
-                    while (client.Connected && !token.IsCancellationRequested) {
+                    while (connection.TcpClient.Connected && !token.IsCancellationRequested) {
                         token.ThrowIfCancellationRequested();
                         string line = await reader.ReadLineAsync();
                         if (!string.IsNullOrWhiteSpace(line)) {
@@ -104,9 +112,9 @@ namespace PingPongServer
                                 try {
                                     using (var stringReader = new StringReader(message)) {
                                         token.ThrowIfCancellationRequested();
-                                        ReadPing(stringReader, pingSerializer);
+                                        ReadPing(connection, stringReader, pingSerializer);
                                         token.ThrowIfCancellationRequested();
-                                        SendPong(writer);
+                                        SendPong(connection, writer);
                                     }
                                 } catch (InvalidOperationException ex) {
                                     _logger.LogError($"[{DateTime.UtcNow:HH:mm:ss.fff}]: XML Deserialization error: {ex.Message}");
@@ -138,6 +146,7 @@ namespace PingPongServer
                         _logger.LogError($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Inner exception: {ioEx.InnerException.Message}");
                     }
                 }
+                OnConnectionError(connection, ioEx);
             } catch (TaskCanceledException ex) {
                 _logger.LogWarning($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Task cancelled");
                 
@@ -146,10 +155,12 @@ namespace PingPongServer
                 if (ex.InnerException != null) {
                     _logger.LogError($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Inner exception: {ex.InnerException.Message}");
                 }
+                OnConnectionError(connection, ex);
             } finally {
-                sslStream.Close();
-                client.Close(); // Ensure the client is closed on error
+                connection.SslStream.Close();
+                connection.TcpClient.Close(); // Ensure the client is closed on error
                 _logger.LogWarning($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Client connection closed.");
+                OnConnectionClosed(connection);
             }
 
         }
@@ -166,7 +177,6 @@ namespace PingPongServer
                 X509KeyStorageFlags.PersistKeySet | X509KeyStorageFlags.MachineKeySet);
             _logger.LogInformation($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Certificate loaded successfully.");
         }
-
         protected void LoadXsdSchema() {
             schemaSet = new XmlSchemaSet();
             string schemaPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "schema.xsd");
@@ -187,18 +197,40 @@ namespace PingPongServer
             //Console.WriteLine("SSL authentication succeeded.");
             _logger.LogInformation($"[{DateTime.UtcNow:HH:mm:ss.fff}]: SSL authentication succeeded.");
         }
-        protected void SendPong(StreamWriter writer) {
+        protected void SendPong(ClientConnection connection, StreamWriter writer) {
             var pongVar = new pong { timestamp = DateTime.UtcNow };
             var pongMessage = Utils.XmlTools.SerializeToXml(pongVar) + _config.Separator;
             writer.WriteLine(pongMessage);
-            _logger.LogInformation($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Sent: {pongVar.timestamp}");
+            _logger.LogInformation($"Sent: {pongVar.timestamp} to {connection.Id}");
         }
-        protected void ReadPing(StringReader stringReader, XmlSerializer pingSerializer) {
+        protected void ReadPing(ClientConnection connection, StringReader stringReader, XmlSerializer pingSerializer) {
             var pingVar = (ping)pingSerializer.Deserialize(stringReader);
             var receivedTime = DateTime.UtcNow;
             var sentTime = pingVar.timestamp;
             var deliveryTime = receivedTime - sentTime;
-            _logger.LogInformation($"Received: {pingVar.timestamp}, Delivery Time: {deliveryTime.TotalMilliseconds}ms");
+            _logger.LogInformation($"Received: {pingVar.timestamp} from {connection.Id}, Delivery Time: {deliveryTime.TotalMilliseconds}ms");
+        }
+        protected virtual void OnConnectionOpened(ClientConnection connection) {
+            _activeConnections[connection.Id] = connection; 
+            _logger.LogInformation($"Connection {connection.Id} opened. Total connections: {_activeConnections.Count}");
+            ConnectionOpened?.Invoke(this, new ConnectionEventArgs(connection));
+        }
+        protected virtual void OnConnectionClosed(ClientConnection connection) {
+            _activeConnections.Remove(connection.Id); 
+            _logger.LogInformation($"Connection {connection.Id} closed. Total connections: {_activeConnections.Count}");
+            ConnectionClosed?.Invoke(this, new ConnectionEventArgs(connection));
+        }
+        protected virtual void OnConnectionError(ClientConnection connection, Exception ex) {
+            _logger.LogError($"Connection {connection.Id} encountered an error: {ex.Message}");
+            ConnectionError?.Invoke(this, new ConnectionErrorEventArgs(connection, ex));
+        }
+        public void DisconnectClient(Guid connectionId) {
+            if (_activeConnections.TryGetValue(connectionId, out var connection)) {
+                connection.TcpClient.Close();
+                _logger.LogInformation($"Disconnected client {connectionId}");
+            } else {
+                _logger.LogWarning($"Trying to close client with ID {connectionId}, not found.");
+            }
         }
     }
 }

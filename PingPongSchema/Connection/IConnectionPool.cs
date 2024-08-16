@@ -7,9 +7,13 @@ using System.Threading.Tasks;
 
 namespace Utils.Connection {
     public interface IConnectionPool {
-        Task<SslStream> GetConnectionAsync(CancellationToken token);
+        event EventHandler<ConnectionEventArgs> ConnectionOpened;
+        event EventHandler<ConnectionEventArgs> ConnectionClosed;
+        event EventHandler<ConnectionErrorEventArgs> ConnectionError;
+        Task<ClientConnection> GetConnectionAsync(CancellationToken token);
         //Task ReturnConnectionToPool(SslStream connection, CancellationToken token);
-        Task CloseConnectionAsync(SslStream connection);
+        Task CloseConnectionAsync(ClientConnection connection);
         Task CloseAllConnectionsAsync();
+        Task InitializeAsync(CancellationToken token);
     }
 }

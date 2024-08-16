@@ -4,6 +4,7 @@ using System.Net.Security;
 using System.Text;
 using System.Xml.Serialization;
 using Utils;
+using Utils.Connection;
 
 namespace Tests.TestClients
 {
@@ -11,22 +12,22 @@ namespace Tests.TestClients
     {
         public TestTcpClient_NonStopListening(ILogger systemLogger, ILogger responseLogger)
             : base(systemLogger, responseLogger) { }
-        protected override async Task CommunicateAsync(SslStream connection, CancellationToken token)
+        protected override async Task CommunicateAsync(ClientConnection connection, CancellationToken token)
         {
-            using StreamReader reader = new StreamReader(_currentConnection);
-            using StreamWriter writer = new StreamWriter(_currentConnection) { AutoFlush = true };
+            using StreamReader reader = new StreamReader(_currentConnection.SslStream);
+            using StreamWriter writer = new StreamWriter(_currentConnection.SslStream) { AutoFlush = true };
             var pingSerializer = new XmlSerializer(typeof(ping));
             var pongSerializer = new XmlSerializer(typeof(pong));
             StringBuilder responseBuilder = new StringBuilder();
 
-            var readingTask = ReadMessagesAsync(reader, pongSerializer, responseBuilder, token);
-            var sendingTask = SendMessagesAsync(writer, token);
+            var readingTask = ReadMessagesAsync(connection, reader, pongSerializer, responseBuilder, token);
+            var sendingTask = SendMessagesAsync(connection, writer, token);
 
             await Task.WhenAll(readingTask, sendingTask);
 
             _systemLogger.LogWarning("Client stopped");
         }
-        private async Task ReadMessagesAsync(StreamReader reader, XmlSerializer pongSerializer, StringBuilder responseBuilder, CancellationToken token)
+        private async Task ReadMessagesAsync(ClientConnection connection, StreamReader reader, XmlSerializer pongSerializer, StringBuilder responseBuilder, CancellationToken token)
         {
             while (!token.IsCancellationRequested)
             {
@@ -43,7 +44,7 @@ namespace Tests.TestClients
                             try {
                                 using (var stringReader = new StringReader(response)) {
                                     if (token.IsCancellationRequested) throw new TaskCanceledException();
-                                    ReadPong(pongSerializer, stringReader);
+                                    ReadPong(connection, pongSerializer, stringReader);
                                 }
                             } catch (InvalidOperationException ex) {
                                 _systemLogger.LogError($"XML Deserialization error: {ex.Message}");
@@ -67,13 +68,13 @@ namespace Tests.TestClients
                 }
             }
         }
-        private async Task SendMessagesAsync(StreamWriter writer, CancellationToken token)
+        private async Task SendMessagesAsync(ClientConnection connection, StreamWriter writer, CancellationToken token)
         {
             try
             {
                 while (!token.IsCancellationRequested)
                 {
-                    SendPing(writer);
+                    SendPing(connection, writer);
                     await Task.Delay(_config.Interval, token);
                 }
             }

@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using PingPongServer;
 using Utils;
 using Utils.Configs.Server;
+using Utils.Connection;
 
 namespace Tests.TestServers {
     public class TestServer_SpammingMessages : PingPongTcpServer {
@@ -15,8 +16,8 @@ namespace Tests.TestServers {
         private int _count = 5;
         public TestServer_SpammingMessages(ILogger<PingPongTcpServer> logger) : base(logger) { }
 
-        protected override async Task HandleClientAsync(TcpClient client, CancellationToken token) {
-            var sslStream = new SslStream(client.GetStream(), false);
+        protected override async Task HandleClientAsync(ClientConnection connection, CancellationToken token) {
+            var sslStream = new SslStream(connection.TcpClient.GetStream(), false);
             sslStream.ReadTimeout = _config.ReadTimeout;
             sslStream.WriteTimeout = _config.WriteTimeout;
             try {
@@ -28,8 +29,7 @@ namespace Tests.TestServers {
                     var pongSerializer = new XmlSerializer(typeof(pong));
                     StringBuilder messageBuilder = new StringBuilder();
 
-                    // Ждем первого сообщения от клиента
-                    while (client.Connected && !token.IsCancellationRequested) {
+                    while (connection.TcpClient.Connected && !token.IsCancellationRequested) {
                         token.ThrowIfCancellationRequested();
                         string line = await reader.ReadLineAsync();
                         if (!string.IsNullOrWhiteSpace(line)) {
@@ -41,7 +41,7 @@ namespace Tests.TestServers {
                                 try {
                                     using (var stringReader = new StringReader(message)) {
                                         token.ThrowIfCancellationRequested();
-                                        ReadPing(stringReader, pingSerializer);
+                                        ReadPing(connection, stringReader, pingSerializer);
                                     }
                                 } catch (InvalidOperationException ex) {
                                     _logger.LogError($"[{DateTime.UtcNow:HH:mm:ss.fff}] XML Deserialization error: {ex.Message}");
@@ -50,7 +50,7 @@ namespace Tests.TestServers {
                                     }
                                 }
                                 messageBuilder.Clear();
-                                break; // Получили первое сообщение от клиента, выходим из цикла ожидания
+                                break; 
                             }
                         } else {
                             _logger.LogWarning($"[{DateTime.UtcNow:HH:mm:ss.fff}] Received empty message or whitespace.");
@@ -58,8 +58,7 @@ namespace Tests.TestServers {
                         }
                     }
 
-                    // Начинаем отправку сообщений клиенту
-                    while (client.Connected && !token.IsCancellationRequested) {
+                    while (connection.TcpClient.Connected && !token.IsCancellationRequested) {
                         token.ThrowIfCancellationRequested();
 
                         var pongVar = new pong { timestamp = DateTime.UtcNow };
@@ -76,10 +75,12 @@ namespace Tests.TestServers {
                 _logger.LogWarning($"[{DateTime.UtcNow:HH:mm:ss.fff}] Task was canceled");
             } catch (Exception ex) {
                 _logger.LogError($"[{DateTime.UtcNow:HH:mm:ss.fff}] Error: {ex.Message}");
+                OnConnectionError(connection, ex);
             } finally {
                 sslStream.Close();
-                client.Close();
+                connection.TcpClient.Close();
                 _logger.LogWarning($"[{DateTime.UtcNow:HH:mm:ss.fff}] Client connection closed.");
+                OnConnectionClosed(connection);
             }
         }
     }

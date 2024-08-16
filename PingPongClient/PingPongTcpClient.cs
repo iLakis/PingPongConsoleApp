@@ -20,7 +20,7 @@ namespace PingPongClient
         protected X509Certificate2? _clientCertificate;
         protected XmlSchemaSet? _schemaSet;
         protected DefaultClientConfig? _config;
-        protected SslStream? _currentConnection;
+        protected ClientConnection _currentConnection;
         protected readonly ILogger _systemLogger;
         protected readonly ILogger _responseLogger;
         protected IConnectionPool _connectionPool;
@@ -44,22 +44,28 @@ namespace PingPongClient
             }          
         }
         public async Task StartAsync(CancellationToken token) {
-            _connectionPool = await ConnectionPool.CreateAsync(
+            _connectionPool = ConnectionPool.Create(
                 2, 
                 _config.ServerAddress, 
                 _config.Port, 
                 _clientCertificate, 
-                _systemLogger, 
-                token, 
+                _systemLogger,
                 _config.MaxReconnectAttempts, 
                 _config.ReconnectDelay
                 );
+
+            _systemLogger.LogInformation($"    TEST [{DateTime.UtcNow:HH:mm:ss.fff}]: Subscribing to events...");
+            _connectionPool.ConnectionOpened += OnConnectionOpened;
+            _connectionPool.ConnectionClosed += OnConnectionClosed;
+            _connectionPool.ConnectionError += OnConnectionError;
+
+            await _connectionPool.InitializeAsync(token);
 
             try {
                 while (!token.IsCancellationRequested) {              
                     try {
                         await GetConnectionFromPoolAsync(token);
-                        _systemLogger.LogInformation("Got connection from pool.");
+                        _systemLogger.LogInformation($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Got connection from pool.");
                         await CommunicateAsync(_currentConnection, token);
                     } catch (AuthenticationException ex) {
                         _systemLogger.LogError($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Authentication failed: {ex.Message}");
@@ -104,8 +110,8 @@ namespace PingPongClient
             try {
                 var connection = await _connectionPool.GetConnectionAsync(token);
                 _currentConnection = connection;
-                _currentConnection.ReadTimeout = _config.ReadTimeout;
-                _currentConnection.WriteTimeout = _config.WriteTimeout;
+                _currentConnection.SslStream.ReadTimeout = _config.ReadTimeout;
+                _currentConnection.SslStream.WriteTimeout = _config.WriteTimeout;
                 //_systemLogger.LogInformation("Got connection from pool.");
             } catch (OperationCanceledException ex) {
                 _systemLogger.LogError($"[{DateTime.UtcNow:HH:mm:ss.fff}]: {ex.Message}");
@@ -115,22 +121,22 @@ namespace PingPongClient
                 throw;
             }
         }
-        protected virtual async Task CommunicateAsync(SslStream connection, CancellationToken token) {
-            using StreamReader reader = new StreamReader(connection); //_sslStream
-            using StreamWriter writer = new StreamWriter(connection) { AutoFlush = true };
+        protected virtual async Task CommunicateAsync(ClientConnection connection, CancellationToken token) {
+            using StreamReader reader = new StreamReader(connection.SslStream); //_sslStream
+            using StreamWriter writer = new StreamWriter(connection.SslStream) { AutoFlush = true };
             var pingSerializer = new XmlSerializer(typeof(ping));
             var pongSerializer = new XmlSerializer(typeof(pong));
             StringBuilder responseBuilder = new StringBuilder();
             Stopwatch stopwatch = new Stopwatch();
 
-            while (connection.CanRead && connection.CanWrite && !token.IsCancellationRequested) { //_client.Connected
+            while (connection.SslStream.CanRead && connection.SslStream.CanWrite && !token.IsCancellationRequested) { //_client.Connected
                 token.ThrowIfCancellationRequested();
-                SendPing(writer);
+                SendPing(connection, writer);
 
                 stopwatch.Restart();
                 bool pongReceived = false;
 
-                while (connection.CanRead && connection.CanWrite && !token.IsCancellationRequested) { //_client.Connected
+                while (connection.SslStream.CanRead && connection.SslStream.CanWrite && !token.IsCancellationRequested) { //_client.Connected
                     token.ThrowIfCancellationRequested();
                     string line = await reader.ReadLineAsync();
                     if (!string.IsNullOrWhiteSpace(line)) {
@@ -143,7 +149,7 @@ namespace PingPongClient
                             try {
                                 using (var stringReader = new StringReader(response)) {
                                     token.ThrowIfCancellationRequested();
-                                    ReadPong(pongSerializer, stringReader);
+                                    ReadPong(connection, pongSerializer, stringReader);
                                     pongReceived = true;
                                 }
                             } catch (InvalidOperationException ex) {
@@ -174,7 +180,6 @@ namespace PingPongClient
             }
             //_systemLogger.LogWarning("Client stopped");
         }
-
         protected virtual async Task HandleTimeoutAsync(CancellationToken token) {
             _systemLogger.LogWarning($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Handling timeout - attempting to reconnect...");
             try {
@@ -184,7 +189,7 @@ namespace PingPongClient
                 throw;
             }
         }
-        protected virtual void AdjustBehaviorBasedOnLatency(long latency) { 
+        /*protected virtual void AdjustBehaviorBasedOnLatency(long latency) { 
             if (latency > _config.HighLatencyThreshold) { 
                 _systemLogger.LogWarning("High latency detected, increasing interval and timeouts.");
                 _config.Interval = Math.Min(_config.Interval + 100, _config.MaxInterval);
@@ -197,9 +202,9 @@ namespace PingPongClient
                 _config.ReadTimeout = Math.Max(_config.ReadTimeout - 500, _config.MinReadTimeout);
                 _config.WriteTimeout = Math.Max(_config.WriteTimeout - 500, _config.MinWriteTimeout); 
             }
-            _currentConnection.ReadTimeout = _config.ReadTimeout;
-            _currentConnection.WriteTimeout = _config.WriteTimeout;
-        }
+            _currentConnection.SslStream.ReadTimeout = _config.ReadTimeout;
+            _currentConnection.SslStream.WriteTimeout = _config.WriteTimeout;
+        }*/
         public async Task SwapConnectionAsync(CancellationToken token) {
             try {
                 _systemLogger.LogInformation($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Swapping connection...");
@@ -214,18 +219,18 @@ namespace PingPongClient
             }
             return;
         }
-        protected void SendPing(StreamWriter writer) {
+        protected void SendPing(ClientConnection connection, StreamWriter writer) {
             var pingVar = new ping { timestamp = DateTime.UtcNow };           
             var pingMessage = XmlTools.SerializeToXml(pingVar) + _config.Separator;
             writer.WriteLine(pingMessage);
-            _systemLogger.LogInformation($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Sent: {pingVar.timestamp}");
+            _systemLogger.LogInformation($"Sent: {pingVar.timestamp} to {connection.Id}");
         }
-        protected void ReadPong(XmlSerializer pongSerializer, StringReader stringReader) {
+        protected void ReadPong(ClientConnection connection, XmlSerializer pongSerializer, StringReader stringReader) {
             var pongVar = (pong)pongSerializer.Deserialize(stringReader);
             var receivedTime = DateTime.UtcNow;
             var sentTime = pongVar.timestamp;
             var deliveryTime = receivedTime - sentTime;
-            _responseLogger.LogInformation($"Received: {pongVar.timestamp}, Delivery Time: {deliveryTime.TotalMilliseconds}ms");
+            _responseLogger.LogInformation($"Received: {pongVar.timestamp} from {connection.Id}, Delivery Time: {deliveryTime.TotalMilliseconds}ms");
         }
         protected void LoadCertificate() {
             try {
@@ -239,7 +244,7 @@ namespace PingPongClient
                     certPath,
                     _config.SslPass,
                     X509KeyStorageFlags.MachineKeySet);
-                _systemLogger.LogInformation("Certificate loaded successfully.");
+                _systemLogger.LogInformation($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Certificate loaded successfully.");
             } catch (Exception ex) {
                 _systemLogger.LogError($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Error loading certificate: {ex.Message}");
                 throw;
@@ -253,23 +258,41 @@ namespace PingPongClient
                     throw new FileNotFoundException("XML schema file not found", schemaPath);
                 }
                 _schemaSet.Add("", schemaPath);
-                _systemLogger.LogInformation("Schema loaded successfully.");
+                _systemLogger.LogInformation($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Schema loaded successfully.");
             } catch (Exception ex) {
                 _systemLogger.LogError($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Error loading schema: {ex.Message}");
                 throw;
             }
         }
         public void DisconnectCurrentConnection() {
-            _systemLogger.LogWarning("Disconnecting current connection of the client.");
+            _systemLogger.LogWarning($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Disconnecting current connection of the client.");
             if (_currentConnection != null) {
                 _connectionPool.CloseConnectionAsync(_currentConnection).Wait();
             } else {
-                _systemLogger.LogError("No current connection to disconnect.");
+                _systemLogger.LogError($"[{DateTime.UtcNow:HH:mm:ss.fff}]: No current connection to disconnect.");
             }
         }
         public void DisconnectAllConnections() {
-            _systemLogger.LogWarning("Disconnecting all connections of the client.");
+            _systemLogger.LogWarning($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Disconnecting all connections of the client.");
             _connectionPool?.CloseAllConnectionsAsync().Wait();
+        }
+        private void OnConnectionOpened(object sender, ConnectionEventArgs e) {
+            var connection = e.Connection;
+            _systemLogger.LogInformation($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Connection opened with remote endpoint {connection.TcpClient.Client.RemoteEndPoint}");
+        }
+        private void OnConnectionClosed(object sender, ConnectionEventArgs e) {
+            var connection = e.Connection;
+            _systemLogger.LogInformation($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Connection closed with remote endpoint {connection.TcpClient.Client.RemoteEndPoint}");
+        }
+        private void OnConnectionError(object sender, ConnectionErrorEventArgs e) {
+            _systemLogger.LogError($"[{DateTime.UtcNow:HH:mm:ss.fff}]: Connection error occurred: {e.Exception.Message}");
+
+            /*if (e.Connection != null) {
+                DisconnectCurrentConnection();
+                _ = ReconnectAsync(e.Connection); 
+            } else {
+                _systemLogger.LogError("No connection was associated with the error.");
+            }*/
         }
 
     }

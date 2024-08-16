@@ -5,40 +5,38 @@ using System.Net.Security;
 using System.Text;
 using System.Xml.Serialization;
 using Utils;
+using Utils.Connection;
 
 namespace Tests.TestClients {
     public class TestClient_NonStopListening : PingPongTcpClient {
         public TestClient_NonStopListening(ILogger systemLogger, ILogger responseLogger)
             : base(systemLogger, responseLogger) { }
 
-        protected override async Task CommunicateAsync(SslStream connection, CancellationToken token) {
-            using StreamReader reader = new StreamReader(connection);
-            using StreamWriter writer = new StreamWriter(connection) { AutoFlush = true };
+        protected override async Task CommunicateAsync(ClientConnection connection, CancellationToken token) {
+            using StreamReader reader = new StreamReader(connection.SslStream);
+            using StreamWriter writer = new StreamWriter(connection.SslStream) { AutoFlush = true };
             var pongSerializer = new XmlSerializer(typeof(pong));
             StringBuilder responseBuilder = new StringBuilder();
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            // Отправляем первое сообщение клиенту
-            SendPing(writer);
+            SendPing(connection, writer);
 
-            // Задача для отправки ping сообщений
             var pingTask = Task.Run(async () => {
-                while (connection.CanRead && connection.CanWrite && !token.IsCancellationRequested) {
+                while (connection.SslStream.CanRead && connection.SslStream.CanWrite && !token.IsCancellationRequested) {
                     if (stopwatch.ElapsedMilliseconds >= _config.Interval) {
-                        SendPing(writer);
+                        SendPing(connection, writer);
                         stopwatch.Restart();
                     }
-                    await Task.Delay(1, token); // Минимальная задержка
+                    await Task.Delay(1, token); 
                 }
             }, token);
 
-            // Главный цикл для обработки входящих сообщений
-            while (connection.CanRead && connection.CanWrite && !token.IsCancellationRequested) {
+            while (connection.SslStream.CanRead && connection.SslStream.CanWrite && !token.IsCancellationRequested) {
                 token.ThrowIfCancellationRequested();
 
                 try {
-                    while (connection.CanRead && connection.CanWrite) {
+                    while (connection.SslStream.CanRead && connection.SslStream.CanWrite) {
                         string line = await reader.ReadLineAsync();
                         if (!string.IsNullOrWhiteSpace(line)) {
                             responseBuilder.AppendLine(line);
@@ -50,7 +48,7 @@ namespace Tests.TestClients {
                                 try {
                                     using (var stringReader = new StringReader(response)) {
                                         token.ThrowIfCancellationRequested();
-                                        ReadPong(pongSerializer, stringReader);
+                                        ReadPong(connection, pongSerializer, stringReader);
                                     }
                                 } catch (InvalidOperationException ex) {
                                     _systemLogger.LogError($"[{DateTime.UtcNow:HH:mm:ss.fff}] XML Deserialization error: {ex.Message}");
@@ -68,10 +66,10 @@ namespace Tests.TestClients {
                     _systemLogger.LogError($"[{DateTime.UtcNow:HH:mm:ss.fff}] Error while reading from stream: {ex.Message}");
                 }
 
-                await Task.Delay(1, token); // Минимальная задержка для обработки
+                await Task.Delay(1, token); 
             }
 
-            await pingTask; // Завершаем задачу отправки ping сообщений
+            await pingTask;
         }
     }
 }
